@@ -26,8 +26,8 @@ private:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 private:
     GameScene* _scene;
-    MoveDir _currentDir;
-    MoveDir _nextDir;
+    MoveDir _currentDir = MoveDir::None;
+    MoveDir _nextDir = MoveDir::None;
 };
 
 #endif // PLAYER_H

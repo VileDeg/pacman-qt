@@ -24,9 +24,15 @@ void Player::action()
         _frameNumber = 0;
     }
 
+    update(boundingRect());
+
+    v2pr(pos());
+    pr("Next: " << int(_nextDir) << " Current: " << int(_currentDir));
+
     QPoint plPos(pos().toPoint()); // Player pos local to scene
-    QPoint scPos(_scene->sceneRect().topLeft().toPoint()); // Scene pos global
-    QPoint mapPos = plPos - scPos; // Player pos global
+    //QPoint scPos(_scene->sceneRect().topLeft().toPoint()); // Scene pos global
+    //QPoint mapPos = plPos - scPos; // Player pos global
+    QPoint mapPos = plPos;
     QPoint mapPosTile = { mapPos.x() / _tileDim.width(), mapPos.y() / _tileDim.height() }; //Tile in which the player is 
     QPoint mapPosTileRem = { mapPos.x() % _tileDim.width(), mapPos.y() % _tileDim.height() };
 

@@ -8,7 +8,8 @@
 #include "mainwindow.h"
 #include "wall.h"
 
-GameScene::GameScene(QObject *parent) : QGraphicsScene(parent)
+GameScene::GameScene(QObject *parent) 
+    : QGraphicsScene(parent) ,_wallPen(), _wallBrush(Qt::red)
 {
     setBackgroundBrush(Qt::black);
 
@@ -40,14 +41,29 @@ bool GameScene::canMoveTo(int x, int y)
     if (x < 0 || y < 0 || x >= _mapSize.width() || y >= _mapSize.height())
         return false;
 
-    if (_map[y][x] == nullptr) {
+    if (_map[x][y] == nullptr) {
        // pr("Warning: nullptr at " << x << ", " << y);
         return true;
     }
 
-    return _map[y][x]->getType() != SpriteType::Wall;
+    return _map[x][y]->getType() != SpriteType::Wall;
 }
 
+
+void GameScene::addToMap(Sprite* sprite, int li, int ci)
+{
+    addItem(sprite);
+    _map[li][ci] = sprite;
+}
+
+void GameScene::addWall(int li, int ci)
+{
+    Wall* tmp = new Wall(
+        QRect(ci*_tileSize.x(), li*_tileSize.y(), _tileSize.x(), _tileSize.y()), 
+        _wallPen, _wallBrush);
+    addItem(tmp);
+    _map[li][ci] = tmp;
+}
 
 bool GameScene::loadMap(QString mapPath)
 {
@@ -69,40 +85,34 @@ bool GameScene::loadMap(QString mapPath)
     vpr(width); vpr(height);
 
     { //Allocate map array
-        _mapSize = { width, height };
-        _map = new Sprite **[height];
-        for (int i = 0; i < height; i++) {
-            _map[i] = new Sprite *[width];
-            for (int j = 0; j < width; j++)
+        _mapSize = { width+2, height+2 };
+        _map = new Sprite **[_mapSize.height()];
+        for (int i = 0; i < _mapSize.height(); i++) {
+            _map[i] = new Sprite *[_mapSize.width()];
+            for (int j = 0; j < _mapSize.width(); j++)
                 _map[i][j] = nullptr;
         }
     }
 
-    QPen tilePen = QPen();
-    QBrush wallBrush = Qt::red;
-    QBrush borderBrush = Qt::blue;
-    QBrush borderBrush1 = Qt::green;
+    
     { //Draw borders
+        _wallBrush = Qt::blue;
         for (int ci = 0; ci < width + 2; ++ci) { //Top and bottom border
-            QRect tileRect{ ci * _tileSize.x(), 0, _tileSize.x(), _tileSize.y() };
-
-            addRect(tileRect, tilePen, borderBrush);
-            tileRect = { ci * _tileSize.x(), (height + 1) * _tileSize.y(), _tileSize.x(), _tileSize.y() };
-            addRect(tileRect, tilePen, borderBrush);
+            addWall(0, ci);
+            addWall(height+1, ci);
         }
+        _wallBrush = Qt::green;
         for (int li = 1; li < height + 1; ++li) { //Left and right border
-            QRect tileRect{ 0, li * _tileSize.y(), _tileSize.x(), _tileSize.y() };
-            addRect(tileRect, tilePen, borderBrush1);
-            tileRect = { (width + 1) * _tileSize.x(), li * _tileSize.y(), _tileSize.x(), _tileSize.y() };
-            addRect(tileRect, tilePen, borderBrush1);
+            addWall(li, 0);
+            addWall(li, width+1);
         }
     }
+    _wallBrush = Qt::red;
 
-    Wall* tmpWall = nullptr;
 
-    for (int li = 0; !in.atEnd(); ++li) { //Lines
-        if (li >= height) {
-            errpr("Too many lines in map");
+    for (int li = 1; li < _mapSize.height()-1; ++li) { //Lines
+        if (in.atEnd()) {
+            errpr("Too few lines in map");
             return false;
         }
 
@@ -111,12 +121,12 @@ bool GameScene::loadMap(QString mapPath)
             errpr("Too many characters in line");
             return false;
         }
-        for (int ci = 0; ci < line.size(); ++ci) { //Columns
 
-            //Add 1 because of border
-            QRect tileRect = {(1+ci)*_tileSize.x(), (1+li)*_tileSize.y(), _tileSize.x(), _tileSize.y()};
+        for (int ci = 1; ci < _mapSize.width()-1; ++ci) { //Columns
 
-            char cu = line[ci].unicode();
+            QRect tileRect = {ci*_tileSize.x(), li*_tileSize.y(), _tileSize.x(), _tileSize.y()};
+
+            char cu = line[ci-1].unicode();
 
             switch (cu)
             {
@@ -127,10 +137,7 @@ bool GameScene::loadMap(QString mapPath)
 
                     break;
                 case 'X': //Wall
-                    tmpWall = new Wall(tileRect, tilePen, wallBrush);
-                    addItem(tmpWall);
-                    _map[li][ci] = tmpWall;
-
+                    addWall(li, ci);
                     break;
                 case 'S':
                     pr("player found at: " << li << ", " << ci);

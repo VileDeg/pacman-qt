@@ -22,9 +22,14 @@ public:
 private slots:
     void playerHandler();
 private:
+    void addToMap(Sprite* sprite, int li, int ci);
+    void addWall(int li, int ci);
+private:
     std::unordered_map<QString, int> _intervals{};
     QTimer* _playerTimer;
     QSize _mapSize;
+    QPen _wallPen;
+    QBrush _wallBrush;
     
     QPoint _tileSize{62,62};
     float _scaleFactor{1.f};
