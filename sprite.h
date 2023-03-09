@@ -8,7 +8,7 @@
 #include <QPainter>
 #include <QVector2D>
 
-enum class SpriteType { None, Empty, Player, Wall, Enemy, Item };
+enum class SpriteType { None, Empty, Player, Wall, Enemy, Ball };
 
 class Sprite : public QObject, public QGraphicsItem
 {
@@ -20,7 +20,9 @@ public:
     SpriteType getType() { return _type; }
     void setPen(QPen pen) { _pen = pen; }
     void setBrush(QBrush brush) { _brush = brush; }
+    void setImage(QPixmap* image) { _spriteImage = image; }
 protected:
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
     QRectF boundingRect() const override;
 protected:
@@ -32,11 +34,8 @@ protected:
     QBrush _brush = Qt::magenta;
 
     QPixmap* _spriteImage = nullptr;  
-    int _frameNumber{};   
 
     QSize _tileDim; //Frame dimensions
-    
-    const int _maxFrame{2};
 private:
     void init();
 };

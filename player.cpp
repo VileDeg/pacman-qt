@@ -1,33 +1,111 @@
 #include "player.h"
+
 #include <QKeyEvent>
+#include <QTimer>
+#include <QPixmap>
+
 #include "utils.h"
 #include "gamescene.h"
 
 Player::Player(QRect rect, QObject *parent)
     : Sprite(SpriteType::Player, rect, parent)
 {
-    _sheetOffset = {260, 323};
+    /*_sheetOffset = {260, 323};
     QString sheetPath = ":/img/pacman_hd.png";
     _spriteImage = new QPixmap(sheetPath); 
     if (_spriteImage->isNull()) {
         errpr("failed to open pixmap:" << sheetPath);
-    }
-    
+    }*/
+
+    loadAnimationFrames();
+    _spriteImage = &_animation[MoveDir::Right][0];
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(animationHandler()));
+    timer->start(_animInterval);
 }
 
 Player::~Player() {}
 
-void Player::action()
+void Player::loadAnimationFrame(MoveDir dir, QString path)
+{
+    static QString animPath = ":/sprites/player/";
+    QPixmap tmp(animPath+path);
+    if (tmp.isNull()) {
+        errpr("failed to open pixmap:" << path);
+    }
+    _animation[dir].push_back(tmp);
+}
+
+void Player::loadAnimationFrames()
+{
+    loadAnimationFrame(MoveDir::None, "a1.png");
+
+    loadAnimationFrame(MoveDir::Up, "a1.png");
+    loadAnimationFrame(MoveDir::Up, "b2.png");
+    loadAnimationFrame(MoveDir::Up, "b3.png");
+    loadAnimationFrame(MoveDir::Up, "b4.png");
+    loadAnimationFrame(MoveDir::Up, "b5.png");
+    loadAnimationFrame(MoveDir::Up, "b6.png");
+    loadAnimationFrame(MoveDir::Up, "b5.png");
+    loadAnimationFrame(MoveDir::Up, "b4.png");
+    loadAnimationFrame(MoveDir::Up, "b3.png");
+    loadAnimationFrame(MoveDir::Up, "b2.png");
+
+    loadAnimationFrame(MoveDir::Left, "a1.png");
+    loadAnimationFrame(MoveDir::Left, "c2.png");
+    loadAnimationFrame(MoveDir::Left, "c3.png");
+    loadAnimationFrame(MoveDir::Left, "c4.png");
+    loadAnimationFrame(MoveDir::Left, "c5.png");
+    loadAnimationFrame(MoveDir::Left, "c6.png");
+    loadAnimationFrame(MoveDir::Left, "c5.png");
+    loadAnimationFrame(MoveDir::Left, "c4.png");
+    loadAnimationFrame(MoveDir::Left, "c3.png");
+    loadAnimationFrame(MoveDir::Left, "c2.png");
+
+    loadAnimationFrame(MoveDir::Down, "a1.png");
+    loadAnimationFrame(MoveDir::Down, "d2.png");
+    loadAnimationFrame(MoveDir::Down, "d3.png");
+    loadAnimationFrame(MoveDir::Down, "d4.png");
+    loadAnimationFrame(MoveDir::Down, "d5.png");
+    loadAnimationFrame(MoveDir::Down, "d6.png");
+    loadAnimationFrame(MoveDir::Down, "d5.png");
+    loadAnimationFrame(MoveDir::Down, "d4.png");
+    loadAnimationFrame(MoveDir::Down, "d3.png");
+    loadAnimationFrame(MoveDir::Down, "d2.png");
+
+    loadAnimationFrame(MoveDir::Right, "a1.png");
+    loadAnimationFrame(MoveDir::Right, "a2.png");
+    loadAnimationFrame(MoveDir::Right, "a3.png");
+    loadAnimationFrame(MoveDir::Right, "a4.png");
+    loadAnimationFrame(MoveDir::Right, "a5.png");
+    loadAnimationFrame(MoveDir::Right, "a6.png");
+    loadAnimationFrame(MoveDir::Right, "a5.png");
+    loadAnimationFrame(MoveDir::Right, "a4.png");
+    loadAnimationFrame(MoveDir::Right, "a3.png");
+    loadAnimationFrame(MoveDir::Right, "a2.png");
+}
+
+void Player::animationHandler()
 {
     ++_frameNumber;
-    if (_frameNumber == _maxFrame) {
+    if (_frameNumber >= _animation[_currentDir].size()) {
         _frameNumber = 0;
     }
+    /*if (_currentDir == MoveDir::None) {
+        pr("Frame: " << _frameNumber);
+    }*/
+
+    _spriteImage = &_animation[_currentDir][_frameNumber];
 
     update(boundingRect());
+}
 
-    v2pr(pos());
-    pr("Next: " << int(_nextDir) << " Current: " << int(_currentDir));
+
+void Player::action()
+{
+    //v2pr(pos());
+    //pr("Next: " << int(_nextDir) << " Current: " << int(_currentDir));
 
     QPoint plPos(pos().toPoint()); // Player pos local to scene
     //QPoint scPos(_scene->sceneRect().topLeft().toPoint()); // Scene pos global
@@ -38,6 +116,8 @@ void Player::action()
 
     if (mapPosTileRem.isNull()) {
         _tilePos = mapPosTile; // Update the index of current tile
+
+        _scene->checkForBall(mapPosTile.y(), mapPosTile.x());
     }
 
     int tpx = _tilePos.x();
@@ -69,6 +149,7 @@ void Player::action()
             }
             break;
         default:
+            _currentDir = _nextDir;
             break;
     }
 
@@ -76,70 +157,50 @@ void Player::action()
         case MoveDir::None:
             break;
         case MoveDir::Up:
-            if (tpy == 0 && !upFree) {
+            if (mapPosTileRem.y() == 0 && !upFree) {
                 _nextDir = _currentDir = MoveDir::None; // Stop
             } else {
                 moveUp();
             }
             break;
         case MoveDir::Left:
-            if (tpx == 0 && !leftFree) {
+            if (mapPosTileRem.x() == 0 && !leftFree) {
                 _nextDir = _currentDir = MoveDir::None; // Stop
             } else {
                 moveLeft();
             }
             break;
         case MoveDir::Down:
-            if (tpy == 0 && !downFree) {
+            if (mapPosTileRem.y() == 0 && !downFree) {
                 _nextDir = _currentDir = MoveDir::None; // Stop
             } else {
                 moveDown();
             }
             break;
         case MoveDir::Right:
-            if (tpx == 0 && !rightFree) {
+            if (mapPosTileRem.x() == 0 && !rightFree) {
                 _nextDir = _currentDir = MoveDir::None; // Stop
             } else {
                 moveRight();
             }
             break;
         default:
-                break;
+            break;
     }
 }
 
-void Player::moveUp()
-{
-    pr("move up");
-    setPos(x(), y() - 1);
-}
-void Player::moveLeft()
-{
-    pr("move left");
-    setPos(x() - 1, y());
-}
-void Player::moveDown()
-{
-    pr("move down");
-    setPos(x(), y() + 1);
-}
-void Player::moveRight()
-{
-    pr("move right");
-    setPos(x() + 1, y());
-}
-
-void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{
-    QRect r = boundingRect().toRect();
-
-    QPoint offset(_sheetOffset.x() + _frameNumber * r.width(), _sheetOffset.y());
-    QRect source = { offset.x(), offset.y(), r.width(), r.height() };
-    painter->drawPixmap(r, *_spriteImage, source);
-
-    painter->setPen(_pen);
-    painter->drawRect(r);
-
-    Q_UNUSED(option);
-    Q_UNUSED(widget);
-}
+//void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+//{
+//    QRect r = boundingRect().toRect();
+//
+//    //QPoint offset(_sheetOffset.x() + _frameNumber * r.width(), _sheetOffset.y());
+//    //QRect source = { offset.x(), offset.y(), r.width(), r.height() };
+//    painter->drawPixmap(r, *_spriteImage); //, source
+//    
+//
+//    //painter->setPen(_pen);
+//    //painter->drawRect(r);
+//
+//    Q_UNUSED(option);
+//    Q_UNUSED(widget);
+//}

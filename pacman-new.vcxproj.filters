@@ -66,9 +66,6 @@
     <ClInclude Include="wall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gamescene.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="player.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

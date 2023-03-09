@@ -4,6 +4,8 @@
 #include <QTimer>
 
 #include <QDebug>
+#include <QHBoxLayout>
+#include <QLabel>
 
 #include <cstdlib>
 
@@ -13,22 +15,35 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
-    //_ui(new Ui::MainWindow)
 {
-    //_ui->setupUi(this);
-
+    setStyleSheet("background-color: black;");
     setWindowTitle("Pac-Man");
-    resize(_windowDim);
-    //Move window to center of display
-   /* QRect desktopRect = QApplication::desktop()->availableGeometry(this);
-    QPoint center = desktopRect.center();
-    setGeometry(center.x() - width() * 0.5, center.y() - height() * 0.5,
-                width(), height());*/
+    setFixedSize(_windowDim);
+
+    _scoreLabel = new QLabel(this);
+    {
+        _scoreLabel->setStyleSheet("font-family: Fixedsys; color: white; font-size: 20px;");
+        _scoreLabel->setText("Score: ");
+        _scoreLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+        QTimer* scoreTimer = new QTimer(this);
+        connect(scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
+        scoreTimer->start(100);
+    }
+
 
     _scene = new GameScene(this);
-    //_scene->setBackgroundBrush(Qt::black);
     _view = new GameView(this);
     _view->setScene(_scene);
+
+    auto* vLayout = new QVBoxLayout();
+    QWidget* placeholderWidget = new QWidget();
+    placeholderWidget->setLayout(vLayout);
+    setCentralWidget(placeholderWidget);
+
+    vLayout->addWidget(_scoreLabel);
+    vLayout->addWidget(_view);
+    vLayout->setAlignment(Qt::AlignCenter);
 
     if (!_scene->loadMap(":/maps/map.txt")) {
         return;
@@ -44,25 +59,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    //delete _ui;
+}
+
+void MainWindow::updateGameScore()
+{
+    int score = _scene->getScore();
+    _scoreLabel->setText("Score: " + QString::number(score));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_W) {
-        pr("W pressed");
         _scene->setPlayerMoveDir(MoveDir::Up);
-        // Handle "W" key press
     } else if (event->key() == Qt::Key_A) {
-        pr("A pressed");
         _scene->setPlayerMoveDir(MoveDir::Left);
-        // Handle "A" key press
     } else if (event->key() == Qt::Key_S) {
-        pr("S pressed");
         _scene->setPlayerMoveDir(MoveDir::Down);
-        // Handle "S" key press
     } else if (event->key() == Qt::Key_D) {
-        pr("D pressed");
         _scene->setPlayerMoveDir(MoveDir::Right);
     }
 }

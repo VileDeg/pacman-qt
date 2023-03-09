@@ -3,21 +3,19 @@
 
 #include <QMainWindow>
 #include <QGraphicsView>
+#include <QLabel>
 #include <vector>
 
 #include "sprite.h"
 #include "gameview.h"
 #include "gamescene.h"
 
-
-//namespace Ui {
-//class MainWindow;
-//}
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+private slots:
+    void updateGameScore();
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -26,11 +24,11 @@ public:
 private:
     void keyPressEvent(QKeyEvent* event) override;
 private:
-    //Ui::MainWindow* _ui;
     GameScene* _scene;
     GameView* _view;
+    QLabel* _scoreLabel;
 
-    QSize _windowDim{1024, 768};
+    QSize _windowDim{640, 480};
 };
 
 #endif // MAINWINDOW_H

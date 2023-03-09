@@ -13,11 +13,14 @@ GameScene::GameScene(QObject *parent)
 {
     setBackgroundBrush(Qt::black);
 
-    _intervals["player"] = 10;
+    _intervals["player"] = 5;
 
     _playerTimer = new QTimer(this);
     connect(_playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
     _playerTimer->start(_intervals["player"]);
+
+    _pixmapCache["wall"] = QPixmap(":/sprites/object/wall.png");
+    _pixmapCache["ball"] = QPixmap(":/sprites/object/dot.png");
 }
 
 GameScene::~GameScene() 
@@ -49,20 +52,49 @@ bool GameScene::canMoveTo(int x, int y)
     return _map[x][y]->getType() != SpriteType::Wall;
 }
 
-
-void GameScene::addToMap(Sprite* sprite, int li, int ci)
+void GameScene::removeSprite(int x, int y)
 {
-    addItem(sprite);
-    _map[li][ci] = sprite;
+    auto sprite = _map[x][y];
+    assert(sprite != nullptr);
+    removeItem(sprite);
+    delete sprite;
+    addSprite(SpriteType::Empty, x, y);
+}
+
+void GameScene::checkForBall(int x, int y)
+{
+    auto sprite = _map[x][y];
+    if (sprite == nullptr) {
+        pr("Warning: nullptr at " << x << ", " << y);
+    }
+    if (sprite->getType() != SpriteType::Ball) {
+        return;
+    }
+
+    _playerScore += 10;
+    
+    removeSprite(x, y);
+}
+
+QRect GameScene::tileRect(int li, int ci)
+{
+    return QRect(ci * _tileWidth, li * _tileWidth, _tileWidth, _tileWidth);
+}
+
+Sprite* GameScene::addSprite(SpriteType type, int li, int ci)
+{
+    Sprite* tmp = new Sprite(type, tileRect(li, ci));
+    addItem(tmp);
+    _map[li][ci] = tmp;
+    return tmp;
 }
 
 void GameScene::addWall(int li, int ci)
 {
-    Wall* tmp = new Wall(
-        QRect(ci*_tileSize.x(), li*_tileSize.y(), _tileSize.x(), _tileSize.y()), 
-        _wallPen, _wallBrush);
-    addItem(tmp);
-    _map[li][ci] = tmp;
+    auto tmp = addSprite(SpriteType::Wall, li, ci);
+    tmp->setImage(&_pixmapCache["wall"]);
+    tmp->setBrush(_wallBrush);
+    tmp->setPen(_wallPen);
 }
 
 bool GameScene::loadMap(QString mapPath)
@@ -78,12 +110,19 @@ bool GameScene::loadMap(QString mapPath)
     QString dimLine = in.readLine();
     QStringList tks = dimLine.split(" ");
     if (tks.size() != 2) {
-        errpr("Invalid map dimensions(number of tokens)");
+        errpr("Invalid map dimensions(too many values)");
     }
-    int width = std::stoi(tks[0].toStdString());
-    int height = std::stoi(tks[1].toStdString());
+    int width{}, height{};
+    try {
+        width = std::stoi(tks[0].toStdString());
+        height = std::stoi(tks[1].toStdString());
+    }
+    catch (std::exception) {
+        errpr("Invalid map dimensions(failed to convert)");
+        return false;
+    }
     vpr(width); vpr(height);
-
+    _tileWidth = (float)_maxViewWidth / std::max(width, height);
     { //Allocate map array
         _mapSize = { width+2, height+2 };
         _map = new Sprite **[_mapSize.height()];
@@ -93,7 +132,6 @@ bool GameScene::loadMap(QString mapPath)
                 _map[i][j] = nullptr;
         }
     }
-
     
     { //Draw borders
         _wallBrush = Qt::blue;
@@ -109,7 +147,7 @@ bool GameScene::loadMap(QString mapPath)
     }
     _wallBrush = Qt::red;
 
-
+    
     for (int li = 1; li < _mapSize.height()-1; ++li) { //Lines
         if (in.atEnd()) {
             errpr("Too few lines in map");
@@ -124,24 +162,23 @@ bool GameScene::loadMap(QString mapPath)
 
         for (int ci = 1; ci < _mapSize.width()-1; ++ci) { //Columns
 
-            QRect tileRect = {ci*_tileSize.x(), li*_tileSize.y(), _tileSize.x(), _tileSize.y()};
-
             char cu = line[ci-1].unicode();
 
+            Sprite* tmp = nullptr;
             switch (cu)
             {
                 case 'T':
                 case 'K':
                 case 'G':
                 case '.': //Empty
-
+                    addSprite(SpriteType::Ball, li, ci)->setImage(&_pixmapCache["ball"]);
                     break;
                 case 'X': //Wall
                     addWall(li, ci);
                     break;
                 case 'S':
                     pr("player found at: " << li << ", " << ci);
-                    _player = new Player(tileRect);
+                    _player = new Player(tileRect(li, ci), this);
                     _player->setScene(this);
                     _player->setPen({ Qt::red, 2, Qt::SolidLine });
                     addItem(_player);
