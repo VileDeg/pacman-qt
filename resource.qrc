@@ -64,5 +64,8 @@
         <file>sprites/player/d4.png</file>
         <file>sprites/player/d5.png</file>
         <file>sprites/player/d6.png</file>
+        <file>sprites/object/key.png</file>
+        <file>sprites/object/lock.png</file>
+        <file>sprites/object/door.png</file>
     </qresource>
 </RCC>

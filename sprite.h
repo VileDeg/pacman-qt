@@ -8,7 +8,7 @@
 #include <QPainter>
 #include <QVector2D>
 
-enum class SpriteType { None, Empty, Player, Wall, Enemy, Ball };
+enum class SpriteType { None, Empty, Player, Wall, Enemy, Ball, Key, Lock, Door };
 
 class Sprite : public QObject, public QGraphicsItem
 {

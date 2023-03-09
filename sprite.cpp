@@ -21,7 +21,6 @@ Sprite::Sprite(SpriteType type, QRect rect, QPen pen, QBrush brush, QObject* par
 
 Sprite::~Sprite()
 {
-    //delete _spriteImage;
 }
 
 void Sprite::init()
@@ -38,15 +37,7 @@ void Sprite::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 {
     QRect r = boundingRect().toRect();
 
-    //QPoint offset(_sheetOffset.x() + _frameNumber * r.width(), _sheetOffset.y());
-    //QRect source = { offset.x(), offset.y(), r.width(), r.height() };
-    if (_spriteImage) {
-        painter->drawPixmap(r, *_spriteImage); //, source
-    }
-
-
-    //painter->setPen(_pen);
-    //painter->drawRect(r);
+    painter->drawPixmap(r, *_spriteImage); //, source
 
     Q_UNUSED(option);
     Q_UNUSED(widget);

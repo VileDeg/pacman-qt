@@ -30,60 +30,66 @@ Player::~Player() {}
 void Player::loadAnimationFrame(MoveDir dir, QString path)
 {
     static QString animPath = ":/sprites/player/";
-    QPixmap tmp(animPath+path);
-    if (tmp.isNull()) {
-        errpr("failed to open pixmap:" << path);
-    }
-    _animation[dir].push_back(tmp);
+    //QPixmap tmp(animPath+path);
+    //if (tmp.isNull()) {
+    //    //errpr("failed to open pixmap:" << path);
+    //    throw std::runtime_error("failed to open pixmap" + path.toStdString());
+    //}
+    _animation[dir].push_back(loadPixmap(animPath + path));
 }
 
 void Player::loadAnimationFrames()
 {
-    loadAnimationFrame(MoveDir::None, "a1.png");
+    try {
+        loadAnimationFrame(MoveDir::None, "a1.png");
 
-    loadAnimationFrame(MoveDir::Up, "a1.png");
-    loadAnimationFrame(MoveDir::Up, "b2.png");
-    loadAnimationFrame(MoveDir::Up, "b3.png");
-    loadAnimationFrame(MoveDir::Up, "b4.png");
-    loadAnimationFrame(MoveDir::Up, "b5.png");
-    loadAnimationFrame(MoveDir::Up, "b6.png");
-    loadAnimationFrame(MoveDir::Up, "b5.png");
-    loadAnimationFrame(MoveDir::Up, "b4.png");
-    loadAnimationFrame(MoveDir::Up, "b3.png");
-    loadAnimationFrame(MoveDir::Up, "b2.png");
+        loadAnimationFrame(MoveDir::Up, "a1.png");
+        loadAnimationFrame(MoveDir::Up, "b2.png");
+        loadAnimationFrame(MoveDir::Up, "b3.png");
+        loadAnimationFrame(MoveDir::Up, "b4.png");
+        loadAnimationFrame(MoveDir::Up, "b5.png");
+        loadAnimationFrame(MoveDir::Up, "b6.png");
+        loadAnimationFrame(MoveDir::Up, "b5.png");
+        loadAnimationFrame(MoveDir::Up, "b4.png");
+        loadAnimationFrame(MoveDir::Up, "b3.png");
+        loadAnimationFrame(MoveDir::Up, "b2.png");
 
-    loadAnimationFrame(MoveDir::Left, "a1.png");
-    loadAnimationFrame(MoveDir::Left, "c2.png");
-    loadAnimationFrame(MoveDir::Left, "c3.png");
-    loadAnimationFrame(MoveDir::Left, "c4.png");
-    loadAnimationFrame(MoveDir::Left, "c5.png");
-    loadAnimationFrame(MoveDir::Left, "c6.png");
-    loadAnimationFrame(MoveDir::Left, "c5.png");
-    loadAnimationFrame(MoveDir::Left, "c4.png");
-    loadAnimationFrame(MoveDir::Left, "c3.png");
-    loadAnimationFrame(MoveDir::Left, "c2.png");
+        loadAnimationFrame(MoveDir::Left, "a1.png");
+        loadAnimationFrame(MoveDir::Left, "c2.png");
+        loadAnimationFrame(MoveDir::Left, "c3.png");
+        loadAnimationFrame(MoveDir::Left, "c4.png");
+        loadAnimationFrame(MoveDir::Left, "c5.png");
+        loadAnimationFrame(MoveDir::Left, "c6.png");
+        loadAnimationFrame(MoveDir::Left, "c5.png");
+        loadAnimationFrame(MoveDir::Left, "c4.png");
+        loadAnimationFrame(MoveDir::Left, "c3.png");
+        loadAnimationFrame(MoveDir::Left, "c2.png");
 
-    loadAnimationFrame(MoveDir::Down, "a1.png");
-    loadAnimationFrame(MoveDir::Down, "d2.png");
-    loadAnimationFrame(MoveDir::Down, "d3.png");
-    loadAnimationFrame(MoveDir::Down, "d4.png");
-    loadAnimationFrame(MoveDir::Down, "d5.png");
-    loadAnimationFrame(MoveDir::Down, "d6.png");
-    loadAnimationFrame(MoveDir::Down, "d5.png");
-    loadAnimationFrame(MoveDir::Down, "d4.png");
-    loadAnimationFrame(MoveDir::Down, "d3.png");
-    loadAnimationFrame(MoveDir::Down, "d2.png");
+        loadAnimationFrame(MoveDir::Down, "a1.png");
+        loadAnimationFrame(MoveDir::Down, "d2.png");
+        loadAnimationFrame(MoveDir::Down, "d3.png");
+        loadAnimationFrame(MoveDir::Down, "d4.png");
+        loadAnimationFrame(MoveDir::Down, "d5.png");
+        loadAnimationFrame(MoveDir::Down, "d6.png");
+        loadAnimationFrame(MoveDir::Down, "d5.png");
+        loadAnimationFrame(MoveDir::Down, "d4.png");
+        loadAnimationFrame(MoveDir::Down, "d3.png");
+        loadAnimationFrame(MoveDir::Down, "d2.png");
 
-    loadAnimationFrame(MoveDir::Right, "a1.png");
-    loadAnimationFrame(MoveDir::Right, "a2.png");
-    loadAnimationFrame(MoveDir::Right, "a3.png");
-    loadAnimationFrame(MoveDir::Right, "a4.png");
-    loadAnimationFrame(MoveDir::Right, "a5.png");
-    loadAnimationFrame(MoveDir::Right, "a6.png");
-    loadAnimationFrame(MoveDir::Right, "a5.png");
-    loadAnimationFrame(MoveDir::Right, "a4.png");
-    loadAnimationFrame(MoveDir::Right, "a3.png");
-    loadAnimationFrame(MoveDir::Right, "a2.png");
+        loadAnimationFrame(MoveDir::Right, "a1.png");
+        loadAnimationFrame(MoveDir::Right, "a2.png");
+        loadAnimationFrame(MoveDir::Right, "a3.png");
+        loadAnimationFrame(MoveDir::Right, "a4.png");
+        loadAnimationFrame(MoveDir::Right, "a5.png");
+        loadAnimationFrame(MoveDir::Right, "a6.png");
+        loadAnimationFrame(MoveDir::Right, "a5.png");
+        loadAnimationFrame(MoveDir::Right, "a4.png");
+        loadAnimationFrame(MoveDir::Right, "a3.png");
+        loadAnimationFrame(MoveDir::Right, "a2.png");
+    }
+    catch (std::runtime_error& e) {
+        errpr(e.what());
+    }
 }
 
 void Player::animationHandler()
@@ -117,7 +123,7 @@ void Player::action()
     if (mapPosTileRem.isNull()) {
         _tilePos = mapPosTile; // Update the index of current tile
 
-        _scene->checkForBall(mapPosTile.y(), mapPosTile.x());
+        _scene->interactAt(mapPosTile.y(), mapPosTile.x());
     }
 
     int tpx = _tilePos.x();
@@ -188,19 +194,3 @@ void Player::action()
             break;
     }
 }
-
-//void Player::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-//{
-//    QRect r = boundingRect().toRect();
-//
-//    //QPoint offset(_sheetOffset.x() + _frameNumber * r.width(), _sheetOffset.y());
-//    //QRect source = { offset.x(), offset.y(), r.width(), r.height() };
-//    painter->drawPixmap(r, *_spriteImage); //, source
-//    
-//
-//    //painter->setPen(_pen);
-//    //painter->drawRect(r);
-//
-//    Q_UNUSED(option);
-//    Q_UNUSED(widget);
-//}

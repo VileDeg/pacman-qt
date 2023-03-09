@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QLabel>
+#include <QVBoxLayout>
 #include <vector>
 
 #include "sprite.h"
@@ -16,17 +17,20 @@ class MainWindow : public QMainWindow
 
 private slots:
     void updateGameScore();
+    void playerWin();
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QSize GetDimensions() { return _windowDim; }
 private:
     void keyPressEvent(QKeyEvent* event) override;
 private:
     GameScene* _scene;
     GameView* _view;
     QLabel* _scoreLabel;
+    QLabel* _winLabel;
+    QVBoxLayout* _vLayout;
+    QWidget* _centeralWidget;
 
     QSize _windowDim{640, 480};
 };

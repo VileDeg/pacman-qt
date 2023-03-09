@@ -4,7 +4,7 @@
 #include <QTimer>
 
 #include <QDebug>
-#include <QHBoxLayout>
+
 #include <QLabel>
 
 #include <cstdlib>
@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _scoreLabel = new QLabel(this);
     {
         _scoreLabel->setStyleSheet("font-family: Fixedsys; color: white; font-size: 20px;");
-        _scoreLabel->setText("Score: ");
+        //_scoreLabel->setText("Score: ");
         _scoreLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
         QTimer* scoreTimer = new QTimer(this);
@@ -31,19 +31,31 @@ MainWindow::MainWindow(QWidget *parent) :
         scoreTimer->start(100);
     }
 
+    _winLabel = new QLabel(this);
+    {
+        _winLabel->setStyleSheet("font-family: Fixedsys; color: white; font-size: 60px;");
+        _winLabel->setText("You won!\nScore: ");
+        _winLabel->setWordWrap(true);
+        //_winLabel->setTextFormat(Qt::RichText);
+        _winLabel->setAlignment(Qt::AlignCenter);
+
+        _winLabel->hide();
+    }
 
     _scene = new GameScene(this);
+    connect(_scene, SIGNAL(playerWin()), this, SLOT(playerWin()));
+
     _view = new GameView(this);
     _view->setScene(_scene);
 
-    auto* vLayout = new QVBoxLayout();
-    QWidget* placeholderWidget = new QWidget();
-    placeholderWidget->setLayout(vLayout);
-    setCentralWidget(placeholderWidget);
+    _vLayout = new QVBoxLayout();
+    _centeralWidget = new QWidget();
+    _centeralWidget->setLayout(_vLayout);
+    setCentralWidget(_centeralWidget);
 
-    vLayout->addWidget(_scoreLabel);
-    vLayout->addWidget(_view);
-    vLayout->setAlignment(Qt::AlignCenter);
+    _vLayout->addWidget(_scoreLabel);
+    _vLayout->addWidget(_view);
+    _vLayout->setAlignment(Qt::AlignCenter);
 
     if (!_scene->loadMap(":/maps/map.txt")) {
         return;
@@ -61,10 +73,18 @@ MainWindow::~MainWindow()
 {
 }
 
+void MainWindow::playerWin()
+{
+    _centeralWidget->hide();
+    _winLabel->show();
+    _winLabel->setText(_winLabel->text() + QString::number(_scene->getScore()));
+}
+
 void MainWindow::updateGameScore()
 {
+    static QString scoreText = "Score: ";
     int score = _scene->getScore();
-    _scoreLabel->setText("Score: " + QString::number(score));
+    _scoreLabel->setText(scoreText + QString::number(score));
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

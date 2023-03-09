@@ -12,11 +12,14 @@
 class GameScene : public QGraphicsScene
 {
     Q_OBJECT
+signals:
+    void playerWin();
 public:
     GameScene(QObject *parent = 0);
     ~GameScene();
 
-    void checkForBall(int x, int y);
+    
+    void interactAt(int x, int y);
     int getScore() { return _playerScore; }
     bool canMoveTo(int x, int y);
     void setPlayerMoveDir(MoveDir dir) { _player->setMoveDir(dir); }
@@ -24,6 +27,7 @@ public:
 private slots:
     void playerHandler();
 private:
+    void openDoor();
     Sprite* addSprite(SpriteType type, int li, int ci);
     void removeSprite(int li, int ci);
     QRect tileRect(int li, int ci);
@@ -36,7 +40,10 @@ private:
     QPen _wallPen;
     QBrush _wallBrush;
     int _playerScore = 0;
-    std::unordered_map<QString, QPixmap> _pixmapCache{};
+    int _ballPoints = 10;
+    bool _keyFound = false;
+    QPoint _doorPos;
+    std::unordered_map<SpriteType, QPixmap> _pixmapCache{};
     int _maxViewWidth{ 320 };
     int _maxTilesInRow{ 10 };
     int _tileWidth; //Will be set according on map dimensions

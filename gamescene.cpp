@@ -19,8 +19,15 @@ GameScene::GameScene(QObject *parent)
     connect(_playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
     _playerTimer->start(_intervals["player"]);
 
-    _pixmapCache["wall"] = QPixmap(":/sprites/object/wall.png");
-    _pixmapCache["ball"] = QPixmap(":/sprites/object/dot.png");
+    try {
+        _pixmapCache[SpriteType::Wall] = loadPixmap(":/sprites/object/wall.png");
+        _pixmapCache[SpriteType::Ball] = loadPixmap(":/sprites/object/dot.png");
+        _pixmapCache[SpriteType::Key]  = loadPixmap(":/sprites/object/key.png");
+        _pixmapCache[SpriteType::Lock] = loadPixmap(":/sprites/object/lock.png");
+        _pixmapCache[SpriteType::Door] = loadPixmap(":/sprites/object/door.png");
+    } catch (std::runtime_error& e) {
+        errpr(e.what());
+    }
 }
 
 GameScene::~GameScene() 
@@ -43,37 +50,39 @@ bool GameScene::canMoveTo(int x, int y)
 {
     if (x < 0 || y < 0 || x >= _mapSize.width() || y >= _mapSize.height())
         return false;
+    assert(_map[x][y]);
 
-    if (_map[x][y] == nullptr) {
-       // pr("Warning: nullptr at " << x << ", " << y);
-        return true;
+    switch (_map[x][y]->getType()) {
+        case SpriteType::Wall:
+        case SpriteType::Lock:
+            return false;
     }
 
-    return _map[x][y]->getType() != SpriteType::Wall;
+    return true;
 }
 
-void GameScene::removeSprite(int x, int y)
+void GameScene::interactAt(int x, int y)
 {
     auto sprite = _map[x][y];
-    assert(sprite != nullptr);
-    removeItem(sprite);
-    delete sprite;
-    addSprite(SpriteType::Empty, x, y);
-}
-
-void GameScene::checkForBall(int x, int y)
-{
-    auto sprite = _map[x][y];
-    if (sprite == nullptr) {
-        pr("Warning: nullptr at " << x << ", " << y);
-    }
-    if (sprite->getType() != SpriteType::Ball) {
-        return;
-    }
-
-    _playerScore += 10;
+    assert(sprite);
     
-    removeSprite(x, y);
+    switch (sprite->getType())
+    {
+    case SpriteType::Ball:
+        _playerScore += _ballPoints;
+        removeSprite(x, y);
+        break;
+    case SpriteType::Key:
+        removeSprite(x, y); //Key -> Empty
+        removeSprite(_doorPos.x(), _doorPos.y()); //Lock -> Empty
+        addSprite(SpriteType::Door, _doorPos.x(), _doorPos.y()); //Empty -> Door
+        break;
+    case SpriteType::Door:
+        playerWin();
+        break;
+    default:
+        break;
+    }
 }
 
 QRect GameScene::tileRect(int li, int ci)
@@ -86,13 +95,22 @@ Sprite* GameScene::addSprite(SpriteType type, int li, int ci)
     Sprite* tmp = new Sprite(type, tileRect(li, ci));
     addItem(tmp);
     _map[li][ci] = tmp;
+    tmp->setImage(&_pixmapCache[type]);
     return tmp;
+}
+
+void GameScene::removeSprite(int x, int y)
+{
+    auto sprite = _map[x][y];
+    assert(sprite != nullptr);
+    removeItem(sprite);
+    delete sprite;
+    addSprite(SpriteType::Empty, x, y);
 }
 
 void GameScene::addWall(int li, int ci)
 {
     auto tmp = addSprite(SpriteType::Wall, li, ci);
-    tmp->setImage(&_pixmapCache["wall"]);
     tmp->setBrush(_wallBrush);
     tmp->setPen(_wallPen);
 }
@@ -111,6 +129,8 @@ bool GameScene::loadMap(QString mapPath)
     QStringList tks = dimLine.split(" ");
     if (tks.size() != 2) {
         errpr("Invalid map dimensions(too many values)");
+        f.close();
+        return false;
     }
     int width{}, height{};
     try {
@@ -119,6 +139,7 @@ bool GameScene::loadMap(QString mapPath)
     }
     catch (std::exception) {
         errpr("Invalid map dimensions(failed to convert)");
+        f.close();
         return false;
     }
     vpr(width); vpr(height);
@@ -147,16 +168,20 @@ bool GameScene::loadMap(QString mapPath)
     }
     _wallBrush = Qt::red;
 
-    
+    bool targetInMap = false;
+    bool playerInMap = false;
+    bool keyInMap = false;
     for (int li = 1; li < _mapSize.height()-1; ++li) { //Lines
         if (in.atEnd()) {
             errpr("Too few lines in map");
+            f.close();
             return false;
         }
 
         QString line = in.readLine();
         if (line.size() != width) {
             errpr("Too many characters in line");
+            f.close();
             return false;
         }
 
@@ -167,28 +192,51 @@ bool GameScene::loadMap(QString mapPath)
             Sprite* tmp = nullptr;
             switch (cu)
             {
-                case 'T':
-                case 'K':
-                case 'G':
+                case 'T': //Target(door)
+                    _doorPos = { li, ci };
+                    targetInMap = true;
+                    break;
+                case 'K': //Key
+                    addSprite(SpriteType::Key, li, ci);
+                    keyInMap = true;
+                    break;
+                case 'G': //Ghost
+                    addSprite(SpriteType::Empty, li, ci);
+                    break;
                 case '.': //Empty
-                    addSprite(SpriteType::Ball, li, ci)->setImage(&_pixmapCache["ball"]);
+                    addSprite(SpriteType::Ball, li, ci);
                     break;
                 case 'X': //Wall
                     addWall(li, ci);
                     break;
-                case 'S':
-                    pr("player found at: " << li << ", " << ci);
+                case 'S': //Start(player)
+                    //pr("player found at: " << li << ", " << ci);
                     _player = new Player(tileRect(li, ci), this);
                     _player->setScene(this);
                     _player->setPen({ Qt::red, 2, Qt::SolidLine });
                     addItem(_player);
                     _map[li][ci] = _player;
+                    playerInMap = true;
                     break;
                 default:
-                    errpr("Invalid symbol in map");
+                    errpr("Invalid symbol '" << cu << "' in map");
+                    f.close();
                     return false;
             }
         }
+    }
+
+    if (!targetInMap || !playerInMap) {
+        QString errmsg = "";
+        errmsg += !targetInMap ? "target not found in map" : "";
+        errmsg += !playerInMap ? "player not found in map" : "";
+        errpr(errmsg);
+        return false;
+    }
+    if (keyInMap) { //If there is key in map, door is closed by default
+        addSprite(SpriteType::Lock, _doorPos.x(), _doorPos.y());
+    } else { //Else it is open
+        addSprite(SpriteType::Door, _doorPos.x(), _doorPos.y());
     }
 
     f.close();

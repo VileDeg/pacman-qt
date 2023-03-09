@@ -90,6 +90,7 @@
   <ItemGroup>
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="wall.cpp" />
     <QtRcc Include="resource.qrc" />
     <QtUic Include="mainwindow.ui" />
