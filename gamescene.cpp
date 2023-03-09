@@ -8,8 +8,8 @@
 #include "mainwindow.h"
 #include "wall.h"
 
-GameScene::GameScene(QObject *parent) 
-    : QGraphicsScene(parent) ,_wallPen(), _wallBrush(Qt::red)
+GameScene::GameScene(int viewWidth, QObject *parent)
+    : QGraphicsScene(parent) , _viewWidth(viewWidth), _wallBrush(Qt::red)
 {
     setBackgroundBrush(Qt::black);
 
@@ -79,6 +79,7 @@ void GameScene::interactAt(int x, int y)
         break;
     case SpriteType::Door:
         playerWin();
+        removeSprite(x, y);
         break;
     default:
         break;
@@ -143,9 +144,12 @@ bool GameScene::loadMap(QString mapPath)
         return false;
     }
     vpr(width); vpr(height);
-    _tileWidth = (float)_maxViewWidth / std::max(width, height);
+    int wFull = width + 2;
+    int hFull = height + 2;
+
+    _tileWidth = (float)_viewWidth / std::max(wFull, hFull);
     { //Allocate map array
-        _mapSize = { width+2, height+2 };
+        _mapSize = { wFull, hFull };
         _map = new Sprite **[_mapSize.height()];
         for (int i = 0; i < _mapSize.height(); i++) {
             _map[i] = new Sprite *[_mapSize.width()];

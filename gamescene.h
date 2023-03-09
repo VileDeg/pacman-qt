@@ -15,9 +15,8 @@ class GameScene : public QGraphicsScene
 signals:
     void playerWin();
 public:
-    GameScene(QObject *parent = 0);
+    GameScene(int viewWidth, QObject *parent = 0);
     ~GameScene();
-
     
     void interactAt(int x, int y);
     int getScore() { return _playerScore; }
@@ -27,7 +26,6 @@ public:
 private slots:
     void playerHandler();
 private:
-    void openDoor();
     Sprite* addSprite(SpriteType type, int li, int ci);
     void removeSprite(int li, int ci);
     QRect tileRect(int li, int ci);
@@ -44,7 +42,7 @@ private:
     bool _keyFound = false;
     QPoint _doorPos;
     std::unordered_map<SpriteType, QPixmap> _pixmapCache{};
-    int _maxViewWidth{ 320 };
+    int _viewWidth;
     int _maxTilesInRow{ 10 };
     int _tileWidth; //Will be set according on map dimensions
     float _scaleFactor{1.f};

@@ -1,61 +1,47 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
-
 #include <QTimer>
-
 #include <QDebug>
-
 #include <QLabel>
+#include <QMenuBar>
+#include <QDirIterator>
 
 #include <cstdlib>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "utils.h"
+#include "ui.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-    setStyleSheet("background-color: black;");
+    QPalette pal = palette();
+    pal.setColor(QPalette::Window, Qt::black);
+    setPalette(pal);
     setWindowTitle("Pac-Man");
     setFixedSize(_windowDim);
 
-    _scoreLabel = new QLabel(this);
-    {
-        _scoreLabel->setStyleSheet("font-family: Fixedsys; color: white; font-size: 20px;");
-        //_scoreLabel->setText("Score: ");
-        _scoreLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    _ui = new WindowUI(this);
+    setCentralWidget(_ui);
 
-        QTimer* scoreTimer = new QTimer(this);
-        connect(scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
-        scoreTimer->start(100);
-    }
 
-    _winLabel = new QLabel(this);
-    {
-        _winLabel->setStyleSheet("font-family: Fixedsys; color: white; font-size: 60px;");
-        _winLabel->setText("You won!\nScore: ");
-        _winLabel->setWordWrap(true);
-        //_winLabel->setTextFormat(Qt::RichText);
-        _winLabel->setAlignment(Qt::AlignCenter);
+    startGame(":/maps/map.txt");
+}
 
-        _winLabel->hide();
-    }
+MainWindow::~MainWindow()
+{
+}
 
-    _scene = new GameScene(this);
+void MainWindow::startGame(QString mapPath)
+{
+    _ui->otherCentral->hide();
+    _ui->mapCentral->show();
+
+    _scene = new GameScene(_viewWidth, this);
+    _ui->view->setScene(_scene);
+
     connect(_scene, SIGNAL(playerWin()), this, SLOT(playerWin()));
-
-    _view = new GameView(this);
-    _view->setScene(_scene);
-
-    _vLayout = new QVBoxLayout();
-    _centeralWidget = new QWidget();
-    _centeralWidget->setLayout(_vLayout);
-    setCentralWidget(_centeralWidget);
-
-    _vLayout->addWidget(_scoreLabel);
-    _vLayout->addWidget(_view);
-    _vLayout->setAlignment(Qt::AlignCenter);
 
     if (!_scene->loadMap(":/maps/map.txt")) {
         return;
@@ -64,27 +50,31 @@ MainWindow::MainWindow(QWidget *parent) :
     auto w = _scene->sceneRect().width();
     auto h = _scene->sceneRect().height();
     //Set view size forever according to contents. Add 2 because of the borders
-    _view->setFixedSize(w+2,h+2);
+    _ui->view->setFixedSize(w + 2, h + 2);
     //Move to center of the window
-    _view->move(_windowDim.width()/2-w/2, _windowDim.height()/2-h/2);
+    _ui->view->move(_windowDim.width() / 2 - w / 2, _windowDim.height() / 2 - h / 2);
+
+    _scoreTimer = new QTimer(this);
+    connect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
+    _scoreTimer->start(100);
 }
 
-MainWindow::~MainWindow()
+void MainWindow::endGame()
 {
+    _scoreTimer->deleteLater();
+    _scoreTimer = nullptr;
+    _scene->deleteLater();
+    _scene = nullptr;
 }
 
 void MainWindow::playerWin()
 {
-    _centeralWidget->hide();
-    _winLabel->show();
-    _winLabel->setText(_winLabel->text() + QString::number(_scene->getScore()));
+    _ui->onPlayerWin(_scene->getScore());
 }
 
 void MainWindow::updateGameScore()
 {
-    static QString scoreText = "Score: ";
-    int score = _scene->getScore();
-    _scoreLabel->setText(scoreText + QString::number(score));
+    _ui->onUpdateGameScore(_scene->getScore());
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
