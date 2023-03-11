@@ -35,9 +35,11 @@ signals:
 private slots:
     void playerHandler();
     void enemiesHandler();
+
 public:
     GameScene(QString mapPath, int viewWidth, QObject *parent = 0);
     ~GameScene();
+    
     
     void playerInteract(int x, int y);
     void collideWithEnemy(QPoint playerPos, bool* died);
@@ -52,6 +54,7 @@ private:
     Sprite* addSprite(SpriteType type, int li, int ci);
     void makeEmptyAt(int li, int ci);
     
+    void playerSendToTile(QPoint tilePos);
     void printAstar();
     void initAstar();
     void cleanupAstar();
@@ -62,6 +65,7 @@ private:
     int _playerScore = 0;
     int _ballPoints = 10;
     bool _keyFound = false;
+    QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;
     Node** _asMap;
     bool _astarInitialized = false;
@@ -70,7 +74,6 @@ private:
     int _viewWidth;
     int _maxTilesInRow{ 10 };
     int _tileWidth; //Will be set according on map dimensions
-    //float _scaleFactor{1.f};
     Sprite*** _map = nullptr;
     Player* _player = nullptr;
 };

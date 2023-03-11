@@ -16,7 +16,7 @@ void Enemy::action()
 
         setRandomNextDir();
     }
-
+    scanAround();
     processMovement(rem);
 }
 
@@ -26,11 +26,6 @@ void Enemy::setRandomNextDir()
     QVector<MoveDir> dirs{};
     int tpx = _t.x;
     int tpy =_t.y;
-
-    /*bool upFree = _scene->canMoveTo(tpx, tpy - 1);
-    bool leftFree = _scene->canMoveTo(tpx-1, tpy);
-    bool downFree = _scene->canMoveTo(tpx, tpy+1);
-    bool rightFree = _scene->canMoveTo(tpx+1, tpy);*/
 
     if (_aroundFree[0]) {
         dirs.push_back(MoveDir::Up);

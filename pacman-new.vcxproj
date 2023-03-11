@@ -110,7 +110,7 @@
     <QtMoc Include="ui.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="sprite.h" />
-    <ClInclude Include="player.h" />
+    <QtMoc Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res.txt" />

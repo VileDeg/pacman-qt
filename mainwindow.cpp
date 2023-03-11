@@ -28,7 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui = new WindowUI(this);
     setCentralWidget(_ui);
 
-
     //startGame(":/maps/asymm.txt");
     startGame(":/maps/map.txt");
 }

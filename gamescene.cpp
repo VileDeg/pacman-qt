@@ -53,9 +53,6 @@ GameScene::GameScene(QString mapPath, int viewWidth, QObject *parent)
     catch (std::runtime_error& e) {
         throw std::runtime_error("Filed to load map '" + mapPath.toStdString() + "' " + e.what());
     }
-
-    //initAstar();
-    //findPath(QPoint(1, 9), QPoint(10, 1));
    
     int interval = 150 / _tileWidth; //Adjust the speed according to tile size
 
@@ -77,28 +74,18 @@ GameScene::~GameScene()
         delete[] _map[i]; // Delete row
     }
     delete[] _map; // Delete map
-
-    cleanupAstar();
 }
 
 void GameScene::playerHandler()
 {
+    if (_tileClicked != QPoint(-1,-1) && _player->_tileOverlapped) {
+        playerSendToTile(_tileClicked);
+    }
     _player->action(); //Move player
 }
 
 void GameScene::enemiesHandler()
 {
-    //create enemies list
-    /*QVector<Enemy*> enemies;
-    for (int i = 0; i < _mapSize.height(); ++i) {
-        for (int j = 0; j < _mapSize.width(); ++j) {
-            if (_map[i][j]->getType() == SpriteType::Enemy) {
-                enemies.push_back(dynamic_cast<Enemy*>(_map[i][j]));
-                assert(enemies.back());
-            }
-        }
-    }*/
-
     for (auto enemy : _enemies) {
         enemy->action();
     }
@@ -151,13 +138,7 @@ void GameScene::initAstar()
             Node& curr = _asMap[r][c];
 
             if (r > 0) {
-                /*if (c > 0) {
-                    curr.nbs[0] = &_asMap[r - 1][c - 1];
-                }*/
                 curr.nbs[0] = &_asMap[r - 1][c];
-                /*if (c < dimy - 1) {
-                    curr.nbs[2] = &_asMap[r - 1][c + 1];
-                }*/
             }
 
             if (c > 0) {
@@ -168,18 +149,11 @@ void GameScene::initAstar()
             }
 
             if (r < dimx - 1) {
-                /*if (c > 0) {
-                    curr.nbs[5] = &_asMap[r + 1][c - 1];
-                }*/
                 curr.nbs[3] = &_asMap[r + 1][c];
-                /*if (c < dimy-1) {
-                    curr.nbs[7] = &_asMap[r + 1][c + 1];
-                }*/
             }
         }
     }
     _astarInitialized = true;
-    //printAstar();
 }
 
 void GameScene::printAstar()
@@ -202,13 +176,14 @@ void GameScene::printAstar()
 
 std::vector<QPoint> GameScene::findPath(QPoint start, QPoint end)
 {
+    if (!canMoveTo(end.x(), end.y())) {
+        return {};
+    }
+
     if (_astarInitialized) {
         cleanupAstar();
     }
     initAstar();
-    static int cnt = 0;
-
-    ++cnt;
 
     //Find shortest path from start to end in _map using A* algorithm
     std::vector<Node*> open{}, closed{};
@@ -299,7 +274,6 @@ std::vector<QPoint> GameScene::findPath(QPoint start, QPoint end)
         pathPoints.push_back(QPoint(node->x, node->y));
     }
     std::cout << std::endl;
-
     return pathPoints;
 }
 
@@ -478,7 +452,6 @@ void GameScene::loadFromMap(QString mapPath)
                     _player->setZValue(2);
                     addItem(_player);
                     _map[ci][li] = _player;
-                    //addToScene(_player, ci, li);
                     playerInMap = true;
                     break;
                 default:
@@ -506,18 +479,21 @@ void GameScene::onKeyPress(QKeyEvent* event)
 {
     if (!_player) return;
     if (event->key() == Qt::Key_W) {
-        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Up);
     } else if (event->key() == Qt::Key_A) {
-        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Left);
     } else if (event->key() == Qt::Key_S) {
-        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Down);
     } else if (event->key() == Qt::Key_D) {
-        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Right);
     }
+}
+
+
+void GameScene::playerSendToTile(QPoint tilePos)
+{
+    _player->setMouseClickPath(findPath(_player->getTilePos(), tilePos));
+    _tileClicked = { -1,-1 };
 }
 
 void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
@@ -526,8 +502,12 @@ void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
 
     if (event->button() == Qt::LeftButton) {
         QPoint tPos(localPos.x() / _tileWidth, localPos.y() / _tileWidth);
-        _player->_path = findPath(_player->getTilePos(), tPos);
-        _player->_path.erase(_player->_path.begin()); //Remove starting point
-        _player->setPathTo(localPos);
+        
+        if (!_player->_tileOverlapped) {
+            _tileClicked = tPos;
+            return;
+        }
+
+        playerSendToTile(tPos);
     }
 }

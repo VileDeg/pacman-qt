@@ -7,6 +7,9 @@
 
 class Player : public AnimatedSprite
 {
+    Q_OBJECT
+signals:
+    void tileOverlapped(int x, int y);
 public:
     explicit Player(TileData t, GameScene* parent)
         :AnimatedSprite(SpriteType::Player, t, parent)
@@ -15,30 +18,25 @@ public:
     ~Player() {}
 
     void action() override;
-    void setPathTo(QPointF mousePos);
     void setMoveDir(MoveDir dir) override { 
-        
+        _goToMouse = false;
         AnimatedSprite::setMoveDir(dir); 
     }
-    std::vector<QPoint> _path;
+
+    void setMouseClickPath(std::vector<QPoint> path) {
+        _path = path; 
+        _goToMouse = true;
+    }
+    bool _tileOverlapped = false;
 
     QPoint getTilePos() {return QPoint(_t.x, _t.y);}
-    void setDirTo(QPoint to) { 
-        if (to - getTilePos() == QPoint(0, -1)) setMoveDir(MoveDir::Up);
-        else if (to - getTilePos() == QPoint(-1, 0)) setMoveDir(MoveDir::Left);
-        else if (to - getTilePos() == QPoint(0, 1)) setMoveDir(MoveDir::Down);
-        else if (to - getTilePos() == QPoint(1, 0)) setMoveDir(MoveDir::Right);
-        else assert(false);
-    }
-    QPoint _target{-1,-1};
 private:
-    
-    
-    
-    /*void onTileOverlap() override;
-    void onAction() override;*/
-
     void loadAnimationFrames() override;
+    void setDirTo(QPoint to);
+    
+    
+    bool _goToMouse = false;
+    std::vector<QPoint> _path;
 };
 
 #endif // PLAYER_H

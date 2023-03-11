@@ -6,7 +6,6 @@ GameView::GameView(QWidget *parent)
     Init();
 }
 
-
 void GameView::Init()
 {
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);

@@ -20,8 +20,6 @@ class MainWindow : public QMainWindow
 
 private slots:
     void updateGameScore();
-    /*void playerWin();
-    void playerLoose();*/
     void gameEnd(bool win, int score);
    
 public:

@@ -8,8 +8,43 @@
 #include "gamescene.h"
 #include <map>
 
+void Player::setDirTo(QPoint to) {
+    auto diff = to - getTilePos();
+    if (diff == QPoint(0, -1)) {
+        _nextDir = MoveDir::Up;
+    } else if (diff == QPoint(-1, 0)) {
+        _nextDir = MoveDir::Left;
+    } else if (diff == QPoint(0, 1)) {
+        _nextDir = MoveDir::Down;
+    } else if (diff == QPoint(1, 0)) {
+        _nextDir = MoveDir::Right;
+    } else if (diff == QPoint(0, 0)) {
+           _nextDir = MoveDir::None;
+    } else {
+        __debugbreak();
+        assert(false);
+    }
+
+    /*if (diff.x() < 0) {
+        _nextDir = MoveDir::Left;
+    } else if (diff.x() > 0) {
+        _nextDir = MoveDir::Right;
+    } else if (diff.y() < 0) {
+        _nextDir = MoveDir::Up;
+    } else if (diff.y() > 0) {
+        _nextDir = MoveDir::Down;
+    } else if (diff.isNull()) {
+        _nextDir = MoveDir::None;
+    } else {
+        __debugbreak();
+        assert(false);
+        _nextDir = _currentDir;
+    }*/
+}
+
 void Player::action()
 {
+    _tileOverlapped = false;
     bool died = false;
     _scene->collideWithEnemy(pos().toPoint(), &died);
     if (died) {
@@ -21,93 +56,28 @@ void Player::action()
     QPoint rem = { p.x() % _t.width, p.y() % _t.width };
 
     if (rem.isNull()) {
+        _tileOverlapped = true;
+        _oldTPos = { _t.x, _t.y };
         _t.x = tPos.x(); // Update the index of current tile
         _t.y = tPos.y();
 
         _scene->playerInteract(_t.x, _t.y);
+
+        scanAround();
+
+        if (_goToMouse) { //Move to mouse click
+            if (!_path.empty()) {
+                auto next = _path.front();
+                setDirTo(next);
+                _path.erase(_path.begin());
+            } else {
+                _nextDir = MoveDir::None;
+                _goToMouse = false;
+            }
+        }
     }
 
     processMovement(rem);
-
-    if (_target == QPoint{ -1, -1 }) {
-        return;
-    }
-
-    p = pos().toPoint(); // Player p local to scene
-    tPos = { p.x() / _t.width, p.y() / _t.width }; //Tile in which the player is 
-    rem = { p.x() % _t.width, p.y() % _t.width };
-
-    if (!rem.isNull()) {
-        return;
-    }
-
-    _t.x = tPos.x(); // Update the index of current tile
-    _t.y = tPos.y();
-
-    if (!_path.empty()) {
-        auto next = _path.front();
-        setDirTo(next);
-        _path.erase(_path.begin());
-    } else {
-        _nextDir = MoveDir::None;
-        _target = { -1,-1 };
-    }
-
-    /*std::map<MoveDir, int> dirMap{
-        { MoveDir::Up, 0 },
-        { MoveDir::Left, 0 },
-        { MoveDir::Down, 0 },
-        { MoveDir::Right, 0 }
-    };
-
-    
-    QPoint tdiff = _target - tPos;
-    if (tdiff.isNull()) {
-        _nextDir = MoveDir::None;
-        _target = { -1, -1 };
-        return;
-    }
-    pr("Target: " << _target);
-    pr("Player: " << tPos);
-    pr("Diff: " << tdiff);
-    if (tdiff.x() > 0) {
-        dirMap[MoveDir::Right] = tdiff.x();
-    } 
-    if (tdiff.x() < 0) {
-        dirMap[MoveDir::Left] = -tdiff.x();
-    } 
-    if (tdiff.y() > 0) {
-        dirMap[MoveDir::Down] = tdiff.y();
-    } 
-    if (tdiff.y() < 0) {
-        dirMap[MoveDir::Up] = -tdiff.y();
-    }
-
-    bool end = false;
-    while(!end) {
-        auto it = std::max_element(dirMap.begin(), dirMap.end(),
-            [](const auto& a, const auto& b) {
-                return a.second < b.second;
-            });
-        _nextDir = it->first;
-        dirMap.erase(it);
-        if (!_aroundFree[static_cast<int>(_nextDir) - 1]) {
-            if (!dirMap.empty()) {
-                continue;
-            }
-            _nextDir = MoveDir::None;
-            end = true;
-        } else {
-            end = true;
-        }
-    }*/
-}
-
-void Player::setPathTo(QPointF mousePos)
-{
-    int tx = mousePos.x() / _t.width;
-    int ty = mousePos.y() / _t.width;
-    _target = { tx,ty };
 }
 
 void Player::loadAnimationFrames()
