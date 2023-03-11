@@ -13,7 +13,8 @@
 #define v2pr(_v) pr(#_v << ": (" << _v.x() << "," << _v.y() << ")")
 
 
-QPixmap loadPixmap(QString path);
+QImage loadPixmap(QString path);
+QImage setImageBrightness(QImage& img, int brightness);
 
 
 #endif // UTILS_H

@@ -7,36 +7,38 @@
 #include "utils.h"
 #include "gamescene.h"
 
-Player::Player(QRect rect, QObject *parent)
-    : Sprite(SpriteType::Player, rect, parent)
+void Player::action()
 {
-    /*_sheetOffset = {260, 323};
-    QString sheetPath = ":/img/pacman_hd.png";
-    _spriteImage = new QPixmap(sheetPath); 
-    if (_spriteImage->isNull()) {
-        errpr("failed to open pixmap:" << sheetPath);
-    }*/
+    bool died = false;
+    _scene->collideWithEnemy(pos().toPoint(), &died);
+    if (died) {
+        return;
+    }
 
-    loadAnimationFrames();
-    _spriteImage = &_animation[MoveDir::Right][0];
+    QPoint p(pos().toPoint()); // Player p local to scene
+    QPoint tPos = { p.x() / _t.width, p.y() / _t.width }; //Tile in which the player is 
+    QPoint rem = { p.x() % _t.width, p.y() % _t.width };
 
-    QTimer* timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(animationHandler()));
-    timer->start(_animInterval);
+    if (rem.isNull()) {
+        _t.x = tPos.x(); // Update the index of current tile
+        _t.y = tPos.y();
+
+        _scene->playerInteract(_t.x, _t.y);
+
+    }
+
+    processMovement(rem);
+
 }
 
-Player::~Player() {}
-
-void Player::loadAnimationFrame(MoveDir dir, QString path)
-{
-    static QString animPath = ":/sprites/player/";
-    //QPixmap tmp(animPath+path);
-    //if (tmp.isNull()) {
-    //    //errpr("failed to open pixmap:" << path);
-    //    throw std::runtime_error("failed to open pixmap" + path.toStdString());
-    //}
-    _animation[dir].push_back(loadPixmap(animPath + path));
-}
+//void Player::onTileOverlap()
+//{
+//    _scene->playerInteract(_t.x, _t.y);
+//}
+//void Player::onAction()
+//{
+//    
+//}
 
 void Player::loadAnimationFrames()
 {
@@ -89,108 +91,5 @@ void Player::loadAnimationFrames()
     }
     catch (std::runtime_error& e) {
         errpr(e.what());
-    }
-}
-
-void Player::animationHandler()
-{
-    ++_frameNumber;
-    if (_frameNumber >= _animation[_currentDir].size()) {
-        _frameNumber = 0;
-    }
-    /*if (_currentDir == MoveDir::None) {
-        pr("Frame: " << _frameNumber);
-    }*/
-
-    _spriteImage = &_animation[_currentDir][_frameNumber];
-
-    update(boundingRect());
-}
-
-
-void Player::action()
-{
-    //v2pr(pos());
-    //pr("Next: " << int(_nextDir) << " Current: " << int(_currentDir));
-
-    QPoint plPos(pos().toPoint()); // Player pos local to scene
-    //QPoint scPos(_scene->sceneRect().topLeft().toPoint()); // Scene pos global
-    //QPoint mapPos = plPos - scPos; // Player pos global
-    QPoint mapPos = plPos;
-    QPoint mapPosTile = { mapPos.x() / _tileDim.width(), mapPos.y() / _tileDim.height() }; //Tile in which the player is 
-    QPoint mapPosTileRem = { mapPos.x() % _tileDim.width(), mapPos.y() % _tileDim.height() };
-
-    if (mapPosTileRem.isNull()) {
-        _tilePos = mapPosTile; // Update the index of current tile
-
-        _scene->interactAt(mapPosTile.y(), mapPosTile.x());
-    }
-
-    int tpx = _tilePos.x();
-    int tpy = _tilePos.y();
-    bool upFree = _scene->canMoveTo(tpy - 1, tpx);
-    bool leftFree = _scene->canMoveTo(tpy, tpx - 1);
-    bool downFree = _scene->canMoveTo(tpy + 1, tpx);
-    bool rightFree = _scene->canMoveTo(tpy, tpx + 1);
-
-    switch (_nextDir) {
-        case MoveDir::Up:
-            if (mapPosTileRem.x() == 0 && upFree) {
-                _currentDir = _nextDir;
-            }
-            break;
-        case MoveDir::Left:
-            if (mapPosTileRem.y() == 0 && leftFree) {
-                _currentDir = _nextDir;
-            }
-            break;
-        case MoveDir::Down:
-            if (mapPosTileRem.x() == 0 && downFree) {
-                _currentDir = _nextDir;
-            }
-            break;
-        case MoveDir::Right:
-            if (mapPosTileRem.y() == 0 && rightFree) {
-                _currentDir = _nextDir;
-            }
-            break;
-        default:
-            _currentDir = _nextDir;
-            break;
-    }
-
-    switch (_currentDir) {
-        case MoveDir::None:
-            break;
-        case MoveDir::Up:
-            if (mapPosTileRem.y() == 0 && !upFree) {
-                _nextDir = _currentDir = MoveDir::None; // Stop
-            } else {
-                moveUp();
-            }
-            break;
-        case MoveDir::Left:
-            if (mapPosTileRem.x() == 0 && !leftFree) {
-                _nextDir = _currentDir = MoveDir::None; // Stop
-            } else {
-                moveLeft();
-            }
-            break;
-        case MoveDir::Down:
-            if (mapPosTileRem.y() == 0 && !downFree) {
-                _nextDir = _currentDir = MoveDir::None; // Stop
-            } else {
-                moveDown();
-            }
-            break;
-        case MoveDir::Right:
-            if (mapPosTileRem.x() == 0 && !rightFree) {
-                _nextDir = _currentDir = MoveDir::None; // Stop
-            } else {
-                moveRight();
-            }
-            break;
-        default:
-            break;
     }
 }

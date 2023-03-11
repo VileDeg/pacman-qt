@@ -88,11 +88,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animatedsprite.cpp" />
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="utils.cpp" />
-    <ClCompile Include="wall.cpp" />
     <QtRcc Include="resource.qrc" />
     <QtUic Include="mainwindow.ui" />
     <QtMoc Include="mainwindow.h" />
@@ -103,12 +104,13 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gamescene.h" />
+    <QtMoc Include="animatedsprite.h" />
+    <ClInclude Include="enemy.h" />
     <ClInclude Include="gameview.h" />
     <QtMoc Include="ui.h" />
     <ClInclude Include="utils.h" />
-    <ClInclude Include="wall.h" />
     <ClInclude Include="sprite.h" />
-    <QtMoc Include="player.h" />
+    <ClInclude Include="player.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res.txt" />

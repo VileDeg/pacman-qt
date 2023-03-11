@@ -1,5 +1,5 @@
 #include <QGraphicsScene>
-#include <QKeyEvent>
+
 #include <QTimer>
 #include <QDebug>
 #include <QLabel>
@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     pal.setColor(QPalette::Window, Qt::black);
     setPalette(pal);
     setWindowTitle("Pac-Man");
+    int w = _viewWidth + _offsetAroundView;
+    _windowDim = {w,w};
     setFixedSize(_windowDim);
 
     _ui = new WindowUI(this);
@@ -27,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     startGame(":/maps/map.txt");
+    //startGame(":/maps/big.txt");
 }
 
 MainWindow::~MainWindow()
@@ -38,14 +41,16 @@ void MainWindow::startGame(QString mapPath)
     _ui->otherCentral->hide();
     _ui->mapCentral->show();
 
-    _scene = new GameScene(_viewWidth, this);
-    _ui->view->setScene(_scene);
-
-    connect(_scene, SIGNAL(playerWin()), this, SLOT(playerWin()));
-
-    if (!_scene->loadMap(":/maps/map.txt")) {
+    try {
+        _scene = new GameScene(mapPath, _viewWidth, this);
+    } catch (std::exception& e) {
+        errpr(e.what());
         return;
     }
+
+    _ui->view->setScene(_scene);
+
+    connect(_scene, SIGNAL(gameEnd(bool, int)), this, SLOT(gameEnd(bool, int)));
 
     auto w = _scene->sceneRect().width();
     auto h = _scene->sceneRect().height();
@@ -54,22 +59,30 @@ void MainWindow::startGame(QString mapPath)
     //Move to center of the window
     _ui->view->move(_windowDim.width() / 2 - w / 2, _windowDim.height() / 2 - h / 2);
 
-    _scoreTimer = new QTimer(this);
+    _scoreTimer = new QTimer(this); //this
     connect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
     _scoreTimer->start(100);
 }
 
-void MainWindow::endGame()
+void MainWindow::cleanup()
 {
-    _scoreTimer->deleteLater();
+    disconnect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
+    delete _scoreTimer;
+    delete _scene;
+    _scene = nullptr;
+    /*delete _scoreTimer;
+    delete _scene;*/
+    /*_scoreTimer->deleteLater();
     _scoreTimer = nullptr;
     _scene->deleteLater();
-    _scene = nullptr;
+    _scene = nullptr;*/
+    cleanupDone = true;
 }
 
-void MainWindow::playerWin()
+void MainWindow::gameEnd(bool win, int score)
 {
-    _ui->onPlayerWin(_scene->getScore());
+    cleanup();
+    _ui->onGameEnd(win, score);
 }
 
 void MainWindow::updateGameScore()
@@ -79,14 +92,6 @@ void MainWindow::updateGameScore()
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_W) {
-        _scene->setPlayerMoveDir(MoveDir::Up);
-    } else if (event->key() == Qt::Key_A) {
-        _scene->setPlayerMoveDir(MoveDir::Left);
-    } else if (event->key() == Qt::Key_S) {
-        _scene->setPlayerMoveDir(MoveDir::Down);
-    } else if (event->key() == Qt::Key_D) {
-        _scene->setPlayerMoveDir(MoveDir::Right);
-    }
+    if (!_scene) return;
+    _scene->onKeyPress(event);
 }
-

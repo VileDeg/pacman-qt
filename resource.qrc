@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>img/pacman_hd.png</file>
         <file>maps/map.txt</file>
         <file>sprites/enemy/bl1.png</file>
         <file>sprites/enemy/bl2.png</file>
@@ -67,5 +66,8 @@
         <file>sprites/object/key.png</file>
         <file>sprites/object/lock.png</file>
         <file>sprites/object/door.png</file>
+        <file>maps/big.txt</file>
+        <file>maps/asymm.txt</file>
+        <file>sprites/object/floor.jpg</file>
     </qresource>
 </RCC>

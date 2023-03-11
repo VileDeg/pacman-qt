@@ -52,13 +52,16 @@
     <ClCompile Include="sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="wall.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="animatedsprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,10 +72,13 @@
     <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wall.h">
+    <ClInclude Include="sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
+    <ClInclude Include="enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -83,10 +89,10 @@
     <QtMoc Include="gamescene.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="player.h">
+    <QtMoc Include="ui.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ui.h">
+    <QtMoc Include="animatedsprite.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

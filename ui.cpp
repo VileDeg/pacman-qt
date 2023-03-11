@@ -28,14 +28,38 @@ void WindowUI::initLabels() {
         labels.win->setAlignment(Qt::AlignCenter);
     }
 }
+
+void WindowUI::initActions()
+{
+    QDirIterator it(":/maps/", QStringList() << "*.txt", QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        qDebug() << it.next();
+        QAction* act = new QAction(it.filePath(), this);
+        actions.append(act);
+        _mapsPath.append(it.filePath());
+    }
+}
+
+void WindowUI::initButtons()
+{
+    buttons.loadMap = new QPushButton("Load map", this);
+    {
+        buttons.loadMap->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        //buttons.loadMap->addAction(menus.loadMap->menuAction());
+        //connect(buttons.loadMap, SIGNAL(clicked()), this, SLOT(loadMapMenuTriggered()));
+        buttons.loadMap->setMenu(menus.loadMap);
+    }
+}
+
 void WindowUI::initLayouts() {
     mapCentral = new QWidget(this);
     {
         layouts.map = new QVBoxLayout(this);
         {
+            layouts.map->setAlignment(Qt::AlignCenter);
+
             layouts.map->addWidget(labels.score);
             layouts.map->addWidget(view);
-            layouts.map->setAlignment(Qt::AlignCenter);
         }
     }
     mapCentral->setLayout(layouts.map);
@@ -44,8 +68,10 @@ void WindowUI::initLayouts() {
     {
         layouts.other = new QVBoxLayout(this);
         {
-            layouts.other->addWidget(labels.win);
             layouts.other->setAlignment(Qt::AlignCenter);
+
+            layouts.other->addWidget(labels.win);
+            layouts.other->addWidget(buttons.loadMap);
         }
     }
     otherCentral->setLayout(layouts.other);
@@ -53,9 +79,10 @@ void WindowUI::initLayouts() {
 
     layouts.main = new QVBoxLayout(this);
     {
+        layouts.main->setAlignment(Qt::AlignCenter);
+
         layouts.main->addWidget(mapCentral);
         layouts.main->addWidget(otherCentral);
-        layouts.main->setAlignment(Qt::AlignCenter);
     }
 }
 
@@ -65,26 +92,21 @@ void WindowUI::initMenus() {
     menus.file->addMenu(menus.loadMap);
     connect(menus.loadMap, SIGNAL(triggered(QAction*)), this, SLOT(loadMapMenuTriggered(QAction*)));
 
-
-    QDirIterator it(":/maps/", QStringList() << "*.txt", QDir::Files, QDirIterator::Subdirectories);
-    while (it.hasNext()) {
-        qDebug() << it.next();
-        QAction* act = new QAction(it.filePath(), this);
+    for (auto& act: actions) {
         menus.loadMap->addAction(act);
-        _mapsPath.append(it.filePath());
     }
 }
 
 void WindowUI::init() {
     initLabels();
+    initActions();
+    initMenus();
+    initButtons();
 
     view = new GameView(this);
 
     initLayouts();
-
     setLayout(layouts.main);
-
-    initMenus();
 }
 
 void WindowUI::loadMapMenuTriggered(QAction* act)
@@ -93,7 +115,9 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
     //Iterate through menu actions and find the one that was triggered
     for (int i = 0; i < menus.loadMap->actions().size(); ++i) {
         if (menus.loadMap->actions()[i] == act) {
-            _mainWindow->endGame();
+            if (!_mainWindow->cleanupDone) {
+                _mainWindow->cleanup();
+            }
             _mainWindow->startGame(_mapsPath[i]);
             return;
         }
@@ -101,13 +125,19 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
     assert(false);
 }
 
-void WindowUI::onPlayerWin(int score)
+void WindowUI::onGameEnd(bool win, int score)
 {
-    labels.win->setText("You won!\nScore: " + QString::number(score));
+    if (win) {
+        labels.win->setText("You won!\nScore: " + QString::number(score));
+        //buttons.loadMap->hide();
+    } else {
+        labels.win->setText("You lost :(\nScore: " + QString::number(score));
+    }
 
     mapCentral->hide();
     otherCentral->show();
 }
+
 
 void WindowUI::onUpdateGameScore(int score)
 {
