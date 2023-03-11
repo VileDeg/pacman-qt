@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "mainwindow.h"
 
+#include <deque>
 
 void GameScene::loadImages()
 {
@@ -40,7 +41,7 @@ void GameScene::loadImages()
 }
 
 GameScene::GameScene(QString mapPath, int viewWidth, QObject *parent)
-    : QGraphicsScene(parent) , _viewWidth(viewWidth), _wallBrush(Qt::red)
+    : QGraphicsScene(parent) , _viewWidth(viewWidth)
 {
     setBackgroundBrush(Qt::magenta);
        
@@ -53,12 +54,14 @@ GameScene::GameScene(QString mapPath, int viewWidth, QObject *parent)
         throw std::runtime_error("Filed to load map '" + mapPath.toStdString() + "' " + e.what());
     }
 
+    //initAstar();
+    //findPath(QPoint(1, 9), QPoint(10, 1));
    
     int interval = 150 / _tileWidth; //Adjust the speed according to tile size
 
-    _playerTimer = new QTimer(this);
-    connect(_playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
-    _playerTimer->start(interval);
+    auto playerTimer = new QTimer(this);
+    connect(playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
+    playerTimer->start(interval);
 
     auto ghostTimer = new QTimer(this);
     connect(ghostTimer, SIGNAL(timeout()), this, SLOT(enemiesHandler()));
@@ -74,6 +77,8 @@ GameScene::~GameScene()
         delete[] _map[i]; // Delete row
     }
     delete[] _map; // Delete map
+
+    cleanupAstar();
 }
 
 void GameScene::playerHandler()
@@ -114,6 +119,190 @@ bool GameScene::canMoveTo(int x, int y)
     return true;
 }
 
+void GameScene::cleanupAstar()
+{
+    for (int i = 0; i < _mapSize.width(); ++i) {
+        delete[] _asMap[i];
+    }
+    delete[] _asMap;
+}
+
+void GameScene::initAstar()
+{
+    _asMap = new Node*[_mapSize.width()];
+    memset(_asMap, 0, sizeof(Node*) * _mapSize.width());
+    for (int i = 0; i < _mapSize.width(); ++i) {
+        _asMap[i] = new Node[_mapSize.height()];
+        memset(_asMap[i], 0, sizeof(Node) * _mapSize.height());
+
+        for (int j = 0; j < _mapSize.height(); ++j) {
+            _asMap[i][j] = {};
+            _asMap[i][j].x = i;
+            _asMap[i][j].y = j;
+            _asMap[i][j].isWall = _map[i][j]->getType() == SpriteType::Wall;
+            _asMap[i][j].nbs.resize(4);
+        }
+    }
+
+    int dimx = _mapSize.width();
+    int dimy = _mapSize.height();
+    for (std::size_t r = 0; r < _mapSize.width(); ++r) {
+        for (std::size_t c = 0; c < _mapSize.height(); ++c) {
+            Node& curr = _asMap[r][c];
+
+            if (r > 0) {
+                /*if (c > 0) {
+                    curr.nbs[0] = &_asMap[r - 1][c - 1];
+                }*/
+                curr.nbs[0] = &_asMap[r - 1][c];
+                /*if (c < dimy - 1) {
+                    curr.nbs[2] = &_asMap[r - 1][c + 1];
+                }*/
+            }
+
+            if (c > 0) {
+                curr.nbs[1] = &_asMap[r][c - 1];
+            }
+            if (c < dimy - 1) {
+                curr.nbs[2] = &_asMap[r][c + 1];
+            }
+
+            if (r < dimx - 1) {
+                /*if (c > 0) {
+                    curr.nbs[5] = &_asMap[r + 1][c - 1];
+                }*/
+                curr.nbs[3] = &_asMap[r + 1][c];
+                /*if (c < dimy-1) {
+                    curr.nbs[7] = &_asMap[r + 1][c + 1];
+                }*/
+            }
+        }
+    }
+    _astarInitialized = true;
+    //printAstar();
+}
+
+void GameScene::printAstar()
+{
+    for (int i = 0; i < _mapSize.width(); ++i) {
+        for (int j = 0; j < _mapSize.height(); ++j) {
+            std::cout << _asMap[i][j] << "\n\t";
+            for (auto nb : _asMap[i][j].nbs) {
+                if (nb) {
+                    std::cout << *nb;
+                } else {
+                    std::cout << "NULL ";
+                }
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    }
+}
+
+std::vector<QPoint> GameScene::findPath(QPoint start, QPoint end)
+{
+    if (_astarInitialized) {
+        cleanupAstar();
+    }
+    initAstar();
+    static int cnt = 0;
+
+    ++cnt;
+
+    //Find shortest path from start to end in _map using A* algorithm
+    std::vector<Node*> open{}, closed{};
+    open.push_back(&_asMap[start.x()][start.y()]);
+
+    int iteration = 0;
+    int maxIterations = 100;
+
+    while (true) {
+        if (iteration > maxIterations) {
+            std::cout << "Max iterations reached. Path not found." << std::endl;
+            break;
+        }
+
+        //Find node with lowest F cost in open. If there are multiple nodes with the same F cost, choose the one with the lowest H cost.
+        auto it = std::min_element(open.begin(), open.end(), 
+            [](const Node* a, const Node* b) {
+                if (a->f == b->f) {
+                    return a->h < b->h;
+                } else {
+                    return a->f < b->f;
+                }
+            }
+        );
+
+        if (it == open.end()) { //No path found
+            std::cout << "Open list is empty. Path not found. Iteration: " << iteration << std::endl;
+            break;
+        }
+        Node* curr = *it;
+
+        //Remove curr from open
+        open.erase(it);
+        //Add curr to closed
+        closed.push_back(curr);
+        //If curr is the end node, we are done
+        if (curr->x == end.x() && curr->y == end.y()) {
+            std::cout << "Path found in " + std::to_string(iteration) + " iterations\n";
+            break;
+        }
+
+        //For each neighbor of curr
+        for (std::size_t i = 0; i < curr->nbs.size(); ++i) {
+            Node* nb = curr->nbs[i];
+            if (!nb) {
+                continue;
+            }
+            //If neighbor is not walkable or neighbor is in closed, skip to next neighbor
+            if (nb->isWall || std::find(closed.begin(), closed.end(), nb) != closed.end()) {
+                continue;
+            }
+            
+            float diff = 1;
+            float dstToNb = curr->g + diff;
+            //If new path to neighbor is shorter OR neighbor is not in open
+            bool inOpen = std::find(open.begin(), open.end(), nb) != open.end();
+            if (dstToNb < nb->g || !inOpen) {
+                //Set g to new path
+                nb->g = dstToNb;
+                //Set h to distance from neighbor to end
+                auto dst = QVector2D(nb->x, nb->y).distanceToPoint(QVector2D(end.x(), end.y()));
+                nb->h = dst;
+                //Set f to g + h
+                nb->f = nb->g + nb->h;
+                //Set parent to curr
+                nb->parent = curr;
+                //If neighbor is not in open
+                if (!inOpen) {
+                    //Add neighbor to open
+                    open.push_back(nb);
+                }
+            }
+        }
+
+        ++iteration;
+    }
+
+    std::deque<Node*> path{};
+    Node* curr = &_asMap[end.x()][end.y()];
+    while (curr) {
+        path.push_front(curr);
+        curr = curr->parent;
+    }
+    std::vector<QPoint> pathPoints{};
+    std::cout << "Path: ";
+    for (auto node : path) {
+        std::cout << *node;
+        pathPoints.push_back(QPoint(node->x, node->y));
+    }
+    std::cout << std::endl;
+
+    return pathPoints;
+}
+
 void GameScene::playerInteract(int x, int y)
 {
     Sprite* target = _map[x][y];
@@ -138,7 +327,6 @@ void GameScene::playerInteract(int x, int y)
     default:
         break;
     }
-
 }
 
 void GameScene::collideWithEnemy(QPoint playerPos, bool * died)
@@ -166,15 +354,6 @@ void GameScene::moveSprite(int fromx, int fromy, int tox, int toy)
 
 }
 
-
-//void GameScene::addToScene(Sprite* sprite, int ci, int li)
-//{
-//    addItem(sprite);
-//    _map[ci][li] = sprite;
-// 
-//    //_map[li][ci] = sprite;
-//}
-
 Sprite* GameScene::addSprite(SpriteType type, int ci, int li)
 {
     TileData t{ ci, li, _tileWidth };
@@ -194,13 +373,6 @@ void GameScene::makeEmptyAt(int x, int y)
     addSprite(SpriteType::Empty, x, y);
 }
 
-void GameScene::addWall(int ci, int li)
-{
-    auto tmp = addSprite(SpriteType::Wall, ci, li);
-    tmp->setBrush(_wallBrush);
-    tmp->setPen(_wallPen);
-}
-
 void GameScene::loadFromMap(QString mapPath)
 {
     QFile f(mapPath);
@@ -217,8 +389,8 @@ void GameScene::loadFromMap(QString mapPath)
     }
     int width{}, height{};
     try {
-        width = std::stoi(tks[0].toStdString());
-        height = std::stoi(tks[1].toStdString());
+        height = std::stoi(tks[0].toStdString());
+        width = std::stoi(tks[1].toStdString());
     }
     catch (std::exception) {
         throw std::runtime_error("Invalid map dimensions(failed to convert)");
@@ -237,16 +409,18 @@ void GameScene::loadFromMap(QString mapPath)
             for (int j = 0; j < _mapSize.height(); j++)
                 _map[i][j] = nullptr;
         }
+
+        
     }
     
     { //Draw borders
         for (int ci = 0; ci < width + 2; ++ci) { //Top and bottom border
-            addWall(0, ci);
-            addWall(height+1, ci);
+            addSprite(SpriteType::Wall, ci, 0);
+            addSprite(SpriteType::Wall, ci, height+1);
         }
         for (int li = 1; li < height + 1; ++li) { //Left and right border
-            addWall(li, 0);
-            addWall(li, width+1);
+            addSprite(SpriteType::Wall, 0, li);
+            addSprite(SpriteType::Wall, width+1, li);
         }
     }
 
@@ -276,6 +450,7 @@ void GameScene::loadFromMap(QString mapPath)
                 case 'T': //Target(door)
                     _doorPos = { ci, li };
                     targetInMap = true;
+                    pr("Door pos: " << ci << " " << li);
                     break;
                 case 'K': //Key
                     addSprite(SpriteType::Key, ci, li);
@@ -291,17 +466,13 @@ void GameScene::loadFromMap(QString mapPath)
                     _enemies.append(enemy);
                     break;
                 case '.': //Empty
-                    //addSprite(SpriteType::Ball, ci, li)->setZValue(1);
-                    /*auto tmp  = new Sprite(SpriteType::Empty, t);
-                    addItem(tmp);
-                    _map[ci][li] = tmp;
-                    tmp->setImage(new QPixmap)*/
                     addSprite(SpriteType::Ball, ci, li);
                     break;
                 case 'X': //Wall
-                    addWall(ci, li);
+                    addSprite(SpriteType::Wall, ci, li);
                     break;
                 case 'S': //Start(player)
+                    pr("Player pos: " << ci << " " << li);
                     _player = new Player(t, this);
                     _player->setScene(this);
                     _player->setZValue(2);
@@ -335,12 +506,28 @@ void GameScene::onKeyPress(QKeyEvent* event)
 {
     if (!_player) return;
     if (event->key() == Qt::Key_W) {
+        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Up);
     } else if (event->key() == Qt::Key_A) {
+        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Left);
     } else if (event->key() == Qt::Key_S) {
+        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Down);
     } else if (event->key() == Qt::Key_D) {
+        _player->_target = {-1,-1}; //Clear mouse target
         _player->setMoveDir(MoveDir::Right);
+    }
+}
+
+void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
+{
+    if (!_player) return;
+
+    if (event->button() == Qt::LeftButton) {
+        QPoint tPos(localPos.x() / _tileWidth, localPos.y() / _tileWidth);
+        _player->_path = findPath(_player->getTilePos(), tPos);
+        _player->_path.erase(_player->_path.begin()); //Remove starting point
+        _player->setPathTo(localPos);
     }
 }

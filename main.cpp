@@ -1,13 +1,21 @@
-#include "mainwindow.h"
 #include <QApplication>
-#include <QDebug>
 
+#include "mainwindow.h"
+#include "utils.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    int ret = 0;
 
-    return a.exec();
+    try {
+        QApplication a(argc, argv);
+        MainWindow w;
+        w.show();
+        ret = a.exec();
+    } catch (std::exception& e) {
+        errpr(e.what());
+        return 1;
+    }
+
+    return ret;
 }

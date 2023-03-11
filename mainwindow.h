@@ -33,6 +33,7 @@ private:
     void cleanup();
 
     void keyPressEvent(QKeyEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 private:
     GameScene* _scene;
     WindowUI* _ui{};

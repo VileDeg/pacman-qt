@@ -23,8 +23,8 @@ void WindowUI::initLabels() {
     labels.win = new QLabel(this);
     {
         labels.win->setStyleSheet("font-family: Fixedsys; color: white; font-size: 60px;");
-        labels.win->setText("You won!\nScore: ");
-        labels.win->setWordWrap(true);
+        //labels.win->setText("You won!\nScore: ");
+        //labels.win->setWordWrap(true);
         labels.win->setAlignment(Qt::AlignCenter);
     }
 }
@@ -128,6 +128,7 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
 void WindowUI::onGameEnd(bool win, int score)
 {
     if (win) {
+        
         labels.win->setText("You won!\nScore: " + QString::number(score));
         //buttons.loadMap->hide();
     } else {

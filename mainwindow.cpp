@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QMenuBar>
 #include <QDirIterator>
+#include <QMouseEvent>
 
 #include <cstdlib>
 
@@ -28,13 +29,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setCentralWidget(_ui);
 
 
+    //startGame(":/maps/asymm.txt");
     startGame(":/maps/map.txt");
-    //startGame(":/maps/big.txt");
 }
 
-MainWindow::~MainWindow()
-{
-}
+MainWindow::~MainWindow() {}
 
 void MainWindow::startGame(QString mapPath)
 {
@@ -44,8 +43,7 @@ void MainWindow::startGame(QString mapPath)
     try {
         _scene = new GameScene(mapPath, _viewWidth, this);
     } catch (std::exception& e) {
-        errpr(e.what());
-        return;
+        throw std::runtime_error("Error creating scene: " + std::string(e.what()));
     }
 
     _ui->view->setScene(_scene);
@@ -70,12 +68,7 @@ void MainWindow::cleanup()
     delete _scoreTimer;
     delete _scene;
     _scene = nullptr;
-    /*delete _scoreTimer;
-    delete _scene;*/
-    /*_scoreTimer->deleteLater();
-    _scoreTimer = nullptr;
-    _scene->deleteLater();
-    _scene = nullptr;*/
+   
     cleanupDone = true;
 }
 
@@ -87,6 +80,7 @@ void MainWindow::gameEnd(bool win, int score)
 
 void MainWindow::updateGameScore()
 {
+    if (!_scene) return;
     _ui->onUpdateGameScore(_scene->getScore());
 }
 
@@ -94,4 +88,14 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     if (!_scene) return;
     _scene->onKeyPress(event);
+}
+
+void MainWindow::mousePressEvent(QMouseEvent * event)
+{
+    if (!_scene) return;
+
+    QPoint origin = _ui->view->mapFromGlobal(QCursor::pos());
+    QPointF relativeOrigin = _ui->view->mapToScene(origin);
+   
+    _scene->onMousePress(event, relativeOrigin);
 }

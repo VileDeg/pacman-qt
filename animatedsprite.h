@@ -15,7 +15,7 @@ public:
     explicit AnimatedSprite(SpriteType type, TileData t, GameScene* parent);
     ~AnimatedSprite() {}
 
-    void setMoveDir(MoveDir dir) { _nextDir = dir; }
+    virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
     void setScene(GameScene* scene) { _scene = scene; }
 
     virtual void action() = 0;

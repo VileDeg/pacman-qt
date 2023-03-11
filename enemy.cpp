@@ -23,31 +23,31 @@ void Enemy::action()
 
 void Enemy::setRandomNextDir()
 {
-    QVector<MoveDir> aroundFree{};
+    QVector<MoveDir> dirs{};
     int tpx = _t.x;
     int tpy =_t.y;
 
-    bool upFree = _scene->canMoveTo(tpx, tpy + 1);
+    /*bool upFree = _scene->canMoveTo(tpx, tpy - 1);
     bool leftFree = _scene->canMoveTo(tpx-1, tpy);
-    bool downFree = _scene->canMoveTo(tpx, tpy-1);
-    bool rightFree = _scene->canMoveTo(tpx+1, tpy);
+    bool downFree = _scene->canMoveTo(tpx, tpy+1);
+    bool rightFree = _scene->canMoveTo(tpx+1, tpy);*/
 
-    if (upFree) {
-        aroundFree.push_back(MoveDir::Up);
+    if (_aroundFree[0]) {
+        dirs.push_back(MoveDir::Up);
     }
-    if (leftFree) {
-        aroundFree.push_back(MoveDir::Left);
+    if (_aroundFree[1]) {
+        dirs.push_back(MoveDir::Left);
     }
-    if (downFree) {
-        aroundFree.push_back(MoveDir::Down);
+    if (_aroundFree[2]) {
+        dirs.push_back(MoveDir::Down);
     }
-    if (rightFree) {
-        aroundFree.push_back(MoveDir::Right);
+    if (_aroundFree[3]) {
+        dirs.push_back(MoveDir::Right);
     }
-    if (aroundFree.isEmpty()) {
+    if (dirs.isEmpty()) {
         return;
     }
-    _nextDir = aroundFree.at(QRandomGenerator::global()->generate() % aroundFree.size());
+    _nextDir = dirs.at(QRandomGenerator::global()->generate() % dirs.size());
 }
 
 

@@ -12,6 +12,7 @@ public:
     ~Enemy() {}
 
     void action() override;
+    
 private:
     void setRandomNextDir();
 
