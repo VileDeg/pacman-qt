@@ -21,9 +21,11 @@ class MainWindow : public QMainWindow
 private slots:
     void updateGameScore();
     void gameEnd(bool win, int score);
+    void replay();
+    void atQuit();
    
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QApplication* app, QWidget *parent = 0);
     ~MainWindow();
 
 private:
@@ -33,6 +35,7 @@ private:
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
 private:
+    QApplication* _app;
     GameScene* _scene;
     WindowUI* _ui{};
     QSize _windowDim;
@@ -40,6 +43,11 @@ private:
     int _offsetAroundView{ 100 };
     QTimer* _scoreTimer;
     bool cleanupDone = false;
+    QFile _saveFile;
+    QTime _startTime;
+    QDataStream _saveStream;
+    bool _replay = 1;
+    QTimer* _replayTimer;
     
     friend class WindowUI;
 };

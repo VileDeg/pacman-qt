@@ -57,7 +57,6 @@ void Player::action()
 
     if (rem.isNull()) {
         _tileOverlapped = true;
-        _oldTPos = { _t.x, _t.y };
         _t.x = tPos.x(); // Update the index of current tile
         _t.y = tPos.y();
 

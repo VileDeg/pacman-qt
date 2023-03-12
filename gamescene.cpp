@@ -1,9 +1,9 @@
 #include "gamescene.h"
 
-#include <QFile>
+#include <QKeyEvent>
 #include <QTextStream>
 #include <QtGlobal>
-#include <QKeyEvent>
+
 
 #include "utils.h"
 #include "mainwindow.h"
@@ -49,10 +49,15 @@ GameScene::GameScene(QString mapPath, int viewWidth, QObject *parent)
 
     try {
         loadFromMap(mapPath);
+    
     }
     catch (std::runtime_error& e) {
         throw std::runtime_error("Filed to load map '" + mapPath.toStdString() + "' " + e.what());
     }
+
+    
+    //_saveStream.setDevice(&_saveFile);
+
    
     int interval = 150 / _tileWidth; //Adjust the speed according to tile size
 
@@ -63,6 +68,8 @@ GameScene::GameScene(QString mapPath, int viewWidth, QObject *parent)
     auto ghostTimer = new QTimer(this);
     connect(ghostTimer, SIGNAL(timeout()), this, SLOT(enemiesHandler()));
     ghostTimer->start(interval*4);
+
+    
 }
 
 GameScene::~GameScene() 
@@ -78,7 +85,7 @@ GameScene::~GameScene()
 
 void GameScene::playerHandler()
 {
-    if (_tileClicked != QPoint(-1,-1) && _player->_tileOverlapped) {
+    if (_tileClicked != QPoint(-1,-1) && _player->getTileOverlapped()) {
         playerSendToTile(_tileClicked);
     }
     _player->action(); //Move player
@@ -487,8 +494,13 @@ void GameScene::onKeyPress(QKeyEvent* event)
     } else if (event->key() == Qt::Key_D) {
         _player->setMoveDir(MoveDir::Right);
     }
-}
 
+    
+
+    /*_saveStream << QTime::currentTime().toString();
+    _saveStream << " K " << event->key() << "\n";*/
+    //_saveStream << event->key();
+}
 
 void GameScene::playerSendToTile(QPoint tilePos)
 {
@@ -503,7 +515,7 @@ void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
     if (event->button() == Qt::LeftButton) {
         QPoint tPos(localPos.x() / _tileWidth, localPos.y() / _tileWidth);
         
-        if (!_player->_tileOverlapped) {
+        if (!_player->getTileOverlapped()) {
             _tileClicked = tPos;
             return;
         }

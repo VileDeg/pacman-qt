@@ -27,7 +27,7 @@ public:
         _path = path; 
         _goToMouse = true;
     }
-    bool _tileOverlapped = false;
+    bool getTileOverlapped() { return _tileOverlapped; }
 
     QPoint getTilePos() {return QPoint(_t.x, _t.y);}
 private:
@@ -35,6 +35,7 @@ private:
     void setDirTo(QPoint to);
     
     
+    bool _tileOverlapped = false;
     bool _goToMouse = false;
     std::vector<QPoint> _path;
 };

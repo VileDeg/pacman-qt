@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 
     try {
         QApplication a(argc, argv);
-        MainWindow w;
+        MainWindow w(&a);
         w.show();
         ret = a.exec();
     } catch (std::exception& e) {
