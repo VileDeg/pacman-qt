@@ -18,7 +18,7 @@ public:
     void setScene(GameScene* scene) { _scene = scene; }
 
     virtual void action() = 0;
-
+    std::vector<MoveDir> _moveSeq{};
 protected:
     void moveUp() { setPos(x(), y() - 1); }
     void moveLeft() { setPos(x() - 1, y()); }

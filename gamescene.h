@@ -5,9 +5,9 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QTimer>
-#include <chrono>
 #include <QTime>
 #include <QPair>
+#include <QByteArray>
 #include <QFile>
 #include <unordered_map>
 #include <iostream>
@@ -31,21 +31,6 @@ struct Node {
     }
 };
 
-class Timer //from https://gist.github.com/gongzhitaao/7062087
-{
-public:
-    Timer() : beg_(clock_::now()) {}
-    void reset() { beg_ = clock_::now(); }
-    double elapsed() const { 
-        return std::chrono::duration_cast<second_>
-            (clock_::now() - beg_).count(); }
-
-private:
-    typedef std::chrono::high_resolution_clock clock_;
-    typedef std::chrono::duration<double, std::ratio<1> > second_;
-    std::chrono::time_point<clock_> beg_;
-};
-
 class GameScene : public QGraphicsScene
 {
     Q_OBJECT
@@ -54,9 +39,10 @@ signals:
 private slots:
     void playerHandler();
     void enemiesHandler();
+    void replay();
 
 public:
-    GameScene(QString mapPath, int viewWidth, QObject *parent = 0);
+    GameScene(QString filePath, int viewWidth, bool replay = false, QObject *parent = 0);
     ~GameScene();
     
     void playerInteract(int x, int y);
@@ -66,11 +52,12 @@ public:
     bool canMoveTo(int x, int y);
     std::vector<QPoint> findPath(QPoint start, QPoint end);
 
-    void savePlayerPos() {
-    }
+    bool _replay = false;
 
     void onKeyPress(QKeyEvent* event);
     void onMousePress(QMouseEvent* event, QPointF localPos);
+    void processKey(QKeyEvent* event);
+    void processMouse(QMouseEvent* event, QPointF localPos);
 private:
     Sprite* addSprite(SpriteType type, int li, int ci);
     void makeEmptyAt(int li, int ci);
@@ -80,22 +67,22 @@ private:
     void initAstar();
     void cleanupAstar();
     void loadImages();
+    void parseMap(QString* inputStr);
     void loadFromMap(QString mapPath);
+    void loadFromRecording(QString mapPath);
+    void endGame(bool win);
 private:
     QSize _mapSize; //In tiles
     int _playerScore = 0;
     int _ballPoints = 10;
     bool _keyFound = false;
     bool _loggingEnabled = true;
+    bool _toBeRecorded = true;
+    QString _saveFilePath{ "saves/save.bin" };
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;
-   /* QFile _saveFile;
-    QTime _startTime;
-    QDataStream _saveStream;*/
-    //Timer _timer;
-    //std::chrono::high_resolution_clock
-    //std::high _startTime;
-    //QTextStream _saveStream;
+    QString _mapString;
+    //QByteArray _recBytes;
     Node** _asMap;
     bool _astarInitialized = false;
     QVector<Enemy*> _enemies{};
@@ -105,6 +92,13 @@ private:
     int _tileWidth; //Will be set according on map dimensions
     Sprite*** _map = nullptr;
     Player* _player = nullptr;
+
+    QFile _saveFile;
+    QTime _startTime;
+    QDataStream _saveStream;
+    
+    QTimer* _replayTimer;
+    
 };
 
 #endif // GAMESCENE_H

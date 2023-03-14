@@ -13,6 +13,7 @@ class WindowUI : public QWidget {
 
 private slots:
     void loadMapMenuTriggered(QAction* action);
+    void loadRecordingMenuTriggered(QAction* action);
 public:
     WindowUI(MainWindow* mainWindow);
     ~WindowUI() {}
@@ -32,8 +33,12 @@ public:
     struct {
         QMenu* file;
         QMenu* loadMap;
+        QMenu* loadRecording;
     } menus;
-    QVector<QAction*> actions;
+    struct {
+        QVector<QAction*> map;
+        QVector<QAction*> recording;
+    } actions;
     QWidget* mapCentral;
     QWidget* otherCentral;
     QGraphicsView* view;
@@ -50,7 +55,10 @@ private:
     void onUpdateGameScore(int score);
 private:
     MainWindow* _mainWindow;
-    QVector<QString> _mapsPath;
+    struct{
+        QVector<QString> map;
+        QVector<QString> recording;
+    } _path;
 
     friend class MainWindow;
 };

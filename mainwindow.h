@@ -17,7 +17,6 @@ class WindowUI;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 private slots:
     void updateGameScore();
     void gameEnd(bool win, int score);
@@ -29,7 +28,7 @@ public:
     ~MainWindow();
 
 private:
-    void startGame(QString mapPath);
+    void startGame(QString mapPath, bool recorded);
     void cleanup();
 
     void keyPressEvent(QKeyEvent* event) override;
@@ -43,12 +42,12 @@ private:
     int _offsetAroundView{ 100 };
     QTimer* _scoreTimer;
     bool cleanupDone = false;
-    QFile _saveFile;
+    /*QFile _saveFile;
     QTime _startTime;
     QDataStream _saveStream;
     bool _replay = 1;
     QTimer* _replayTimer;
-    
+    */
     friend class WindowUI;
 };
 

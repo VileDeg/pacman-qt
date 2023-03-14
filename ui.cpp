@@ -31,12 +31,22 @@ void WindowUI::initLabels() {
 
 void WindowUI::initActions()
 {
-    QDirIterator it(":/maps/", QStringList() << "*.txt", QDir::Files, QDirIterator::Subdirectories);
+    {
+        QDirIterator it(":/maps/", QStringList() << "*.txt", QDir::Files, QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            qDebug() << it.next();
+            QAction* act = new QAction(it.filePath(), this);
+            actions.map.append(act);
+            _path.map.append(it.filePath());
+        }
+    }
+
+    QDirIterator it("saves/", QStringList() << "*.bin", QDir::Files, QDirIterator::Subdirectories);
     while (it.hasNext()) {
         qDebug() << it.next();
         QAction* act = new QAction(it.filePath(), this);
-        actions.append(act);
-        _mapsPath.append(it.filePath());
+        actions.recording.append(act);
+        _path.recording.append(it.filePath());
     }
 }
 
@@ -87,13 +97,27 @@ void WindowUI::initLayouts() {
 }
 
 void WindowUI::initMenus() {
-    menus.loadMap = new QMenu("Load map", this);
     menus.file = _mainWindow->menuBar()->addMenu("File");
-    menus.file->addMenu(menus.loadMap);
-    connect(menus.loadMap, SIGNAL(triggered(QAction*)), this, SLOT(loadMapMenuTriggered(QAction*)));
+    {
+        menus.loadMap = new QMenu("Load map", this);
+        {
+            menus.file->addMenu(menus.loadMap);
+            connect(menus.loadMap, SIGNAL(triggered(QAction*)), this, SLOT(loadMapMenuTriggered(QAction*)));
 
-    for (auto& act: actions) {
-        menus.loadMap->addAction(act);
+            for (auto& act : actions.map) {
+                menus.loadMap->addAction(act);
+            }
+        }
+
+        menus.loadRecording = new QMenu("Load recording", this);
+        {
+            menus.file->addMenu(menus.loadRecording);
+            connect(menus.loadRecording, SIGNAL(triggered(QAction*)), this, SLOT(loadRecordingMenuTriggered(QAction*)));
+
+            for (auto& act: actions.recording) {
+                menus.loadRecording->addAction(act);
+            }
+        }
     }
 }
 
@@ -113,12 +137,32 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
 {
     pr("loadMapMenuTriggered");
     //Iterate through menu actions and find the one that was triggered
-    for (int i = 0; i < menus.loadMap->actions().size(); ++i) {
-        if (menus.loadMap->actions()[i] == act) {
+    auto acts = menus.loadMap->actions();
+    auto paths = _path.map;
+    for (int i = 0; i < acts.size(); ++i) {
+        if (acts[i] == act) {
             if (!_mainWindow->cleanupDone) {
                 _mainWindow->cleanup();
             }
-            _mainWindow->startGame(_mapsPath[i]);
+            _mainWindow->startGame(paths[i], false);
+            return;
+        }
+    }
+    assert(false);
+}
+
+void WindowUI::loadRecordingMenuTriggered(QAction* act)
+{
+    pr("loadRecordingMenuTriggered");
+    //Iterate through menu actions and find the one that was triggered
+    auto acts = menus.loadRecording->actions();
+    auto paths = _path.recording;
+    for (int i = 0; i < acts.size(); ++i) {
+        if (acts[i] == act) {
+            if (!_mainWindow->cleanupDone) {
+                _mainWindow->cleanup();
+            }
+            _mainWindow->startGame(paths[i], true);
             return;
         }
     }

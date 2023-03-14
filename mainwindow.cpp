@@ -31,7 +31,7 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent) :
     connect(app, SIGNAL(aboutToQuit()), this, SLOT(atQuit()));
 
     //startGame(":/maps/asymm.txt");
-    startGame(":/maps/map.txt");
+    startGame(":/maps/map.txt", false);
 }
 
 MainWindow::~MainWindow() {}
@@ -41,13 +41,13 @@ void MainWindow::atQuit()
     
 }
 
-void MainWindow::startGame(QString mapPath)
+void MainWindow::startGame(QString mapPath, bool recorded)
 {
     _ui->otherCentral->hide();
     _ui->mapCentral->show();
 
     try {
-        _scene = new GameScene(mapPath, _viewWidth, this);
+        _scene = new GameScene(mapPath, _viewWidth, recorded, this);
     } catch (std::exception& e) {
         throw std::runtime_error("Error creating scene: " + std::string(e.what()));
     }
@@ -67,7 +67,7 @@ void MainWindow::startGame(QString mapPath)
     connect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
     _scoreTimer->start(100);
 
-    _saveFile.setFileName("saves/save.txt");
+    /*_saveFile.setFileName("saves/save.txt");
     if (!_saveFile.open(_replay ? QIODevice::ReadOnly : QIODevice::WriteOnly)) {
         throw std::runtime_error("Could not open file");
     }
@@ -79,12 +79,12 @@ void MainWindow::startGame(QString mapPath)
         _replayTimer = new QTimer(this);
         connect(_replayTimer, SIGNAL(timeout()), this, SLOT(replay()));
         _replayTimer->start(100);
-    }
+    }*/
 }
 
 void MainWindow::replay()
 {
-    static bool timeRead = false;
+    /*static bool timeRead = false;
     static int nextTime = 0;
     if (_saveFile.atEnd()) {
         __debugbreak();
@@ -122,17 +122,17 @@ void MainWindow::replay()
         _saveStream >> win;
         _saveStream >> score;
         gameEnd(win, score);
-    }
+    }*/
 }
 
 void MainWindow::cleanup()
 {
     _scoreTimer->stop();
     disconnect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
-    if (_replay) {
+    /*if (_replay) {
         _replayTimer->stop();
         delete _replayTimer;
-    }
+    }*/
     delete _scoreTimer;
     delete _scene;
     _scene = nullptr;
@@ -142,12 +142,12 @@ void MainWindow::cleanup()
 
 void MainWindow::gameEnd(bool win, int score)
 {
-    if (!_replay) {
+   /* if (!_replay) {
         _saveStream << _startTime.msecsTo(QTime::currentTime());
         _saveStream << 2;
         _saveStream << win;
         _saveStream << score;
-    }
+    }*/
     cleanup();
     _ui->onGameEnd(win, score);
 }
@@ -160,21 +160,21 @@ void MainWindow::updateGameScore()
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
-    if (_replay) return;
+    //if (_scene->_replay) return;
     if (!_scene) return;
-    _saveStream << _startTime.msecsTo(QTime::currentTime());
+    /*_saveStream << _startTime.msecsTo(QTime::currentTime());
     _saveStream << 0;
-    _saveStream << event->key();
+    _saveStream << event->key();*/
     _scene->onKeyPress(event);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent * event)
 {
-    if (_replay) return;
+    //if (_scene->_replay) return;
     if (!_scene) return;
 
     QPoint origin = _ui->view->mapFromGlobal(QCursor::pos());
     QPointF relativeOrigin = _ui->view->mapToScene(origin);
-    _saveStream << relativeOrigin;
+    //_saveStream << relativeOrigin;
     _scene->onMousePress(event, relativeOrigin);
 }
