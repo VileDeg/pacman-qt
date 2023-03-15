@@ -12,18 +12,13 @@ Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
 
 void Enemy::action()
 {
-    QPoint p(pos().toPoint()); // Player p local to scene
-    QPoint tPos = { p.x() / _t.width, p.y() / _t.width }; //Tile in which the player is 
-    QPoint rem = { p.x() % _t.width, p.y() % _t.width };
+    updatePosition();
 
-    if (rem.isNull()) {
-        _t.x = tPos.x(); // Update the index of current tile
-        _t.y = tPos.y();
-
+    if (_remPixels.isNull()) {
         setRandomNextDir();
     }
     scanAround();
-    processMovement(rem);
+    processMovement();
 }
 
 

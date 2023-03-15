@@ -12,8 +12,13 @@ void GameView::Init()
     setCacheMode(QGraphicsView::CacheNone);
     setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    setFocusPolicy(Qt::StrongFocus);
-    setFocus();
+    /*setFocusPolicy(Qt::StrongFocus);
+    setFocus();*/
+
+    /*QPalette pal = palette();
+    pal.setColor(QPalette::Window, Qt::black);
+    setPalette(pal);*/
+    setStyleSheet("background-color:black;");
 }
 
 GameView::~GameView() {}

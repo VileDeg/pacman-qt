@@ -23,9 +23,10 @@
 
 #define PRINF(_msg) HPRINFO(_msg, "Info");
 
+//do{ PRABRT(""); abort(); }while(0)
 //Macro for breaking into the debugger or aborting the program
 #ifdef NDEBUG
-    #define TRAP() do{ PRABRT(""); abort(); }while(0)
+    #define TRAP() 
 #else
     #ifdef _WIN32
         #ifdef _MSC_VER

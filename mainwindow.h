@@ -35,11 +35,11 @@ private:
     void mousePressEvent(QMouseEvent* event) override;
 private:
     QApplication* _app;
-    GameScene* _scene;
+    GameScene* _scene = nullptr;
     WindowUI* _ui{};
     QSize _windowDim;
     int _viewWidth{ 600 };
-    int _offsetAroundView{ 100 };
+    int _offsetAroundView{ 200 };
     QTimer* _scoreTimer;
     bool _cleanupNeeded = false;
     //bool anyGameStarted = false;

@@ -5,6 +5,9 @@
 #include <QVBoxLayout>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QToolBar>
+
+#include <unordered_map>
 
 class MainWindow;
 
@@ -14,34 +17,23 @@ class WindowUI : public QWidget {
 private slots:
     void loadMapMenuTriggered(QAction* action);
     void loadRecordingMenuTriggered(QAction* action);
+    void onReplayButtonClick();
 public:
     WindowUI(MainWindow* mainWindow);
     ~WindowUI() {}
 
-    struct {
-        QLabel* score;
-        QLabel* win;
-    } labels;
-    struct {
-        QPushButton* loadMap;
-    } buttons;
-    struct {
-        QVBoxLayout* main;
-        QVBoxLayout* map;
-        QVBoxLayout* other;
-    } layouts;
-    struct {
-        QMenu* file;
-        QMenu* loadMap;
-        QMenu* loadRecording;
-    } menus;
-    struct {
-        QVector<QAction*> map;
-        QVector<QAction*> recording;
-    } actions;
+    std::unordered_map<QString, QLabel*> labels;
+    std::unordered_map<QString, QPushButton*> buttons;
+    std::unordered_map<QString, QVBoxLayout*> layouts;
+    std::unordered_map<QString, QMenu*> menus;
+    std::unordered_map<QString, QVector<QAction*>> actions;
+
     QWidget* mapCentral;
     QWidget* otherCentral;
     QGraphicsView* view;
+    QToolBar* toolbar;
+
+    QString currentMapName;
 private:
     void init();
     void initLabels();
@@ -49,16 +41,16 @@ private:
     void initButtons();
     void initLayouts();
     void initMenus();
+    void refresh();
 
+    
     void onGameEnd(bool win, int score);
 
     void onUpdateGameScore(int score);
 private:
     MainWindow* _mainWindow;
-    struct{
-        QVector<QString> map;
-        QVector<QString> recording;
-    } _path;
+
+    std::unordered_map<QString, QVector<QString>> _path;
 
     friend class MainWindow;
 };

@@ -30,17 +30,18 @@ protected:
     void loadAnimationFrame(MoveDir dir, QString path);
     virtual void loadAnimationFrames() = 0;
     void initAnimation(QString path, int interval);
-    void processMovement(QPoint rem);
+    void processMovement();
     void scanAround();
+    void updatePosition();
 
     GameScene* _scene;
     MoveDir _currentDir = MoveDir::None;
     MoveDir _nextDir = MoveDir::None;
+    QPoint _remPixels{0,0};
     bool _aroundFree[4]; //WASD
 private:
     int _frameNumber = 0;
     QString _animPath = ":/sprites/";
-    
 
     std::unordered_map<MoveDir, std::vector<QImage>> _animation{};
 };

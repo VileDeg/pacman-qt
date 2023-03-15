@@ -50,7 +50,8 @@ GameScene::GameScene(QString filePath, int viewWidth, bool replay, QObject *pare
     }
 
     if (_toBeRecorded || _replay) {
-        _saveFile.setFileName(_saveFilePath);
+        auto name = filePath.split('/').last().split('.').first();
+        _saveFile.setFileName("saves/"+name+".bin");
         if (!_saveFile.open(_replay ? QIODevice::ReadOnly : QIODevice::WriteOnly)) {
             throw std::runtime_error("Could not open file");
         }

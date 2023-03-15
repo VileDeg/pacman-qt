@@ -34,14 +34,10 @@ void Player::action()
         return;
     }
 
-    QPoint p(pos().toPoint()); // Player p local to scene
-    QPoint tPos = { p.x() / _t.width, p.y() / _t.width }; //Tile in which the player is 
-    QPoint rem = { p.x() % _t.width, p.y() % _t.width };
+    updatePosition();
 
-    if (rem.isNull()) {
+    if (_remPixels.isNull()) {
         _tileOverlapped = true;
-        _t.x = tPos.x(); // Update the index of current tile
-        _t.y = tPos.y();
 
         bool win = false;
         _scene->playerInteract(_t.x, _t.y, &win);
@@ -81,12 +77,12 @@ void Player::action()
             } else {
                 _nextDir = MoveDir::None;
                 PRINF("MoveSeq empty");
-                ASSERT(false);
+                //ASSERT(false);
             }
         }
     }
 
-    processMovement(rem);
+    processMovement();
 }
 
 void Player::loadAnimationFrames()

@@ -22,7 +22,6 @@ void AnimatedSprite::initAnimation(QString path, int interval)
 void AnimatedSprite::loadAnimationFrame(MoveDir dir, QString path)
 {
     auto tmp = loadPixmap(_animPath + path);
-    //setImageBrightness(tmp, 120)
     _animation[dir].push_back(tmp);
 }
 
@@ -46,26 +45,34 @@ void AnimatedSprite::scanAround()
     _aroundFree[3] = _scene->canMoveTo(_t.x+1, _t.y); //Right
 }
 
-void AnimatedSprite::processMovement(QPoint rem)
+void AnimatedSprite::updatePosition()
+{
+    QPoint p(pos().toPoint()); // Player p local to scene
+    _t.x = p.x() / _t.width;
+    _t.y = p.y() / _t.width;
+    _remPixels = { p.x() % _t.width, p.y() % _t.width };
+}
+
+void AnimatedSprite::processMovement()
 {
     switch (_nextDir) {
     case MoveDir::Up:
-        if (rem.x() == 0 && _aroundFree[0]) {
+        if (_remPixels.x() == 0 && _aroundFree[0]) {
             _currentDir = _nextDir;
         }
         break;
     case MoveDir::Left:
-        if (rem.y() == 0 && _aroundFree[1]) {
+        if (_remPixels.y() == 0 && _aroundFree[1]) {
             _currentDir = _nextDir;
         }
         break;
     case MoveDir::Down:
-        if (rem.x() == 0 && _aroundFree[2]) {
+        if (_remPixels.x() == 0 && _aroundFree[2]) {
             _currentDir = _nextDir;
         }
         break;
     case MoveDir::Right:
-        if (rem.y() == 0 && _aroundFree[3]) {
+        if (_remPixels.y() == 0 && _aroundFree[3]) {
             _currentDir = _nextDir;
         }
         break;
@@ -80,28 +87,28 @@ void AnimatedSprite::processMovement(QPoint rem)
     case MoveDir::None:
         break;
     case MoveDir::Up:
-        if (rem.y() == 0 && !_aroundFree[0]) {
+        if (_remPixels.y() == 0 && !_aroundFree[0]) {
             doStop();
         } else {
             moveUp();
         }
         break;
     case MoveDir::Left:
-        if (rem.x() == 0 && !_aroundFree[1]) {
+        if (_remPixels.x() == 0 && !_aroundFree[1]) {
             doStop();
         } else {
             moveLeft();
         }
         break;
     case MoveDir::Down:
-        if (rem.y() == 0 && !_aroundFree[2]) {
+        if (_remPixels.y() == 0 && !_aroundFree[2]) {
             doStop();
         } else {
             moveDown();
         }
         break;
     case MoveDir::Right:
-        if (rem.x() == 0 && !_aroundFree[3]) {
+        if (_remPixels.x() == 0 && !_aroundFree[3]) {
             doStop();
         } else {
             moveRight();
