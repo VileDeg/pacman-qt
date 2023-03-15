@@ -45,7 +45,7 @@ public:
     GameScene(QString filePath, int viewWidth, bool replay = false, QObject *parent = 0);
     ~GameScene();
     
-    void playerInteract(int x, int y);
+    void playerInteract(int x, int y, bool* win);
     void collideWithEnemy(QPoint playerPos, bool* died);
     void moveSprite(int fromx, int fromy, int tox, int toy);
     int getScore() { return _playerScore; }
@@ -58,6 +58,8 @@ public:
     void onMousePress(QMouseEvent* event, QPointF localPos);
     void processKey(QKeyEvent* event);
     void processMouse(QMouseEvent* event, QPointF localPos);
+
+    bool _toBeRecorded = true;
 private:
     Sprite* addSprite(SpriteType type, int li, int ci);
     void makeEmptyAt(int li, int ci);
@@ -69,7 +71,7 @@ private:
     void loadImages();
     void parseMap(QString* inputStr);
     void loadFromMap(QString mapPath);
-    void loadFromRecording(QString mapPath);
+    void loadFromRecording();
     void endGame(bool win);
 private:
     QSize _mapSize; //In tiles
@@ -77,7 +79,9 @@ private:
     int _ballPoints = 10;
     bool _keyFound = false;
     bool _loggingEnabled = true;
-    bool _toBeRecorded = true;
+    QTimer* _playerTimer;
+    QTimer* _enemiesTimer;
+    
     QString _saveFilePath{ "saves/save.bin" };
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;
@@ -94,11 +98,9 @@ private:
     Player* _player = nullptr;
 
     QFile _saveFile;
-    QTime _startTime;
     QDataStream _saveStream;
     
-    QTimer* _replayTimer;
-    
+    //QTimer* _replayTimer;
 };
 
 #endif // GAMESCENE_H

@@ -1,5 +1,6 @@
 #pragma once
 #include "sprite.h"
+#include <QPair>
 
 enum class MoveDir { None, Up, Left, Down, Right };
 
@@ -18,7 +19,8 @@ public:
     void setScene(GameScene* scene) { _scene = scene; }
 
     virtual void action() = 0;
-    std::vector<MoveDir> _moveSeq{};
+    QVector<QPair<MoveDir, size_t>> _moveSeq{};
+    size_t _moveSeqIndex = 0;
 protected:
     void moveUp() { setPos(x(), y() - 1); }
     void moveLeft() { setPos(x() - 1, y()); }

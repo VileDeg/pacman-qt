@@ -13,7 +13,10 @@ signals:
 public:
     explicit Player(TileData t, GameScene* parent)
         :AnimatedSprite(SpriteType::Player, t, parent)
-    { initAnimation(":/sprites/player/", 25); }
+    { 
+        initAnimation(":/sprites/player/", 25); 
+        //_moveSeq.push_back({ MoveDir::None, 0 });
+    }
         
     ~Player() {}
 

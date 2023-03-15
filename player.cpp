@@ -21,25 +21,8 @@ void Player::setDirTo(QPoint to) {
     } else if (diff == QPoint(0, 0)) {
            _nextDir = MoveDir::None;
     } else {
-        __debugbreak();
-        assert(false);
+        ASSERT(false);
     }
-
-    /*if (diff.x() < 0) {
-        _nextDir = MoveDir::Left;
-    } else if (diff.x() > 0) {
-        _nextDir = MoveDir::Right;
-    } else if (diff.y() < 0) {
-        _nextDir = MoveDir::Up;
-    } else if (diff.y() > 0) {
-        _nextDir = MoveDir::Down;
-    } else if (diff.isNull()) {
-        _nextDir = MoveDir::None;
-    } else {
-        __debugbreak();
-        assert(false);
-        _nextDir = _currentDir;
-    }*/
 }
 
 void Player::action()
@@ -60,7 +43,11 @@ void Player::action()
         _t.x = tPos.x(); // Update the index of current tile
         _t.y = tPos.y();
 
-        _scene->playerInteract(_t.x, _t.y);
+        bool win = false;
+        _scene->playerInteract(_t.x, _t.y, &win);
+        if (win) {
+            return;
+        }
 
         scanAround();
 
@@ -69,9 +56,32 @@ void Player::action()
                 auto next = _path.front();
                 setDirTo(next);
                 _path.erase(_path.begin());
-            } else {
+            } else { // Target reached
                 _nextDir = MoveDir::None;
                 _goToMouse = false;
+            }
+        }
+
+        if (_scene->_toBeRecorded) { // Record next dir for replay
+            if (!_moveSeq.empty() && _nextDir == _currentDir) { // If the next dir is the same as the current dir, just increment the count
+                _moveSeq.back().second += 1;
+            } else {
+                _moveSeq.push_back({ _nextDir, 0 });
+            }
+        }
+
+        if (_scene->_replay) {
+            if (_moveSeqIndex < _moveSeq.size()) {
+                _nextDir = _moveSeq[_moveSeqIndex].first;
+                if (_moveSeq[_moveSeqIndex].second > 0) {
+                    _moveSeq[_moveSeqIndex].second -= 1;
+                } else {
+                    ++_moveSeqIndex;
+                }
+            } else {
+                _nextDir = MoveDir::None;
+                PRINF("MoveSeq empty");
+                ASSERT(false);
             }
         }
     }

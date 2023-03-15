@@ -41,7 +41,8 @@ private:
     int _viewWidth{ 600 };
     int _offsetAroundView{ 100 };
     QTimer* _scoreTimer;
-    bool cleanupDone = false;
+    bool _cleanupNeeded = false;
+    //bool anyGameStarted = false;
     /*QFile _saveFile;
     QTime _startTime;
     QDataStream _saveStream;

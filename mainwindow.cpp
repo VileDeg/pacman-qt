@@ -31,7 +31,7 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent) :
     connect(app, SIGNAL(aboutToQuit()), this, SLOT(atQuit()));
 
     //startGame(":/maps/asymm.txt");
-    startGame(":/maps/map.txt", false);
+    //startGame(":/maps/map.txt", false);
 }
 
 MainWindow::~MainWindow() {}
@@ -43,6 +43,10 @@ void MainWindow::atQuit()
 
 void MainWindow::startGame(QString mapPath, bool recorded)
 {
+    if (_cleanupNeeded) {
+        cleanup();
+    }
+
     _ui->otherCentral->hide();
     _ui->mapCentral->show();
 
@@ -67,6 +71,7 @@ void MainWindow::startGame(QString mapPath, bool recorded)
     connect(_scoreTimer, SIGNAL(timeout()), this, SLOT(updateGameScore()));
     _scoreTimer->start(100);
 
+    _cleanupNeeded = true;
     /*_saveFile.setFileName("saves/save.txt");
     if (!_saveFile.open(_replay ? QIODevice::ReadOnly : QIODevice::WriteOnly)) {
         throw std::runtime_error("Could not open file");
@@ -133,11 +138,13 @@ void MainWindow::cleanup()
         _replayTimer->stop();
         delete _replayTimer;
     }*/
-    delete _scoreTimer;
-    delete _scene;
-    _scene = nullptr;
+    //delete _scoreTimer;
+    //delete _scene;
+    //_scene = nullptr;
+    _scoreTimer->deleteLater();
+    _scene->deleteLater();
    
-    cleanupDone = true;
+    _cleanupNeeded = false;
 }
 
 void MainWindow::gameEnd(bool win, int score)
@@ -148,7 +155,7 @@ void MainWindow::gameEnd(bool win, int score)
         _saveStream << win;
         _saveStream << score;
     }*/
-    cleanup();
+    //cleanup();
     _ui->onGameEnd(win, score);
 }
 

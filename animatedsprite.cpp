@@ -48,8 +48,6 @@ void AnimatedSprite::scanAround()
 
 void AnimatedSprite::processMovement(QPoint rem)
 {
-    
-    
     switch (_nextDir) {
     case MoveDir::Up:
         if (rem.x() == 0 && _aroundFree[0]) {

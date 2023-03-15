@@ -141,9 +141,7 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
     auto paths = _path.map;
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            if (!_mainWindow->cleanupDone) {
-                _mainWindow->cleanup();
-            }
+            //_mainWindow->cleanup();
             _mainWindow->startGame(paths[i], false);
             return;
         }
@@ -159,9 +157,7 @@ void WindowUI::loadRecordingMenuTriggered(QAction* act)
     auto paths = _path.recording;
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            if (!_mainWindow->cleanupDone) {
-                _mainWindow->cleanup();
-            }
+            //_mainWindow->cleanup();
             _mainWindow->startGame(paths[i], true);
             return;
         }

@@ -2,7 +2,13 @@
 #include "utils.h"
 #include "gamescene.h"
 
-#include <QRandomGenerator>
+
+Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
+    : AnimatedSprite(SpriteType::Enemy, t, parent),
+    _seed(seed), _generator(_seed)
+{
+    initAnimation(":/sprites/enemy/", 100);
+}
 
 void Enemy::action()
 {
@@ -42,9 +48,9 @@ void Enemy::setRandomNextDir()
     if (dirs.isEmpty()) {
         return;
     }
-    _nextDir = dirs.at(QRandomGenerator::global()->generate() % dirs.size());
+    //_nextDir = dirs.at(QRandomGenerator::global()->generate() % dirs.size());
+    _nextDir = dirs.at(_generator.generate() % dirs.size());
 }
-
 
 void Enemy::loadAnimationFrames()
 {
