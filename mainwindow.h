@@ -21,7 +21,7 @@ private slots:
     void updateGameScore();
     void gameEnd(bool win, int score);
     void replay();
-    void atQuit();
+    //void atQuit();
    
 public:
     explicit MainWindow(QApplication* app, QWidget *parent = 0);
@@ -29,6 +29,8 @@ public:
 
 private:
     void startGame(QString mapPath, bool recorded);
+    
+    
     void cleanup();
 
     void keyPressEvent(QKeyEvent* event) override;

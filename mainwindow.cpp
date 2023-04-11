@@ -28,7 +28,7 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent) :
     _ui = new WindowUI(this);
     setCentralWidget(_ui);
 
-    connect(app, SIGNAL(aboutToQuit()), this, SLOT(atQuit()));
+    //connect(app, SIGNAL(aboutToQuit()), this, SLOT(atQuit()));
 
     //startGame(":/maps/asymm.txt");
     //startGame(":/maps/map.txt", false);
@@ -36,10 +36,10 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent) :
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::atQuit()
-{
-    
-}
+//void MainWindow::atQuit()
+//{
+//    
+//}
 
 void MainWindow::startGame(QString mapPath, bool recorded)
 {
@@ -47,9 +47,7 @@ void MainWindow::startGame(QString mapPath, bool recorded)
         cleanup();
     }
 
-    _ui->otherCentral->hide();
-    _ui->mapCentral->show();
-    _ui->currentMapName = mapPath.split("/").last().split(".").first();
+    //_ui->onGameStart(mapPath.split("/").last().split(".").first());
 
     try {
         _scene = new GameScene(mapPath, _viewWidth, recorded, this);

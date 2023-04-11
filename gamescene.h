@@ -36,9 +36,15 @@ class GameScene : public QGraphicsScene
     Q_OBJECT
 signals:
     void gameEnd(bool win, int score);
+    //void replayModeSwitch();
 private slots:
     void playerHandler();
     void enemiesHandler();
+
+    void playerAnimHandler();
+    void enemiesAnimHandler();
+
+
     void replay();
 
 public:
@@ -52,6 +58,19 @@ public:
     bool canMoveTo(int x, int y);
     std::vector<QPoint> findPath(QPoint start, QPoint end);
 
+    void setGamePause(bool pause) {
+        //_prevPaused = _isPaused;
+        _isPaused = pause;
+    }
+
+    void setReplayMode(bool forward);
+    bool getReplayMode() { return _replayForward; }
+
+    
+    bool _isPaused = false;
+    //bool _prevPaused = false;
+    bool _replayUntilNextTile = false;
+    
     bool _replay = false;
 
     void onKeyPress(QKeyEvent* event);
@@ -74,6 +93,7 @@ private:
     void loadFromRecording();
     void endGame(bool win);
 private:
+    QString _mapFilePath;
     QSize _mapSize; //In tiles
     int _playerScore = 0;
     int _ballPoints = 10;
@@ -81,7 +101,11 @@ private:
     bool _loggingEnabled = true;
     QTimer* _playerTimer;
     QTimer* _enemiesTimer;
+    QTimer* _playerAnimTimer;
+    QTimer* _enemiesAnimTimer;
     
+    bool _replayForward = true;
+
     QString _saveFilePath{ "saves/save.bin" };
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;

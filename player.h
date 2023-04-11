@@ -14,13 +14,20 @@ public:
     explicit Player(TileData t, GameScene* parent)
         :AnimatedSprite(SpriteType::Player, t, parent)
     { 
-        initAnimation(":/sprites/player/", 25); 
+        initAnimation(":/sprites/player/"); 
         //_moveSeq.push_back({ MoveDir::None, 0 });
     }
         
     ~Player() {}
 
-    void action() override;
+    void action(bool isGameReplayed, bool replayForward) override;
+    void onTileOverlap() override;
+    void onReplayModeSwitch() override {
+        getNextDirReplay();
+    }
+
+    void getNextDirReplay() override;
+
     void setMoveDir(MoveDir dir) override { 
         _goToMouse = false;
         AnimatedSprite::setMoveDir(dir); 

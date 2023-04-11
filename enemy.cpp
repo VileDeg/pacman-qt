@@ -7,26 +7,61 @@ Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
     : AnimatedSprite(SpriteType::Enemy, t, parent),
     _seed(seed), _generator(_seed)
 {
-    initAnimation(":/sprites/enemy/", 100);
+    initAnimation(":/sprites/enemy/");
 }
 
-void Enemy::action()
+void Enemy::action(bool isGameReplayed, bool replayForward)
 {
     updatePosition();
 
     if (_remPixels.isNull()) {
-        setRandomNextDir();
+        onTileOverlap();
+    } else if (isGameReplayed && !replayForward) {
+        reverseNextDir();
     }
+
     scanAround();
     processMovement();
 }
 
+void Enemy::onTileOverlap()
+{
+    if (!_scene->_replay) {
+        setRandomNextDir();
+    } else {
+        getNextDirReplay();
+    }
+}
+
+void Enemy::getNextDirReplay()
+{
+    if (_scene->getReplayMode()) { // Replay forward
+        setRandomNextDir();
+        storeNextDir();
+    } else { // Replay backward
+        if (_moveSeqIndex > 0) {
+            _nextDir = _moveSeq[_moveSeqIndex].first;
+            static QPair<MoveDir, size_t> lastMove = _moveSeq[_moveSeqIndex];
+            if (_nextDir == lastMove.first) { // If the next move is repeated, decrement the count
+                lastMove.second -= 1;
+            } else { // Otherwise, move to the next move
+                --_moveSeqIndex;
+                lastMove = _moveSeq[_moveSeqIndex];
+            }
+            reverseNextDir();
+        } else { // No more moves to replay
+            _nextDir = MoveDir::None;
+            PRINF("MoveSeq empty");
+            ASSERTMSG(false, "MoveSeq empty");
+        }
+    }
+}
 
 void Enemy::setRandomNextDir()
 {
     QVector<MoveDir> dirs{};
     int tpx = _t.x;
-    int tpy =_t.y;
+    int tpy = _t.y;
 
     if (_aroundFree[0]) {
         dirs.push_back(MoveDir::Up);

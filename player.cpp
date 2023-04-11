@@ -25,64 +25,88 @@ void Player::setDirTo(QPoint to) {
     }
 }
 
-void Player::action()
+void Player::action(bool isGameReplayed, bool replayForward) //TODO: remove arguments
 {
-    _tileOverlapped = false;
+    _tileOverlapped = false; // Reset tile overlap flag
     bool died = false;
     _scene->collideWithEnemy(pos().toPoint(), &died);
-    if (died) {
+    if (died) { // Player touched an enemy
         return;
     }
 
-    updatePosition();
+    updatePosition(); // Update position attributes based on pixel position
 
-    if (_remPixels.isNull()) {
-        _tileOverlapped = true;
+    if (_remPixels.isNull()) { // If the player overlaps the tile
+        onTileOverlap();
+    }
 
-        bool win = false;
-        _scene->playerInteract(_t.x, _t.y, &win);
-        if (win) {
-            return;
-        }
+    processMovement(); // Move the player based on next direction
+}
 
-        scanAround();
+void Player::onTileOverlap()
+{
+    _tileOverlapped = true;
 
-        if (_goToMouse) { //Move to mouse click
-            if (!_path.empty()) {
-                auto next = _path.front();
-                setDirTo(next);
-                _path.erase(_path.begin());
-            } else { // Target reached
-                _nextDir = MoveDir::None;
-                _goToMouse = false;
-            }
-        }
+    bool win = false;
+    _scene->playerInteract(_t.x, _t.y, &win);
+    if (win) { // Player reached the exit
+        return;
+    }
 
-        if (_scene->_toBeRecorded) { // Record next dir for replay
-            if (!_moveSeq.empty() && _nextDir == _currentDir) { // If the next dir is the same as the current dir, just increment the count
-                _moveSeq.back().second += 1;
-            } else {
-                _moveSeq.push_back({ _nextDir, 0 });
-            }
-        }
+    scanAround(); // Check in which directions the player can move
 
-        if (_scene->_replay) {
-            if (_moveSeqIndex < _moveSeq.size()) {
-                _nextDir = _moveSeq[_moveSeqIndex].first;
-                if (_moveSeq[_moveSeqIndex].second > 0) {
-                    _moveSeq[_moveSeqIndex].second -= 1;
-                } else {
-                    ++_moveSeqIndex;
-                }
-            } else {
-                _nextDir = MoveDir::None;
-                PRINF("MoveSeq empty");
-                //ASSERT(false);
-            }
+    if (_goToMouse) { //If player direction was set by mouse
+        if (!_path.empty()) { // If there are still tiles to move to
+            auto next = _path.front();
+            setDirTo(next);
+            _path.erase(_path.begin());
+        } else { // Target reached
+            _nextDir = MoveDir::None;
+            _goToMouse = false;
         }
     }
 
-    processMovement();
+    if (_scene->_toBeRecorded) { // Record next dir for replay
+        storeNextDir();
+    }
+
+    if (_scene->_replay) { // Replay next dir
+        getNextDirReplay();
+    }
+}
+
+void Player::getNextDirReplay()
+{
+    if (_scene->getReplayMode()) { // Replay forward
+        if (_moveSeqIndex < _moveSeq.size()) { // If there are still moves to replay
+            _nextDir = _moveSeq[_moveSeqIndex].first;
+            static QPair<MoveDir, size_t> lastMove = _moveSeq[_moveSeqIndex];
+            if (_nextDir == lastMove.first) { // If the next move is repeated, decrement the count
+                lastMove.second -= 1;
+            } else { // Otherwise, move to the next move
+                ++_moveSeqIndex;
+                lastMove = _moveSeq[_moveSeqIndex];
+            }
+        } else { // No more moves to replay
+            _nextDir = MoveDir::None;
+            PRINF("MoveSeq empty");
+        }
+    } else { // Replay backward
+        if (_moveSeqIndex > 0) {
+            _nextDir = _moveSeq[_moveSeqIndex].first;
+            static QPair<MoveDir, size_t> lastMove = _moveSeq[_moveSeqIndex];
+            if (_nextDir == lastMove.first) { // If the next move is repeated, decrement the count
+                lastMove.second -= 1;
+            } else { // Otherwise, move to the next move
+                --_moveSeqIndex;
+                lastMove = _moveSeq[_moveSeqIndex];
+            }
+            reverseNextDir();
+        } else { // No more moves to replay
+            _nextDir = MoveDir::None;
+            PRINF("MoveSeq empty");
+        }
+    }
 }
 
 void Player::loadAnimationFrames()

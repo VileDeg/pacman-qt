@@ -8,6 +8,7 @@
 #include <QToolBar>
 
 #include <unordered_map>
+#include <functional>
 
 class MainWindow;
 
@@ -18,18 +19,24 @@ private slots:
     void loadMapMenuTriggered(QAction* action);
     void loadRecordingMenuTriggered(QAction* action);
     void onReplayButtonClick();
+
+    void onBackButtonClick();
+    void onPauseButtonClick();
+    void onNextButtonClick();
+    void onReplayModeSwitchButtonClick();
 public:
     WindowUI(MainWindow* mainWindow);
     ~WindowUI() {}
 
     std::unordered_map<QString, QLabel*> labels;
     std::unordered_map<QString, QPushButton*> buttons;
-    std::unordered_map<QString, QVBoxLayout*> layouts;
+    std::unordered_map<QString, QBoxLayout*> layouts;
     std::unordered_map<QString, QMenu*> menus;
     std::unordered_map<QString, QVector<QAction*>> actions;
 
-    QWidget* mapCentral;
-    QWidget* otherCentral;
+    std::unordered_map<QString, QWidget*> centrals;
+    /*QWidget* playCentral;
+    QWidget* gameEndCentral;*/
     QGraphicsView* view;
     QToolBar* toolbar;
 
@@ -42,8 +49,9 @@ private:
     void initLayouts();
     void initMenus();
     void refresh();
-
     
+    //void onReplayStart(QString filePath);
+    void onGameStart(QString filePath, bool isRecorded);
     void onGameEnd(bool win, int score);
 
     void onUpdateGameScore(int score);
