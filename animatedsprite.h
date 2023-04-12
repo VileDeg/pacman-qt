@@ -6,7 +6,7 @@ enum class MoveDir { None, Up, Left, Down, Right };
 
 class GameScene;
 
-class AnimatedSprite : public Sprite
+class AnimatedSprite : public Sprite, public ILoadable
 {
     Q_OBJECT
 //private slots:
@@ -24,7 +24,10 @@ public:
     virtual void action(bool isGameReplayed, bool replayForward) = 0;
     virtual void onTileOverlap() = 0;
     virtual void onReplayModeSwitch() = 0;
-    virtual void getNextDirReplay() = 0;
+    //virtual void getNextDirReplay() = 0;
+    void LoadFromStream(QDataStream& stream) override {
+        stream >> _moveSeq;
+    };
 
     std::string dir_to_str(MoveDir d) {
         switch (d) {

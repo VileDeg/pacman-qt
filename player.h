@@ -4,6 +4,7 @@
 #include "animatedsprite.h"
 
 #include <unordered_map>
+#include <iostream>
 
 class Player : public AnimatedSprite
 {
@@ -22,12 +23,8 @@ public:
 
     void action(bool isGameReplayed, bool replayForward) override;
     void onTileOverlap() override;
-    void onReplayModeSwitch() override {
-        //_moveCounter = 0;
-        getNextDirReplay();
-    }
-
-    void getNextDirReplay() override;
+    void onReplayModeSwitch() override;
+    //void getNextDirReplay() override;
 
 
     void setMoveDir(MoveDir dir) override { 

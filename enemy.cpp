@@ -3,6 +3,7 @@
 #include "gamescene.h"
 
 
+
 Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
     : AnimatedSprite(SpriteType::Enemy, t, parent),
     _seed(seed), _generator(_seed)
@@ -29,20 +30,27 @@ void Enemy::onTileOverlap()
     if (!_scene->_replay) {
         setRandomNextDir();
     } else {
-        getNextDirReplay();
+        //getNextDirReplay();
+        replayNextDir(_scene->getReplayMode());
     }
+
+    if (_scene->_toBeRecorded) { // Record next dir for replay
+        storeNextDir();
+    }
+    
     //std::cout << "Enemy: " << _moveSeqIndex << " : " << static_cast<int>(_nextDir) << std::endl;
 }
 
-void Enemy::getNextDirReplay()
-{
-    if (_scene->getReplayMode()) { // Replay forward
-        setRandomNextDir();
-        storeNextDir();
-    } else { // Replay backward
-        replayNextDir(false);
-    }
-}
+//void Enemy::getNextDirReplay()
+//{
+//    replayNextDir(_scene->getReplayMode());
+//    //if (_scene->getReplayMode()) { // Replay forward
+//    //    //setRandomNextDir();
+//    //    //storeNextDir();
+//    //} else { // Replay backward
+//    //    replayNextDir(false);
+//    //}
+//}
 
 void Enemy::setRandomNextDir()
 {

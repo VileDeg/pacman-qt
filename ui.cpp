@@ -279,7 +279,7 @@ void WindowUI::onReplayStartButtonClick()
     //pr("onReplayButtonClick");
     for (auto& rec : _path["rec"]) {
         if (rec.split("/").last().split(".").first() == currentMapName) {
-            onGameStart(rec, true);
+            onGameStart(rec, true, true);
             return;
         }
     }
@@ -288,6 +288,13 @@ void WindowUI::onReplayStartButtonClick()
 
 void WindowUI::onReplayEndButtonClick()
 {
+    for (auto& rec : _path["rec"]) {
+        if (rec.split("/").last().split(".").first() == currentMapName) {
+            onGameStart(rec, true, false);
+            return;
+        }
+    }
+    ASSERT(false);
 }
 
 //void WindowUI::onReplayStart(QString filePath) {
@@ -295,7 +302,7 @@ void WindowUI::onReplayEndButtonClick()
 //    _mainWindow->startGame(filePath, true);
 //}
 
-void WindowUI::onGameStart(QString filePath, bool isRecorded)
+void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromStart)
 {
     centrals["gameend"]->hide();
     centrals["play"]->show();
@@ -306,7 +313,7 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded)
     }
 
     currentMapName = filePath.split("/").last().split(".").first();
-    _mainWindow->startGame(filePath, isRecorded);
+    _mainWindow->startGame(filePath, isRecorded, replayFromStart);
 }
 
 //void WindowUI::onGameStart(QString mapName)

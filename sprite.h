@@ -7,6 +7,13 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QVector2D>
+#include <QDataStream>
+
+class ILoadable {
+public:
+    virtual ~ILoadable() {}
+    virtual void LoadFromStream(QDataStream& stream) = 0;
+};
 
 struct TileData {
     int x;

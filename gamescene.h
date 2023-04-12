@@ -48,7 +48,7 @@ private slots:
     void replay();
 
 public:
-    GameScene(QString filePath, int viewWidth, bool replay = false, QObject *parent = 0);
+    GameScene(QString filePath, int viewWidth, bool replay, bool replayFromStart, QObject *parent = 0);
     ~GameScene();
     
     void playerInteract(int x, int y, bool* win);
@@ -90,7 +90,7 @@ private:
     void loadImages();
     void parseMap(QString* inputStr);
     void loadFromMap(QString mapPath);
-    void loadFromRecording();
+    void loadFromRecording(bool loadFromStart);
     void endGame(bool win);
 private:
     QString _mapFilePath;

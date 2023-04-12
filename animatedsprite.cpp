@@ -40,7 +40,7 @@ void AnimatedSprite::replayNextDir(bool forward)
                 _moveCounter = _moveSeq[_moveSeqIndex].second;
             }
         }
-    } else if (!forward && _moveSeqIndex >= 0) {
+    } else if (!forward && _moveSeqIndex < _moveSeq.size() && _moveSeqIndex >= 0) {
         _nextDir = _moveSeq[_moveSeqIndex].first;
         if (dynamic_cast<Player*>(this)) {
             std::cout << "LastMove: " << dir_to_str(_currentDir) << ", " << _moveCounter << ", " << _moveSeqIndex << std::endl;

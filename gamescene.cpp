@@ -39,7 +39,7 @@ void GameScene::loadImages()
     }
 }
 
-GameScene::GameScene(QString filePath, int viewWidth, bool replay, QObject *parent)
+GameScene::GameScene(QString filePath, int viewWidth, bool replay, bool replayFromStart, QObject *parent)
     : QGraphicsScene(parent), 
     _viewWidth(viewWidth), _replay(replay), _mapFilePath(filePath)
 {
@@ -64,7 +64,7 @@ GameScene::GameScene(QString filePath, int viewWidth, bool replay, QObject *pare
         if (!_replay) {
             loadFromMap(filePath);
         } else {
-            loadFromRecording();
+            loadFromRecording(replayFromStart);
         }
     }
     catch (std::runtime_error& e) {
@@ -390,13 +390,13 @@ void GameScene::setReplayMode(bool forward)
 {
     _replayForward = forward;
 
-    if (_replayForward != forward) {
-        _player->onReplayModeSwitch();
+    //if (_replayForward != forward) {
+    _player->onReplayModeSwitch();
 
-        for (auto& enemy : _enemies) {
-            enemy->onReplayModeSwitch();
-        }
+    for (auto& enemy : _enemies) {
+        enemy->onReplayModeSwitch();
     }
+    //}
 }
 
 void GameScene::playerInteract(int x, int y, bool* end)
@@ -550,14 +550,16 @@ void GameScene::parseMap(QString* inputStr)
                 case 'G': //Ghost
                     addSprite(SpriteType::Empty, ci, li);
                     if (_replay) {
-                        _saveStream >> seed;
+                        //_saveStream >> seed;
+                        enemy = new Enemy(t, 0, this);
+                        enemy->LoadFromStream(_saveStream);
                     } else {
                         seed = QDateTime::currentMSecsSinceEpoch() / 1000;
+                        enemy = new Enemy(t, seed, this);
                         /*if (_toBeRecorded) {
                             _saveStream << seed;
                         }*/
                     }
-                    enemy = new Enemy(t, seed, this);
                     enemy->setZValue(2);
                     addItem(enemy);
                     _enemies.append(enemy);
@@ -614,14 +616,14 @@ void GameScene::loadFromMap(QString mapPath)
     parseMap(&_mapString);
 }
 
-void GameScene::loadFromRecording()
+void GameScene::loadFromRecording(bool loadFromStart)
 {
     _saveStream >> _mapString;
     PRINF("Replay loading: " << _mapString.toStdString())
     
     parseMap(&_mapString);
 
-    _saveStream >> _player->_moveSeq;
+    _player->LoadFromStream(_saveStream);
     _player->_moveCounter = _player->_moveSeq[0].second;
     std::cout << "MoveSeq: " << std::endl;
     for (auto& m : _player->_moveSeq) {
@@ -648,7 +650,8 @@ void GameScene::endGame(bool win)
         _saveStream << _mapString;
 
         for (auto enemy : _enemies) {
-            _saveStream << enemy->_seed;
+            //_saveStream << enemy->_seed;
+            _saveStream << enemy->_moveSeq;
         }
         _saveStream << _player->_moveSeq;
 

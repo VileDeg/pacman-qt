@@ -54,7 +54,7 @@ private:
     void refresh();
     
     //void onReplayStart(QString filePath);
-    void onGameStart(QString filePath, bool isRecorded);
+    void onGameStart(QString filePath, bool isRecorded, bool replayFromStart = true);
     void onGameEnd(bool win, int score);
 
     void onUpdateGameScore(int score);

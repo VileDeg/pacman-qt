@@ -68,18 +68,26 @@ void Player::onTileOverlap()
 
     if (_scene->_toBeRecorded) { // Record next dir for replay
         storeNextDir();
-    }
-
-    if (_scene->_replay) { // Replay next dir
+    } else if (_scene->_replay) { // Replay next dir
         //std::cout << "Overlap: " << _moveSeqIndex << " : " << static_cast<int>(_nextDir) << std::endl;
-        getNextDirReplay();
+        //getNextDirReplay();
+        replayNextDir(_scene->getReplayMode());
     }
 }
 
-void Player::getNextDirReplay()
-{
+void Player::onReplayModeSwitch() {
+    std::cout << "ReplayModeSwitch\n";
+    if (_moveSeqIndex == -1) {
+        _moveSeqIndex = 0;
+    }
+    //getNextDirReplay();
     replayNextDir(_scene->getReplayMode());
 }
+
+//void Player::getNextDirReplay()
+//{
+//    replayNextDir(_scene->getReplayMode());
+//}
 
 void Player::loadAnimationFrames()
 {

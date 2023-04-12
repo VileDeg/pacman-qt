@@ -41,7 +41,7 @@ MainWindow::~MainWindow() {}
 //    
 //}
 
-void MainWindow::startGame(QString mapPath, bool recorded)
+void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
 {
     if (_cleanupNeeded) {
         cleanup();
@@ -50,7 +50,7 @@ void MainWindow::startGame(QString mapPath, bool recorded)
     //_ui->onGameStart(mapPath.split("/").last().split(".").first());
 
     try {
-        _scene = new GameScene(mapPath, _viewWidth, recorded, this);
+        _scene = new GameScene(mapPath, _viewWidth, recorded, replayFromStart, this);
     } catch (std::exception& e) {
         throw std::runtime_error("Error creating scene: " + std::string(e.what()));
     }

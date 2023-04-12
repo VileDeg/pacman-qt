@@ -28,7 +28,7 @@ public:
     ~MainWindow();
 
 private:
-    void startGame(QString mapPath, bool recorded);
+    void startGame(QString mapPath, bool recorded, bool replayFromStart);
     
     
     void cleanup();
