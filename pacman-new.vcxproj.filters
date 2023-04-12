@@ -78,6 +78,9 @@
     <ClInclude Include="enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="animatedsprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res.txt" />
@@ -87,9 +90,6 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ui.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="animatedsprite.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="player.h">

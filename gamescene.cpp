@@ -39,7 +39,7 @@ void GameScene::loadImages()
     }
 }
 
-GameScene::GameScene(QString filePath, int viewWidth, bool replay, bool replayFromStart, QObject *parent)
+GameScene::GameScene(QString filePath, int viewWidth, bool replay, QObject *parent)
     : QGraphicsScene(parent), 
     _viewWidth(viewWidth), _replay(replay), _mapFilePath(filePath)
 {
@@ -50,21 +50,14 @@ GameScene::GameScene(QString filePath, int viewWidth, bool replay, bool replayFr
         _toBeRecorded = false;
     }
 
-    if (_replay) {
-        auto name = filePath.split('/').last().split('.').first();
-        _saveFile.setFileName("saves/"+name+".bin");
-        if (!_saveFile.open(QIODevice::ReadOnly)) {
-            throw std::runtime_error("Could not open file");
-        }
-
-        _saveStream.setDevice(&_saveFile);
-    }
+    _replayStepTimer = new QTimer(this);
+    connect(_replayStepTimer, SIGNAL(timeout()), this, SLOT(ReplayStepForward()));
 
     try {
         if (!_replay) {
             loadFromMap(filePath);
         } else {
-            loadFromRecording(replayFromStart);
+            loadFromRecording(filePath);
         }
     }
     catch (std::runtime_error& e) {
@@ -102,51 +95,22 @@ GameScene::~GameScene()
     }
     delete[] _map; // Delete map
 
-    _saveFile.flush();
-    _saveFile.close();
+    /*saveFile.flush();
+    saveFile.close();*/
 }
 
-void GameScene::replay()
-{
-    /*static bool timeRead = false;
-    static int nextTime = 0;
-    if (_saveFile.atEnd()) {
-        __debugbreak();
-        assert(false);
+bool GameScene::ToggleReplayMode() {
+    if (_replayStepByStep) {
+        _replayStepByStep = false;
+        _replayStepTimer->stop();
+        setGamePaused(false);
+    } else {
+        _replayStepByStep = true;
+        //connect(_replayStepTimer, SIGNAL(timeout()), this, SLOT(ReplayStepForward()));
+        _replayStepTimer->start(1000); // 1 second
+        ReplayStepForward();
     }
-
-    int msSinceStart = _startTime.msecsTo(QTime::currentTime());
-    pr("Since: " << msSinceStart);
-    pr("Next time: " << nextTime);
-
-    if (!timeRead) {
-        _saveStream >> nextTime;
-        timeRead = true;
-    }
-    if (msSinceStart < nextTime) {
-        return;
-    }
-    timeRead = false;
-
-    int type = 0;
-    _saveStream >> type;
-    if (type == 0) {
-        int key;
-        _saveStream >> key;
-        auto ke = QKeyEvent(QEvent::KeyPress, key, Qt::NoModifier);
-        processKey(&ke);
-    } else if (type == 1) {
-        QPointF mousePos;
-        _saveStream >> mousePos;
-        auto me = QMouseEvent(QEvent::MouseButtonPress, mousePos, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-        processMouse(&me, mousePos);
-    } else if (type == 2) {
-        bool win;
-        int score;
-        _saveStream >> win;
-        _saveStream >> score;
-        endGame(win);
-    }*/
+    return _replayStepByStep;
 }
 
 void GameScene::playerHandler()
@@ -157,18 +121,17 @@ void GameScene::playerHandler()
         playerSendToTile(_tileClicked);
     }
 
-    _player->action(_replay, _replayForward); //Move player
+    _player->action(_replay); //Move player
 
     if (_replayUntilNextTile) {
-        static MoveDir playerLastDir = _player->getMoveDir();
         MoveDir playerCurrDir = _player->getMoveDir();
         if (_player->getTileOverlapped() && playerCurrDir != MoveDir::None ||
-            _player->getTileOverlapped() && playerLastDir != playerCurrDir) 
+            _player->getTileOverlapped() && _playerLastDir != playerCurrDir)
         {
-            _isPaused = true;
+            setGamePaused(true);
             _replayUntilNextTile = false;
         }
-        playerLastDir = playerCurrDir;
+        _playerLastDir = playerCurrDir;
     }
 }
 
@@ -176,7 +139,7 @@ void GameScene::enemiesHandler()
 {
     if (_isPaused) return;
     for (auto enemy : _enemies) {
-        enemy->action(_replay, _replayForward);
+        enemy->action(_replay);
     }
 }
 
@@ -185,7 +148,7 @@ void GameScene::playerAnimHandler()
     static unsigned int frame = 0;
 
     if (_isPaused) return;
-    _player->setSpriteByFrame(frame, _replay, _replayForward);
+    _player->setSpriteByFrame(frame, _replay);
     ++frame;
 }
 
@@ -195,9 +158,15 @@ void GameScene::enemiesAnimHandler()
 
     if (_isPaused) return;
     for (auto enemy : _enemies) {
-        enemy->setSpriteByFrame(frame, _replay, _replayForward);
+        enemy->setSpriteByFrame(frame, _replay);
     }
     ++frame;
+}
+
+void GameScene::onPlayerTileOverlapped()
+{
+    _playerSteps++;
+    emit playerStepsChanged(_playerSteps);
 }
 
 bool GameScene::canMoveTo(int x, int y)
@@ -386,17 +355,10 @@ std::vector<QPoint> GameScene::findPath(QPoint start, QPoint end)
     return pathPoints;
 }
 
-void GameScene::setReplayMode(bool forward)
+void GameScene::setPlayerScore(int score)
 {
-    _replayForward = forward;
-
-    //if (_replayForward != forward) {
-    _player->onReplayModeSwitch();
-
-    for (auto& enemy : _enemies) {
-        enemy->onReplayModeSwitch();
-    }
-    //}
+    _playerScore = score;
+    emit playerScoreChanged(_playerScore);
 }
 
 void GameScene::playerInteract(int x, int y, bool* end)
@@ -408,7 +370,7 @@ void GameScene::playerInteract(int x, int y, bool* end)
     {
     case SpriteType::Ball:
         makeEmptyAt(x, y);
-        _playerScore += _ballPoints;
+        setPlayerScore(_playerScore + _ballPoints);
         break;
     case SpriteType::Key:
         makeEmptyAt(x, y); //Key -> Empty
@@ -550,15 +512,12 @@ void GameScene::parseMap(QString* inputStr)
                 case 'G': //Ghost
                     addSprite(SpriteType::Empty, ci, li);
                     if (_replay) {
-                        //_saveStream >> seed;
+                        //saveStream >> seed;
                         enemy = new Enemy(t, 0, this);
-                        enemy->LoadFromStream(_saveStream);
+                        
                     } else {
                         seed = QDateTime::currentMSecsSinceEpoch() / 1000;
                         enemy = new Enemy(t, seed, this);
-                        /*if (_toBeRecorded) {
-                            _saveStream << seed;
-                        }*/
                     }
                     enemy->setZValue(2);
                     addItem(enemy);
@@ -578,6 +537,8 @@ void GameScene::parseMap(QString* inputStr)
                     addItem(_player);
                     _map[ci][li] = _player;
                     playerInMap = true;
+
+                    connect(_player, SIGNAL(tileOverlapped()), this, SLOT(onPlayerTileOverlapped()));
                     break;
                 default:
                     throw std::runtime_error("Invalid symbol '" + cu + std::string("' in map"));
@@ -610,67 +571,80 @@ void GameScene::loadFromMap(QString mapPath)
     PRINF("Normal loading: " << _mapString.toStdString());
 
     /*if (_toBeRecorded) {
-        _saveStream << _mapString;
+        saveStream << _mapString;
     }*/
 
     parseMap(&_mapString);
 }
 
-void GameScene::loadFromRecording(bool loadFromStart)
+void GameScene::loadFromRecording(QString savePath)
 {
-    _saveStream >> _mapString;
-    PRINF("Replay loading: " << _mapString.toStdString())
+    pr("Replay loading from: " << savePath);
+    auto name = savePath.split('/').last().split('.').first();
+    QFile saveFile("saves/" + name + ".bin");
+    if (!saveFile.open(QIODevice::ReadOnly)) {
+        throw std::runtime_error("Could not open file");
+    }
+
+    QDataStream saveStream(&saveFile);
+
+    saveStream >> _mapString;
+    
     
     parseMap(&_mapString);
 
-    _player->LoadFromStream(_saveStream);
-    _player->_moveCounter = _player->_moveSeq[0].second;
-    std::cout << "MoveSeq: " << std::endl;
-    for (auto& m : _player->_moveSeq) {
-        std::cout << "(" << _player->dir_to_str(m.first) << " : " << m.second << "), ";
+    for (auto& enemy : _enemies) {
+        enemy->LoadFromStream(saveStream);
     }
+
+    _player->LoadFromStream(saveStream);
+   
     std::cout << std::endl;
 }
 
 void GameScene::endGame(bool win)
 {
+    ASSERT(!_toBeRecorded || !_replay);
     if (_toBeRecorded) { 
         /* If game ended correctly by win or loose
          * and if it should be recorded, save file is opened,
          * map text, enemy seeds and player moves are writted to file. */
                          
         auto name = _mapFilePath.split('/').last().split('.').first();
-        _saveFile.setFileName("saves/" + name + ".bin");
-        if (!_saveFile.open(QIODevice::WriteOnly)) {
+        QFile saveFile("saves/" + name + ".bin");
+
+        if (!saveFile.open(QIODevice::WriteOnly)) {
             throw std::runtime_error("Could not open file");
         }
-        _saveStream.setDevice(&_saveFile);
-
+        saveFile.resize(0);
+        QDataStream saveStream(&saveFile);
         
-        _saveStream << _mapString;
+        saveStream << _mapString;
 
         for (auto enemy : _enemies) {
-            //_saveStream << enemy->_seed;
-            _saveStream << enemy->_moveSeq;
+            //saveStream << enemy->_seed;
+            enemy->SaveToStream(saveStream);
         }
-        _saveStream << _player->_moveSeq;
+        _player->SaveToStream(saveStream);
 
-        PRINF("File saved: " << _saveFile.fileName().toStdString());
+        PRINF("File saved: " << saveFile.fileName().toStdString());
+
+        /* If "replay" button is pressed, without "flush" or "close",
+        file won't be saved, because destructors are not called */
+        saveFile.flush();
+        saveFile.close();
     }
 
     _playerTimer->stop();
     _enemiesTimer->stop();
-    
-    /* If "replay" button is pressed, without "flush" or "close", 
-       file won't be saved, because destructors are not called */
-    _saveFile.flush();
-    _saveFile.close();
    
     emit gameEnd(win, _playerScore);
 }
 
-void GameScene::processKey(QKeyEvent* event)
+void GameScene::onKeyPress(QKeyEvent* event)
 {
+    if (_replay) return;
+
     if (!_player) return;
     if (event->key() == Qt::Key_W) {
         _player->setMoveDir(MoveDir::Up);
@@ -683,29 +657,6 @@ void GameScene::processKey(QKeyEvent* event)
     }
 }
 
-void GameScene::processMouse(QMouseEvent* event, QPointF localPos)
-{
-    if (!_player) return;
-
-    if (event->button() == Qt::LeftButton) {
-        QPoint tPos(localPos.x() / _tileWidth, localPos.y() / _tileWidth);
-        
-        if (!_player->getTileOverlapped()) {
-            _tileClicked = tPos;
-            return;
-        }
-
-        playerSendToTile(tPos);
-    }
-}
-
-void GameScene::onKeyPress(QKeyEvent* event)
-{
-    if (_replay) return;
-
-    processKey(event);
-}
-
 void GameScene::playerSendToTile(QPoint tilePos)
 {
     _player->setMouseClickPath(findPath(_player->getTilePos(), tilePos));
@@ -716,5 +667,16 @@ void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
 {
     if (_replay) return;
 
-    processMouse(event, localPos);
+    if (!_player) return;
+
+    if (event->button() == Qt::LeftButton) {
+        QPoint tPos(localPos.x() / _tileWidth, localPos.y() / _tileWidth);
+
+        if (!_player->getTileOverlapped()) {
+            _tileClicked = tPos;
+            return;
+        }
+
+        playerSendToTile(tPos);
+    }
 }

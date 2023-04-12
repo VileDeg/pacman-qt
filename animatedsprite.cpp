@@ -6,65 +6,11 @@ AnimatedSprite::AnimatedSprite(SpriteType type, TileData t, GameScene* parent)
     : Sprite(type, t, parent), _scene(parent)
 {}
 
-void AnimatedSprite::setSpriteByFrame(unsigned int frame, bool replay, bool replayForward)
+void AnimatedSprite::setSpriteByFrame(unsigned int frame, bool replay)
 {
-    MoveDir dir = _currentDir;
-    if (replay && !replayForward) {
-        if (_nextDir == MoveDir::Up) {
-            dir = MoveDir::Down;
-        } else if (_nextDir == MoveDir::Left) {
-            dir = MoveDir::Right;
-        } else if (_nextDir == MoveDir::Down) {
-            dir = MoveDir::Up;
-        } else if (_nextDir == MoveDir::Right) {
-            dir = MoveDir::Left;
-        }
-    }
-    _spriteImage = &_animation[dir][frame % _animation[dir].size()];
+    _spriteImage = &_animation[_currentDir][frame % _animation[_currentDir].size()];
 
     update(boundingRect());
-}
-
-void AnimatedSprite::replayNextDir(bool forward)
-{
-    if (forward && _moveSeqIndex < _moveSeq.size() && _moveSeqIndex >= 0) { // If there are still moves to replay
-        _nextDir = _moveSeq[_moveSeqIndex].first;
-        if (dynamic_cast<Player*>(this)) {
-            std::cout << "LastMove: " << dir_to_str(_currentDir) << ", " << _moveCounter << ", " << _moveSeqIndex << std::endl;
-        }
-        if (_moveCounter > 0) { // If the next move is the same as last, decrement the count
-            _moveCounter -= 1; //_nextDir == _currentDir && 
-        } else { // Otherwise, move to the next move
-            ++_moveSeqIndex;
-            if (_moveSeqIndex < _moveSeq.size()) {
-                _moveCounter = _moveSeq[_moveSeqIndex].second;
-            }
-        }
-    } else if (!forward && _moveSeqIndex < _moveSeq.size() && _moveSeqIndex >= 0) {
-        _nextDir = _moveSeq[_moveSeqIndex].first;
-        if (dynamic_cast<Player*>(this)) {
-            std::cout << "LastMove: " << dir_to_str(_currentDir) << ", " << _moveCounter << ", " << _moveSeqIndex << std::endl;
-        }
-        if (_moveCounter < _moveSeq[_moveSeqIndex].second) { // If the next move is the same as last, decrement the count
-            _moveCounter += 1; //_nextDir == _currentDir && 
-        } else { // Otherwise, move to the next move
-            --_moveSeqIndex;
-            _moveCounter = 0;
-        }
-        reverseNextDir();
-    } else { // No more moves to replay
-        _nextDir = MoveDir::None;
-        PRINF("MoveSeq empty");
-    }
-
-    if (dynamic_cast<Player*>(this)) {
-        /*std::cout << "After: " << std::endl;
-        for (auto& m : _moveSeq) {
-            std::cout << "(" << static_cast<int>(m.first) << " : " << m.second << "), ";
-        }
-        std::cout << std::endl;*/
-        std::cout << "Dir: " << dir_to_str(_nextDir) << "\tIndex: " << _moveSeqIndex << std::endl;
-    }   
 }
 
 void AnimatedSprite::initAnimation(QString path)
@@ -161,5 +107,15 @@ void AnimatedSprite::processMovement()
             break;
         default:
             break;
+    }
+}
+
+std::string AnimatedSprite::dir_to_str(MoveDir d) {
+    switch (d) {
+        case MoveDir::None: return "None";
+        case MoveDir::Up: return "Up";
+        case MoveDir::Left: return "Left";
+        case MoveDir::Down: return "Down";
+        case MoveDir::Right: return "Right";
     }
 }

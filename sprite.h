@@ -9,11 +9,7 @@
 #include <QVector2D>
 #include <QDataStream>
 
-class ILoadable {
-public:
-    virtual ~ILoadable() {}
-    virtual void LoadFromStream(QDataStream& stream) = 0;
-};
+
 
 struct TileData {
     int x;
@@ -31,11 +27,6 @@ public:
         _type(type), _t(t), _pixPos(t.x* t.width, t.y* t.width),
         _pen(Qt::magenta, 2, Qt::SolidLine) 
     { init();}
-    explicit Sprite(SpriteType type, TileData t, QPen pen, QBrush brush, QObject* parent = 0)
-        : QObject(parent), QGraphicsItem(),
-        _type(type), _t(t), _pixPos(t.x* t.width, t.y* t.width),
-        _pen(pen), _brush(brush)
-    { init(); }
 
     ~Sprite() {}
 
@@ -55,8 +46,6 @@ protected:
     QPen _pen;
     QBrush _brush = Qt::magenta;
     QImage* _spriteImage = nullptr;  
-
-    //int _tileWidth;
 private:
     void init();
 };

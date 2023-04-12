@@ -2,8 +2,6 @@
 #include "utils.h"
 #include "gamescene.h"
 
-
-
 Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
     : AnimatedSprite(SpriteType::Enemy, t, parent),
     _seed(seed), _generator(_seed)
@@ -11,15 +9,13 @@ Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
     initAnimation(":/sprites/enemy/");
 }
 
-void Enemy::action(bool isGameReplayed, bool replayForward)
+void Enemy::action(bool isGameReplayed)
 {
     updatePosition();
 
     if (_remPixels.isNull()) {
         onTileOverlap();
-    } else if (isGameReplayed && !replayForward) {
-        reverseNextDir();
-    }
+    } 
 
     scanAround();
     processMovement();
@@ -27,30 +23,8 @@ void Enemy::action(bool isGameReplayed, bool replayForward)
 
 void Enemy::onTileOverlap()
 {
-    if (!_scene->_replay) {
-        setRandomNextDir();
-    } else {
-        //getNextDirReplay();
-        replayNextDir(_scene->getReplayMode());
-    }
-
-    if (_scene->_toBeRecorded) { // Record next dir for replay
-        storeNextDir();
-    }
-    
-    //std::cout << "Enemy: " << _moveSeqIndex << " : " << static_cast<int>(_nextDir) << std::endl;
+    setRandomNextDir();
 }
-
-//void Enemy::getNextDirReplay()
-//{
-//    replayNextDir(_scene->getReplayMode());
-//    //if (_scene->getReplayMode()) { // Replay forward
-//    //    //setRandomNextDir();
-//    //    //storeNextDir();
-//    //} else { // Replay backward
-//    //    replayNextDir(false);
-//    //}
-//}
 
 void Enemy::setRandomNextDir()
 {
@@ -73,9 +47,20 @@ void Enemy::setRandomNextDir()
     if (dirs.isEmpty()) {
         return;
     }
-    //_nextDir = dirs.at(QRandomGenerator::global()->generate() % dirs.size());
+
     _nextDir = dirs.at(_generator.generate() % dirs.size());
 }
+
+void Enemy::SaveToStream(QDataStream& stream) {
+    stream << _seed;
+    std::cout << "SAVE Seed: " << _seed << std::endl;
+};
+
+void Enemy::LoadFromStream(QDataStream& stream) {
+    stream >> _seed;
+    std::cout << "LOAD Seed: " << _seed << std::endl;
+    _generator = QRandomGenerator(_seed);
+};
 
 void Enemy::loadAnimationFrames()
 {

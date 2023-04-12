@@ -25,8 +25,9 @@ void Player::setDirTo(QPoint to) {
     }
 }
 
-void Player::action(bool isGameReplayed, bool replayForward) //TODO: remove arguments
+void Player::action(bool isGameReplayed) //TODO: remove arguments
 {
+    bool overlapPrev = _tileOverlapped;
     _tileOverlapped = false; // Reset tile overlap flag
     bool died = false;
     _scene->collideWithEnemy(pos().toPoint(), &died);
@@ -38,6 +39,30 @@ void Player::action(bool isGameReplayed, bool replayForward) //TODO: remove argu
 
     if (_remPixels.isNull()) { // If the player overlaps the tile
         onTileOverlap();
+        if (_tileOverlapped != overlapPrev) {
+            emit tileOverlapped();
+        }
+    }
+
+    if (_scene->_toBeRecorded) { // Record next dir for replay
+        if (!_moveSeq.empty() && _moveSeq.back().first == _nextDir) { // If the last move is the same as the current one
+            ++_moveSeq.back().second; // Increment the count
+        } else { // If the last move is different from the current one
+            _moveSeq.push_back({ _nextDir,0 }); // Dir doesn't repeat so count is 0
+        }
+    } else if (_scene->_replay) { // Replay next dir
+        if (_moveSeqIndex < _moveSeq.size() && _moveSeqIndex >= 0) { // If there are still moves to replay
+            _nextDir = _moveSeq[_moveSeqIndex].first;
+            if (_moveSeq[_moveSeqIndex].second > 0) { // If the move repeats
+                --_moveSeq[_moveSeqIndex].second; // Decrement the count
+            } else { // If the move doesn't repeat
+                ++_moveSeqIndex; // Move to the next move
+            }
+        } else { // No more moves to replay
+            _nextDir = MoveDir::None;
+            PRINF("MoveSeq empty");
+            //ASSERTMSG(false, "MoveSeq empty");
+        }
     }
 
     processMovement(); // Move the player based on next direction
@@ -65,29 +90,26 @@ void Player::onTileOverlap()
             _goToMouse = false;
         }
     }
-
-    if (_scene->_toBeRecorded) { // Record next dir for replay
-        storeNextDir();
-    } else if (_scene->_replay) { // Replay next dir
-        //std::cout << "Overlap: " << _moveSeqIndex << " : " << static_cast<int>(_nextDir) << std::endl;
-        //getNextDirReplay();
-        replayNextDir(_scene->getReplayMode());
-    }
 }
 
-void Player::onReplayModeSwitch() {
-    std::cout << "ReplayModeSwitch\n";
-    if (_moveSeqIndex == -1) {
-        _moveSeqIndex = 0;
+void Player::SaveToStream(QDataStream& stream) {
+    stream << _moveSeq;
+    std::cout << "SAVE MoveSeq:" << std::endl;
+    for (auto& m : _moveSeq) {
+        std::cout << "(" << dir_to_str(m.first) << " " << m.second << "), ";
     }
-    //getNextDirReplay();
-    replayNextDir(_scene->getReplayMode());
-}
+    std::cout << std::endl;
+};
 
-//void Player::getNextDirReplay()
-//{
-//    replayNextDir(_scene->getReplayMode());
-//}
+void Player::LoadFromStream(QDataStream& stream) {
+    stream >> _moveSeq;
+    ASSERT(!_moveSeq.empty());
+    std::cout << "LOAD MoveSeq:" << std::endl;
+    for (auto& m : _moveSeq) {
+        std::cout << "(" << dir_to_str(m.first) << " " << m.second << "), ";
+    }
+    std::cout << std::endl;
+};
 
 void Player::loadAnimationFrames()
 {

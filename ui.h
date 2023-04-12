@@ -19,14 +19,15 @@ private slots:
     void loadMapMenuTriggered(QAction* action);
     void loadRecordingMenuTriggered(QAction* action);
     void onReplayStartButtonClick();
-    void onReplayEndButtonClick();
 
-    void onStepBackButtonClick();
+    void onReplayModeButtonClick();
     void onPauseButtonClick();
     void onStepForwardButtonClick();
-    void onPlayBackwardButtonClick();
-    void onPlayForwardButtonClick();
-    void onReplayModeSwitchButtonClick();
+
+    void onGamePause(bool pause);
+
+    void onPlayerScoreChanged(int score);
+    void onPlayerStepsChanged(int steps);
 public:
     WindowUI(MainWindow* mainWindow);
     ~WindowUI() {}
@@ -38,8 +39,7 @@ public:
     std::unordered_map<QString, QVector<QAction*>> actions;
 
     std::unordered_map<QString, QWidget*> centrals;
-    /*QWidget* playCentral;
-    QWidget* gameEndCentral;*/
+    
     QGraphicsView* view;
     QToolBar* toolbar;
 
@@ -53,11 +53,10 @@ private:
     void initMenus();
     void refresh();
     
-    //void onReplayStart(QString filePath);
-    void onGameStart(QString filePath, bool isRecorded, bool replayFromStart = true);
+    void onGameStart(QString filePath, bool isRecorded);
     void onGameEnd(bool win, int score);
 
-    void onUpdateGameScore(int score);
+    
 private:
     MainWindow* _mainWindow;
 

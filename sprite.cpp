@@ -17,7 +17,6 @@ void Sprite::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 {
     QRect r = boundingRect().toRect();
 
-    //painter->drawPixmap(r, *_spriteImage); //, source
     painter->drawImage(r, *_spriteImage); //, source
 
     Q_UNUSED(option);

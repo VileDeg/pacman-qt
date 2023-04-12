@@ -5,27 +5,31 @@
 
 #include <unordered_map>
 #include <iostream>
+#include "utils.h"
 
 class Player : public AnimatedSprite
 {
     Q_OBJECT
 signals:
-    void tileOverlapped(int x, int y);
+    //void tileOverlapped(int x, int y);
+    void tileOverlapped();
+
+
 public:
     explicit Player(TileData t, GameScene* parent)
         :AnimatedSprite(SpriteType::Player, t, parent)
     { 
         initAnimation(":/sprites/player/"); 
-        //_moveSeq.push_back({ MoveDir::None, 0 });
     }
         
     ~Player() {}
 
-    void action(bool isGameReplayed, bool replayForward) override;
+    void action(bool isGameReplayed) override;
     void onTileOverlap() override;
-    void onReplayModeSwitch() override;
-    //void getNextDirReplay() override;
 
+    void SaveToStream(QDataStream& stream) override;
+
+    void LoadFromStream(QDataStream& stream) override;
 
     void setMoveDir(MoveDir dir) override { 
         _goToMouse = false;
@@ -37,13 +41,15 @@ public:
         _goToMouse = true;
     }
     bool getTileOverlapped() { return _tileOverlapped; }
+    //void storeNextDir();
 
     QPoint getTilePos() {return QPoint(_t.x, _t.y);}
 private:
     void loadAnimationFrames() override;
     void setDirTo(QPoint to);
     
-    
+    QVector<QPair<MoveDir, int>> _moveSeq{};
+    int _moveSeqIndex = 0;
     bool _tileOverlapped = false;
     bool _goToMouse = false;
     std::vector<QPoint> _path;

@@ -36,7 +36,10 @@ class GameScene : public QGraphicsScene
     Q_OBJECT
 signals:
     void gameEnd(bool win, int score);
-    //void replayModeSwitch();
+    void gamePause(bool pause);
+    void playerScoreChanged(int score);
+    void playerStepsChanged(int steps);
+    
 private slots:
     void playerHandler();
     void enemiesHandler();
@@ -44,11 +47,17 @@ private slots:
     void playerAnimHandler();
     void enemiesAnimHandler();
 
-
-    void replay();
+    void onPlayerTileOverlapped();
+public slots:
+    void ReplayStepForward() {
+        if (_isPaused) {
+            setGamePaused(false);
+        }
+        _replayUntilNextTile = true;
+    }
 
 public:
-    GameScene(QString filePath, int viewWidth, bool replay, bool replayFromStart, QObject *parent = 0);
+    GameScene(QString filePath, int viewWidth, bool replay, QObject *parent = 0);
     ~GameScene();
     
     void playerInteract(int x, int y, bool* win);
@@ -58,17 +67,16 @@ public:
     bool canMoveTo(int x, int y);
     std::vector<QPoint> findPath(QPoint start, QPoint end);
 
-    void setGamePause(bool pause) {
-        //_prevPaused = _isPaused;
+    void setGamePaused(bool pause) {
         _isPaused = pause;
+        emit gamePause(pause);
+    }
+    bool getGamePaused() {
+        return _isPaused;
     }
 
-    void setReplayMode(bool forward);
-    bool getReplayMode() { return _replayForward; }
-
+    bool ToggleReplayMode();
     
-    bool _isPaused = false;
-    //bool _prevPaused = false;
     bool _replayUntilNextTile = false;
     
     bool _replay = false;
@@ -80,6 +88,7 @@ public:
 
     bool _toBeRecorded = true;
 private:
+    void setPlayerScore(int score);
     Sprite* addSprite(SpriteType type, int li, int ci);
     void makeEmptyAt(int li, int ci);
     
@@ -90,12 +99,13 @@ private:
     void loadImages();
     void parseMap(QString* inputStr);
     void loadFromMap(QString mapPath);
-    void loadFromRecording(bool loadFromStart);
+    void loadFromRecording(QString savePath);
     void endGame(bool win);
 private:
     QString _mapFilePath;
     QSize _mapSize; //In tiles
     int _playerScore = 0;
+    int _playerSteps = 0;
     int _ballPoints = 10;
     bool _keyFound = false;
     bool _loggingEnabled = true;
@@ -103,8 +113,12 @@ private:
     QTimer* _enemiesTimer;
     QTimer* _playerAnimTimer;
     QTimer* _enemiesAnimTimer;
-    
-    bool _replayForward = true;
+    bool _isPaused = false;
+    QTimer* _replayStepTimer;
+
+    MoveDir _playerLastDir = MoveDir::None;
+    //bool _replayForward = true;
+    bool _replayStepByStep = false;
 
     QString _saveFilePath{ "saves/save.bin" };
     QPoint _tileClicked{ -1,-1 };
@@ -121,8 +135,8 @@ private:
     Sprite*** _map = nullptr;
     Player* _player = nullptr;
 
-    QFile _saveFile;
-    QDataStream _saveStream;
+    //QFile _saveFile;
+    //QDataStream _saveStream;
     
     //QTimer* _replayTimer;
 };

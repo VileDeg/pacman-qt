@@ -2,29 +2,27 @@
 
 #include "animatedsprite.h"
 #include <QRandomGenerator>
+#include <iostream>
 
 class Enemy : public AnimatedSprite
 {
 public:
-    //size_t seed, 
     explicit Enemy(TileData t, size_t seed, GameScene* parent);
     ~Enemy() {}
 
-    void action(bool isGameReplayed, bool replayForward) override;
+    void action(bool isGameReplayed) override;
     void onTileOverlap() override;
-    //void getNextDirReplay() override;
-    void onReplayModeSwitch() override {
-        //getNextDirReplay();
-    }
+
+    void SaveToStream(QDataStream& stream);
+    void LoadFromStream(QDataStream& stream);
 
     void setRandomNextDir();
     
-    size_t _seed;
 private:
-    
-
     void loadAnimationFrames() override;
 
+private:
+    quint64 _seed;
     QRandomGenerator _generator;
 };
 

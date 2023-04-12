@@ -104,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gamescene.h" />
-    <QtMoc Include="animatedsprite.h" />
+    <ClInclude Include="animatedsprite.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="gameview.h" />
     <QtMoc Include="ui.h" />
