@@ -172,8 +172,6 @@ void GameScene::playerHandler()
     }
 }
 
-
-
 void GameScene::enemiesHandler()
 {
     if (_isPaused) return;
@@ -187,7 +185,7 @@ void GameScene::playerAnimHandler()
     static unsigned int frame = 0;
 
     if (_isPaused) return;
-    _player->setSpriteByFrame(frame);
+    _player->setSpriteByFrame(frame, _replay, _replayForward);
     ++frame;
 }
 
@@ -197,7 +195,7 @@ void GameScene::enemiesAnimHandler()
 
     if (_isPaused) return;
     for (auto enemy : _enemies) {
-        enemy->setSpriteByFrame(frame);
+        enemy->setSpriteByFrame(frame, _replay, _replayForward);
     }
     ++frame;
 }
@@ -390,6 +388,8 @@ std::vector<QPoint> GameScene::findPath(QPoint start, QPoint end)
 
 void GameScene::setReplayMode(bool forward)
 {
+    _replayForward = forward;
+
     if (_replayForward != forward) {
         _player->onReplayModeSwitch();
 
@@ -397,8 +397,6 @@ void GameScene::setReplayMode(bool forward)
             enemy->onReplayModeSwitch();
         }
     }
-        
-    _replayForward = forward;
 }
 
 void GameScene::playerInteract(int x, int y, bool* end)
@@ -624,6 +622,12 @@ void GameScene::loadFromRecording()
     parseMap(&_mapString);
 
     _saveStream >> _player->_moveSeq;
+    _player->_moveCounter = _player->_moveSeq[0].second;
+    std::cout << "MoveSeq: " << std::endl;
+    for (auto& m : _player->_moveSeq) {
+        std::cout << "(" << _player->dir_to_str(m.first) << " : " << m.second << "), ";
+    }
+    std::cout << std::endl;
 }
 
 void GameScene::endGame(bool win)

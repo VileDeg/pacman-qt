@@ -18,11 +18,14 @@ class WindowUI : public QWidget {
 private slots:
     void loadMapMenuTriggered(QAction* action);
     void loadRecordingMenuTriggered(QAction* action);
-    void onReplayButtonClick();
+    void onReplayStartButtonClick();
+    void onReplayEndButtonClick();
 
-    void onBackButtonClick();
+    void onStepBackButtonClick();
     void onPauseButtonClick();
-    void onNextButtonClick();
+    void onStepForwardButtonClick();
+    void onPlayBackwardButtonClick();
+    void onPlayForwardButtonClick();
     void onReplayModeSwitchButtonClick();
 public:
     WindowUI(MainWindow* mainWindow);

@@ -67,17 +67,26 @@ void WindowUI::initButtons()
         b->setMenu(menus["map"]);
     }
 
-    BTN_CREATE("replay", "Replay", this);
-    BTN_CONNECT(b, onReplayButtonClick());
+    BTN_CREATE("replay_start", "Replay from start", this);
+    BTN_CONNECT(b, onReplayStartButtonClick());
 
-    BTN_CREATE("back", "Back", this);
-    BTN_CONNECT(b, onBackButtonClick());
+    BTN_CREATE("replay_end", "Replay from end", this);
+    BTN_CONNECT(b, onReplayEndButtonClick());
+
+    BTN_CREATE("back", "Step Back", this);
+    BTN_CONNECT(b, onStepBackButtonClick());
     
     BTN_CREATE("pause", "Pause", this);
     BTN_CONNECT(b, onPauseButtonClick());
 
-    BTN_CREATE("next", "Next", this);
-    BTN_CONNECT(b, onNextButtonClick());
+    BTN_CREATE("next", "Step Forward", this);
+    BTN_CONNECT(b, onStepForwardButtonClick());
+
+    BTN_CREATE("backward", "Play Backward", this);
+    BTN_CONNECT(b, onPlayBackwardButtonClick());
+
+    BTN_CREATE("forward", "Play Forward", this);
+    BTN_CONNECT(b, onPlayForwardButtonClick());
 
     /*BTN_CREATE("replaymode", "Replay mode:\nstep by step", this);
     BTN_CONNECT(b, onReplayModeSwitchButtonClick());*/
@@ -86,12 +95,21 @@ void WindowUI::initButtons()
 void WindowUI::initLayouts() {
     centrals["replay"] = new QWidget(this);
     {
-        auto l = layouts["replay"] = new QHBoxLayout(centrals["replay"]);
+        auto l = layouts["replay"] = new QVBoxLayout(centrals["replay"]);
         {
-            //layouts["play"]->setAlignment(Qt::AlignCenter);
-            l->addWidget(buttons["back"]);
-            l->addWidget(buttons["pause"]);
-            l->addWidget(buttons["next"]);
+            auto l1 = layouts["replay1"] = new QHBoxLayout();
+            {
+                l1->addWidget(buttons["back"]);
+                l1->addWidget(buttons["pause"]);
+                l1->addWidget(buttons["next"]);
+            }
+            l->addLayout(l1);
+            auto l2 = layouts["replay2"] = new QHBoxLayout();
+            {
+                l2->addWidget(buttons["backward"]);
+                l2->addWidget(buttons["forward"]);
+            }
+            l->addLayout(l2);
         }
     }
     centrals["replay"]->hide();
@@ -114,7 +132,8 @@ void WindowUI::initLayouts() {
             l->setAlignment(Qt::AlignCenter);
             l->addWidget(labels["win"]);
             l->addWidget(buttons["map"]);
-            l->addWidget(buttons["replay"]);
+            l->addWidget(buttons["replay_start"]);
+            l->addWidget(buttons["replay_end"]);
         }
     }
     centrals["gameend"]->hide();
@@ -182,7 +201,7 @@ void WindowUI::init() {
 
 void WindowUI::loadMapMenuTriggered(QAction* act)
 {
-    pr("loadMapMenuTriggered");
+    //pr("loadMapMenuTriggered");
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["map"]->actions();
     auto paths = _path["map"];
@@ -198,7 +217,7 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
 
 void WindowUI::loadRecordingMenuTriggered(QAction* act)
 {
-    pr("loadRecordingMenuTriggered");
+    //pr("loadRecordingMenuTriggered");
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["rec"]->actions();
     auto paths = _path["rec"];
@@ -211,8 +230,10 @@ void WindowUI::loadRecordingMenuTriggered(QAction* act)
     assert(false);
 }
 
-void WindowUI::onBackButtonClick() {
-    pr("onBackButtonClick");
+
+
+void WindowUI::onStepBackButtonClick() {
+    //pr("onBackButtonClick");
     if (_mainWindow->_scene->_isPaused) {
         _mainWindow->_scene->setGamePause(false);
     }
@@ -220,12 +241,12 @@ void WindowUI::onBackButtonClick() {
     _mainWindow->_scene->setReplayMode(false);
 }
 void WindowUI::onPauseButtonClick() { //TODO
-    pr("onPauseButtonClick");
+    //pr("onPauseButtonClick");
     _mainWindow->_scene->setGamePause(!_mainWindow->_scene->_isPaused); //TODO
     buttons["pause"]->setText(_mainWindow->_scene->_isPaused ? "Resume" : "Pause");
 }
-void WindowUI::onNextButtonClick() { //TODO
-    pr("onNextButtonClick");
+void WindowUI::onStepForwardButtonClick() { //TODO
+    //pr("onNextButtonClick");
     if (_mainWindow->_scene->_isPaused) {
         _mainWindow->_scene->setGamePause(false);
     }
@@ -233,13 +254,29 @@ void WindowUI::onNextButtonClick() { //TODO
     _mainWindow->_scene->setReplayMode(true);
 }
 
+void WindowUI::onPlayBackwardButtonClick()
+{
+    if (_mainWindow->_scene->_isPaused) {
+        _mainWindow->_scene->setGamePause(false);
+    }
+    _mainWindow->_scene->setReplayMode(false);
+}
+
+void WindowUI::onPlayForwardButtonClick()
+{
+    if (_mainWindow->_scene->_isPaused) {
+        _mainWindow->_scene->setGamePause(false);
+    }
+    _mainWindow->_scene->setReplayMode(true);
+}
+
 void WindowUI::onReplayModeSwitchButtonClick()
 {
 }
 
-void WindowUI::onReplayButtonClick()
+void WindowUI::onReplayStartButtonClick()
 {
-    pr("onReplayButtonClick");
+    //pr("onReplayButtonClick");
     for (auto& rec : _path["rec"]) {
         if (rec.split("/").last().split(".").first() == currentMapName) {
             onGameStart(rec, true);
@@ -247,6 +284,10 @@ void WindowUI::onReplayButtonClick()
         }
     }
     ASSERT(false);
+}
+
+void WindowUI::onReplayEndButtonClick()
+{
 }
 
 //void WindowUI::onReplayStart(QString filePath) {

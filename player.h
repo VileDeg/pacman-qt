@@ -23,10 +23,12 @@ public:
     void action(bool isGameReplayed, bool replayForward) override;
     void onTileOverlap() override;
     void onReplayModeSwitch() override {
+        //_moveCounter = 0;
         getNextDirReplay();
     }
 
     void getNextDirReplay() override;
+
 
     void setMoveDir(MoveDir dir) override { 
         _goToMouse = false;

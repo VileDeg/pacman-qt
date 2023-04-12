@@ -13,7 +13,7 @@ public:
     void onTileOverlap() override;
     void getNextDirReplay() override;
     void onReplayModeSwitch() override {
-        getNextDirReplay();
+        //getNextDirReplay();
     }
     
     size_t _seed;

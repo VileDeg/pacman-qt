@@ -31,6 +31,7 @@ void Enemy::onTileOverlap()
     } else {
         getNextDirReplay();
     }
+    //std::cout << "Enemy: " << _moveSeqIndex << " : " << static_cast<int>(_nextDir) << std::endl;
 }
 
 void Enemy::getNextDirReplay()
@@ -39,21 +40,7 @@ void Enemy::getNextDirReplay()
         setRandomNextDir();
         storeNextDir();
     } else { // Replay backward
-        if (_moveSeqIndex > 0) {
-            _nextDir = _moveSeq[_moveSeqIndex].first;
-            static QPair<MoveDir, size_t> lastMove = _moveSeq[_moveSeqIndex];
-            if (_nextDir == lastMove.first) { // If the next move is repeated, decrement the count
-                lastMove.second -= 1;
-            } else { // Otherwise, move to the next move
-                --_moveSeqIndex;
-                lastMove = _moveSeq[_moveSeqIndex];
-            }
-            reverseNextDir();
-        } else { // No more moves to replay
-            _nextDir = MoveDir::None;
-            PRINF("MoveSeq empty");
-            ASSERTMSG(false, "MoveSeq empty");
-        }
+        replayNextDir(false);
     }
 }
 
