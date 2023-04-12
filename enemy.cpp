@@ -51,17 +51,6 @@ void Enemy::setRandomNextDir()
     _nextDir = dirs.at(_generator.generate() % dirs.size());
 }
 
-void Enemy::SaveToStream(QDataStream& stream) {
-    stream << _seed;
-    std::cout << "SAVE Seed: " << _seed << std::endl;
-};
-
-void Enemy::LoadFromStream(QDataStream& stream) {
-    stream >> _seed;
-    std::cout << "LOAD Seed: " << _seed << std::endl;
-    _generator = QRandomGenerator(_seed);
-};
-
 void Enemy::loadAnimationFrames()
 {
     try {

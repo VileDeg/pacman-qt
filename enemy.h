@@ -13,8 +13,7 @@ public:
     void action(bool isGameReplayed) override;
     void onTileOverlap() override;
 
-    void SaveToStream(QDataStream& stream);
-    void LoadFromStream(QDataStream& stream);
+    
 
     void setRandomNextDir();
     

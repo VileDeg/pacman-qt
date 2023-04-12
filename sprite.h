@@ -9,6 +9,7 @@
 #include <QVector2D>
 #include <QDataStream>
 
+#include "interfaces.h"
 
 
 struct TileData {
@@ -19,14 +20,10 @@ struct TileData {
 
 enum class SpriteType { None, Background, Empty, Player, Wall, Enemy, Ball, Key, Lock, Door };
 
-class Sprite : public QObject, public QGraphicsItem
+class Sprite : public QObject, public QGraphicsItem, public ISerializable
 {
 public:
-    explicit Sprite(SpriteType type, TileData t, QObject *parent = 0) 
-        : QObject(parent), QGraphicsItem(),
-        _type(type), _t(t), _pixPos(t.x* t.width, t.y* t.width),
-        _pen(Qt::magenta, 2, Qt::SolidLine) 
-    { init();}
+    explicit Sprite(SpriteType type, TileData t, QObject* parent = 0);
 
     ~Sprite() {}
 
@@ -35,19 +32,21 @@ public:
     void setPen(QPen pen) { _pen = pen; }
     void setBrush(QBrush brush) { _brush = brush; }
     void setImage(QImage* image) { _spriteImage = image; }
+
+    void Serialize(QDataStream& stream);
+    void Deserialize(QDataStream& stream);
+
 protected:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
     QRectF boundingRect() const override;
 protected:
     SpriteType _type;
     TileData _t;
-    QPoint _pixPos; //Position in pixels
+    //QPoint _pixPos; //Position in pixels
 
     QPen _pen;
     QBrush _brush = Qt::magenta;
     QImage* _spriteImage = nullptr;  
-private:
-    void init();
 };
 
 #endif // SPRITE_H

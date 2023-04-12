@@ -92,25 +92,6 @@ void Player::onTileOverlap()
     }
 }
 
-void Player::SaveToStream(QDataStream& stream) {
-    stream << _moveSeq;
-    std::cout << "SAVE MoveSeq:" << std::endl;
-    for (auto& m : _moveSeq) {
-        std::cout << "(" << dir_to_str(m.first) << " " << m.second << "), ";
-    }
-    std::cout << std::endl;
-};
-
-void Player::LoadFromStream(QDataStream& stream) {
-    stream >> _moveSeq;
-    ASSERT(!_moveSeq.empty());
-    std::cout << "LOAD MoveSeq:" << std::endl;
-    for (auto& m : _moveSeq) {
-        std::cout << "(" << dir_to_str(m.first) << " " << m.second << "), ";
-    }
-    std::cout << std::endl;
-};
-
 void Player::loadAnimationFrames()
 {
     try {

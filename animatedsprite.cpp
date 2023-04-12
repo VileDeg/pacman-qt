@@ -6,7 +6,7 @@ AnimatedSprite::AnimatedSprite(SpriteType type, TileData t, GameScene* parent)
     : Sprite(type, t, parent), _scene(parent)
 {}
 
-void AnimatedSprite::setSpriteByFrame(unsigned int frame, bool replay)
+void AnimatedSprite::setSpriteByFrame(unsigned int frame)
 {
     _spriteImage = &_animation[_currentDir][frame % _animation[_currentDir].size()];
 
@@ -110,6 +110,19 @@ void AnimatedSprite::processMovement()
     }
 }
 
+void AnimatedSprite::Serialize(QDataStream& stream) {
+    Sprite::Serialize(stream);
+    stream << _currentDir;
+};
+
+void AnimatedSprite::Deserialize(QDataStream& stream) {
+    Sprite::Deserialize(stream);
+    stream >> _currentDir;
+};
+
+
+
+
 std::string AnimatedSprite::dir_to_str(MoveDir d) {
     switch (d) {
         case MoveDir::None: return "None";
@@ -118,4 +131,5 @@ std::string AnimatedSprite::dir_to_str(MoveDir d) {
         case MoveDir::Down: return "Down";
         case MoveDir::Right: return "Right";
     }
+    return "None";
 }

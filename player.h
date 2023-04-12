@@ -27,10 +27,6 @@ public:
     void action(bool isGameReplayed) override;
     void onTileOverlap() override;
 
-    void SaveToStream(QDataStream& stream) override;
-
-    void LoadFromStream(QDataStream& stream) override;
-
     void setMoveDir(MoveDir dir) override { 
         _goToMouse = false;
         AnimatedSprite::setMoveDir(dir); 

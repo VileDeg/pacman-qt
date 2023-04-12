@@ -9,79 +9,48 @@
 
 #include <deque>
 
-void GameScene::loadImages()
-{
-    try {
-        //_pixmapCache[SpriteType::Empty] = loadPixmap(":/sprites/object/floor.png");
-    
-        QImage floor = loadPixmap(":/sprites/object/floor.jpg");
-        setImageBrightness(floor, 20);
-        _pixmapCache[SpriteType::Background] = floor;
 
-        TileData t = {0, 0, _viewWidth};
-        Sprite* bg = new Sprite(SpriteType::Empty, t, this);
-        bg->setImage(&_pixmapCache[SpriteType::Background]);
-        addItem(bg);
-        bg->setZValue(-1);
-       
-        _pixmapCache[SpriteType::Empty] = QImage(); //floorDark
-        //bg->setImage(&_pixmapCache[SpriteType::Empty]);
-        _pixmapCache[SpriteType::Wall] = loadPixmap(":/sprites/object/wall.png");
-        _pixmapCache[SpriteType::Ball] = loadPixmap(":/sprites/object/dot.png");
-        _pixmapCache[SpriteType::Key]  = loadPixmap(":/sprites/object/key.png");
-        _pixmapCache[SpriteType::Lock] = loadPixmap(":/sprites/object/lock.png");
-        QImage door = loadPixmap(":/sprites/object/door.png");
-        setImageBrightness(door, 70);
-        _pixmapCache[SpriteType::Door] = door;
 
-    } catch (std::runtime_error& e) {
-        errpr(e.what());
-    }
-}
-
-GameScene::GameScene(QString filePath, int viewWidth, bool replay, QObject *parent)
+GameScene::GameScene(QString filePath, int viewWidth, bool replay, 
+    std::unordered_map<SpriteType, QImage>& pixmapCache, QObject *parent)
     : QGraphicsScene(parent), 
-    _viewWidth(viewWidth), _replay(replay), _mapFilePath(filePath)
+    _viewWidth(viewWidth), _replay(replay), _mapFilePath(filePath), _pixmapCache(pixmapCache)
 {
     setBackgroundBrush(Qt::magenta);
-    loadImages();
 
-    if (_replay) { // If replayed, won't be recorded
-        _toBeRecorded = false;
-    }
+    TileData t = { 0, 0, _viewWidth };
+    Sprite* bg = new Sprite(SpriteType::Empty, t, this);
+    bg->setImage(&_pixmapCache[SpriteType::Background]);
+    addItem(bg);
+    bg->setZValue(-1);
 
-    _replayStepTimer = new QTimer(this);
-    connect(_replayStepTimer, SIGNAL(timeout()), this, SLOT(ReplayStepForward()));
-
-    try {
-        if (!_replay) {
+    if (!_replay) {
+        try {
             loadFromMap(filePath);
-        } else {
-            loadFromRecording(filePath);
         }
-    }
-    catch (std::runtime_error& e) {
-        throw std::runtime_error("Filed to load map '" + filePath.toStdString() + "' " + e.what());
-    }
+        catch (std::runtime_error& e) {
+            throw std::runtime_error("Failed to load map '" + filePath.toStdString() + "' " + e.what());
+        }
 
-    int interval = 150 / _tileWidth; //Adjust the speed according to tile size
-    {
-        _playerTimer = new QTimer(this);
-        connect(_playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
-        _playerTimer->start(interval);
+        int interval = 150 / _tileWidth; //Adjust the speed according to tile size
+        {
+            _playerTimer = new QTimer(this);
+            connect(_playerTimer, SIGNAL(timeout()), this, SLOT(playerHandler()));
+            _playerTimer->start(interval);
 
-        _playerAnimTimer = new QTimer(this);
-        connect(_playerAnimTimer, SIGNAL(timeout()), this, SLOT(playerAnimHandler()));
-        _playerAnimTimer->start(25);
-    }
-    {
-        _enemiesTimer = new QTimer(this);
-        connect(_enemiesTimer, SIGNAL(timeout()), this, SLOT(enemiesHandler()));
-        _enemiesTimer->start(interval * 4);
+            _playerAnimTimer = new QTimer(this);
+            connect(_playerAnimTimer, SIGNAL(timeout()), this, SLOT(playerAnimHandler()));
+            _playerAnimTimer->start(25);
+        }
+        {
+            _enemiesTimer = new QTimer(this);
+            connect(_enemiesTimer, SIGNAL(timeout()), this, SLOT(enemiesHandler()));
+            _enemiesTimer->start(interval * 4);
 
-        _enemiesAnimTimer = new QTimer(this);
-        connect(_enemiesAnimTimer, SIGNAL(timeout()), this, SLOT(enemiesAnimHandler()));
-        _enemiesAnimTimer->start(100);
+            _enemiesAnimTimer = new QTimer(this);
+            connect(_enemiesAnimTimer, SIGNAL(timeout()), this, SLOT(enemiesAnimHandler()));
+            _enemiesAnimTimer->start(100);
+        }
     }
 }
 
@@ -99,31 +68,15 @@ GameScene::~GameScene()
     saveFile.close();*/
 }
 
-bool GameScene::ToggleReplayMode() {
-    if (_replayStepByStep) {
-        _replayStepByStep = false;
-        _replayStepTimer->stop();
-        setGamePaused(false);
-    } else {
-        _replayStepByStep = true;
-        //connect(_replayStepTimer, SIGNAL(timeout()), this, SLOT(ReplayStepForward()));
-        _replayStepTimer->start(1000); // 1 second
-        ReplayStepForward();
-    }
-    return _replayStepByStep;
-}
-
 void GameScene::playerHandler()
 {
-    if (_isPaused) return;
-    
     if (_tileClicked != QPoint(-1,-1) && _player->getTileOverlapped()) {
         playerSendToTile(_tileClicked);
     }
 
     _player->action(_replay); //Move player
 
-    if (_replayUntilNextTile) {
+    /*if (_replayUntilNextTile) {
         MoveDir playerCurrDir = _player->getMoveDir();
         if (_player->getTileOverlapped() && playerCurrDir != MoveDir::None ||
             _player->getTileOverlapped() && _playerLastDir != playerCurrDir)
@@ -132,12 +85,11 @@ void GameScene::playerHandler()
             _replayUntilNextTile = false;
         }
         _playerLastDir = playerCurrDir;
-    }
+    }*/
 }
 
 void GameScene::enemiesHandler()
 {
-    if (_isPaused) return;
     for (auto enemy : _enemies) {
         enemy->action(_replay);
     }
@@ -145,22 +97,16 @@ void GameScene::enemiesHandler()
 
 void GameScene::playerAnimHandler()
 {
-    static unsigned int frame = 0;
-
-    if (_isPaused) return;
-    _player->setSpriteByFrame(frame, _replay);
-    ++frame;
+    _player->setSpriteByFrame(_playerAnimFrame);
+    ++_playerAnimFrame;
 }
 
 void GameScene::enemiesAnimHandler()
 {
-    static unsigned int frame = 0;
-
-    if (_isPaused) return;
     for (auto enemy : _enemies) {
-        enemy->setSpriteByFrame(frame, _replay);
+        enemy->setSpriteByFrame(_enemiesAnimFrame);
     }
-    ++frame;
+    ++_enemiesAnimFrame;
 }
 
 void GameScene::onPlayerTileOverlapped()
@@ -168,6 +114,7 @@ void GameScene::onPlayerTileOverlapped()
     _playerSteps++;
     emit playerStepsChanged(_playerSteps);
 }
+
 
 bool GameScene::canMoveTo(int x, int y)
 {
@@ -426,7 +373,7 @@ Sprite* GameScene::addSprite(SpriteType type, int ci, int li)
 void GameScene::makeEmptyAt(int x, int y)
 {
     auto sprite = _map[x][y];
-    assert(sprite != nullptr);
+    ASSERT(sprite != nullptr);
     removeItem(sprite);
     delete sprite;
     addSprite(SpriteType::Empty, x, y);
@@ -531,11 +478,12 @@ void GameScene::parseMap(QString* inputStr)
                     break;
                 case 'S': //Start(player)
                     pr("Player pos: " << ci << " " << li);
+                    addSprite(SpriteType::Empty, ci, li);
                     _player = new Player(t, this);
                     _player->setScene(this);
                     _player->setZValue(2);
                     addItem(_player);
-                    _map[ci][li] = _player;
+                    //_map[ci][li] = _player;
                     playerInMap = true;
 
                     connect(_player, SIGNAL(tileOverlapped()), this, SLOT(onPlayerTileOverlapped()));
@@ -577,68 +525,38 @@ void GameScene::loadFromMap(QString mapPath)
     parseMap(&_mapString);
 }
 
-void GameScene::loadFromRecording(QString savePath)
-{
-    pr("Replay loading from: " << savePath);
-    auto name = savePath.split('/').last().split('.').first();
-    QFile saveFile("saves/" + name + ".bin");
-    if (!saveFile.open(QIODevice::ReadOnly)) {
-        throw std::runtime_error("Could not open file");
-    }
-
-    QDataStream saveStream(&saveFile);
-
-    saveStream >> _mapString;
-    
-    
-    parseMap(&_mapString);
-
-    for (auto& enemy : _enemies) {
-        enemy->LoadFromStream(saveStream);
-    }
-
-    _player->LoadFromStream(saveStream);
-   
-    std::cout << std::endl;
-}
+//void GameScene::loadFromRecording(QString savePath)
+//{
+//    pr("Replay loading from: " << savePath);
+//    auto name = savePath.split('/').last().split('.').first();
+//    QFile saveFile("saves/" + name + ".bin");
+//    if (!saveFile.open(QIODevice::ReadOnly)) {
+//        throw std::runtime_error("Could not open file");
+//    }
+//
+//    QDataStream saveStream(&saveFile);
+//
+//    saveStream >> _mapString;
+//    
+//    
+//    parseMap(&_mapString);
+//
+//    for (auto& enemy : _enemies) {
+//        enemy->LoadFromStream(saveStream);
+//    }
+//
+//    _player->Deserialize(saveStream);
+//   
+//    std::cout << std::endl;
+//}
 
 void GameScene::endGame(bool win)
 {
-    ASSERT(!_toBeRecorded || !_replay);
-    if (_toBeRecorded) { 
-        /* If game ended correctly by win or loose
-         * and if it should be recorded, save file is opened,
-         * map text, enemy seeds and player moves are writted to file. */
-                         
-        auto name = _mapFilePath.split('/').last().split('.').first();
-        QFile saveFile("saves/" + name + ".bin");
-
-        if (!saveFile.open(QIODevice::WriteOnly)) {
-            throw std::runtime_error("Could not open file");
-        }
-        saveFile.resize(0);
-        QDataStream saveStream(&saveFile);
-        
-        saveStream << _mapString;
-
-        for (auto enemy : _enemies) {
-            //saveStream << enemy->_seed;
-            enemy->SaveToStream(saveStream);
-        }
-        _player->SaveToStream(saveStream);
-
-        PRINF("File saved: " << saveFile.fileName().toStdString());
-
-        /* If "replay" button is pressed, without "flush" or "close",
-        file won't be saved, because destructors are not called */
-        saveFile.flush();
-        saveFile.close();
-    }
 
     _playerTimer->stop();
     _enemiesTimer->stop();
    
-    emit gameEnd(win, _playerScore);
+    emit gameEnd(win, _playerScore, _playerSteps);
 }
 
 void GameScene::onKeyPress(QKeyEvent* event)
@@ -679,4 +597,51 @@ void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
 
         playerSendToTile(tPos);
     }
+}
+
+
+void GameScene::Serialize(QDataStream& stream)
+{
+    for (int i = 0; i < _mapSize.width(); ++i) {
+        for (int j = 0; j < _mapSize.height(); ++j) {
+            if (_map[i][j]) {
+                /*if (_map[i][j]->getType() == SpriteType::Player) {
+                    int t = 0;
+                    t++;
+                }*/
+                _map[i][j]->Serialize(stream);
+            }
+        }
+    }
+
+    stream << _enemiesAnimFrame;
+    for (auto& enemy : _enemies) {
+        enemy->Serialize(stream);
+    }
+
+    stream << _playerAnimFrame;
+    _player->Serialize(stream);
+}
+
+void GameScene::Deserialize(QDataStream& stream)
+{
+    for (int i = 0; i < _mapSize.width(); ++i) {
+        for (int j = 0; j < _mapSize.height(); ++j) {
+            if (_map[i][j]) {
+                _map[i][j]->Deserialize(stream);
+                _map[i][j]->setImage(&_pixmapCache[_map[i][j]->getType()]);
+                _map[i][j]->update(); // Repaint
+            }
+        }
+    }
+
+    stream >> _enemiesAnimFrame;
+    for (auto& enemy : _enemies) {
+        enemy->Deserialize(stream);
+        enemy->setSpriteByFrame(_enemiesAnimFrame);
+    }
+
+    stream >> _playerAnimFrame;
+    _player->Deserialize(stream);
+    _player->setSpriteByFrame(_playerAnimFrame);
 }

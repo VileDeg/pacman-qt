@@ -14,6 +14,7 @@
 
 #include "player.h"
 #include "enemy.h"
+#include "interfaces.h"
 
 struct Node {
     int x;
@@ -31,12 +32,12 @@ struct Node {
     }
 };
 
-class GameScene : public QGraphicsScene
+class GameScene : public QGraphicsScene, public ISerializable
 {
     Q_OBJECT
 signals:
-    void gameEnd(bool win, int score);
-    void gamePause(bool pause);
+    void gameEnd(bool win, int score, int steps);
+    //void gamePause(bool pause);
     void playerScoreChanged(int score);
     void playerStepsChanged(int steps);
     
@@ -48,45 +49,32 @@ private slots:
     void enemiesAnimHandler();
 
     void onPlayerTileOverlapped();
-public slots:
-    void ReplayStepForward() {
-        if (_isPaused) {
-            setGamePaused(false);
-        }
-        _replayUntilNextTile = true;
-    }
-
 public:
-    GameScene(QString filePath, int viewWidth, bool replay, QObject *parent = 0);
+    GameScene(QString filePath, int viewWidth, bool replay, 
+        std::unordered_map<SpriteType, QImage>& pixmapCache, QObject *parent = 0);
     ~GameScene();
     
     void playerInteract(int x, int y, bool* win);
     void collideWithEnemy(QPoint playerPos, bool* died);
     void moveSprite(int fromx, int fromy, int tox, int toy);
     int getScore() { return _playerScore; }
+    int getSteps() { return _playerSteps; }
     bool canMoveTo(int x, int y);
     std::vector<QPoint> findPath(QPoint start, QPoint end);
-
-    void setGamePaused(bool pause) {
-        _isPaused = pause;
-        emit gamePause(pause);
-    }
-    bool getGamePaused() {
-        return _isPaused;
-    }
-
-    bool ToggleReplayMode();
     
     bool _replayUntilNextTile = false;
     
     bool _replay = false;
+    void parseMap(QString* inputStr);
+    QString _mapString;
 
     void onKeyPress(QKeyEvent* event);
     void onMousePress(QMouseEvent* event, QPointF localPos);
-    void processKey(QKeyEvent* event);
-    void processMouse(QMouseEvent* event, QPointF localPos);
 
     bool _toBeRecorded = true;
+
+    void Serialize(QDataStream& stream);
+    void Deserialize(QDataStream& stream);
 private:
     void setPlayerScore(int score);
     Sprite* addSprite(SpriteType type, int li, int ci);
@@ -97,9 +85,9 @@ private:
     void initAstar();
     void cleanupAstar();
     void loadImages();
-    void parseMap(QString* inputStr);
+    
     void loadFromMap(QString mapPath);
-    void loadFromRecording(QString savePath);
+    //void loadFromRecording(QString savePath);
     void endGame(bool win);
 private:
     QString _mapFilePath;
@@ -107,13 +95,16 @@ private:
     int _playerScore = 0;
     int _playerSteps = 0;
     int _ballPoints = 10;
+
+    uint64_t _playerAnimFrame = 0;
+    uint64_t _enemiesAnimFrame = 0;
     bool _keyFound = false;
     bool _loggingEnabled = true;
     QTimer* _playerTimer;
     QTimer* _enemiesTimer;
     QTimer* _playerAnimTimer;
     QTimer* _enemiesAnimTimer;
-    bool _isPaused = false;
+    //bool _isPaused = false;
     QTimer* _replayStepTimer;
 
     MoveDir _playerLastDir = MoveDir::None;
@@ -123,12 +114,12 @@ private:
     QString _saveFilePath{ "saves/save.bin" };
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;
-    QString _mapString;
+    
     //QByteArray _recBytes;
     Node** _asMap;
     bool _astarInitialized = false;
     QVector<Enemy*> _enemies{};
-    std::unordered_map<SpriteType, QImage> _pixmapCache{};
+    std::unordered_map<SpriteType, QImage>& _pixmapCache;
     int _viewWidth;
     int _maxTilesInRow{ 10 };
     int _tileWidth; //Will be set according on map dimensions

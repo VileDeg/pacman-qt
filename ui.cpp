@@ -88,7 +88,10 @@ void WindowUI::initButtons()
     BTN_CONNECT(b, onPauseButtonClick());
 
     BTN_CREATE("next", "Step Forward", this);
-    BTN_CONNECT(b, onStepForwardButtonClick());
+    BTN_CONNECT(b, onStepNextButtonClick());
+
+    BTN_CREATE("back", "Step Back", this);
+    BTN_CONNECT(b, onStepBackButtonClick());
 
     BTN_CREATE("replay_mode", "Step by Step Mode", this);
     BTN_CONNECT(b, onReplayModeButtonClick());
@@ -113,18 +116,16 @@ void WindowUI::initLayouts() {
         {
             auto l1 = layouts["replay1"] = new QHBoxLayout();
             {
-                //l1->addWidget(buttons["back"]);
+                l1->addWidget(buttons["back"]);
                 l1->addWidget(buttons["pause"]);
                 l1->addWidget(buttons["next"]);
-                l1->addWidget(buttons["replay_mode"]);
             }
             l->addLayout(l1);
-            /*auto l2 = layouts["replay2"] = new QHBoxLayout();
+            auto l2 = layouts["replay2"] = new QHBoxLayout();
             {
                 l2->addWidget(buttons["replay_mode"]);
-                l2->addWidget(buttons["normal"]);
             }
-            l->addLayout(l2);*/
+            l->addLayout(l2);
         }
     }
     centrals["replay"]->hide();
@@ -201,13 +202,6 @@ void WindowUI::refresh()
 }
 
 void WindowUI::init() {
-    /*toolbar = new QToolBar(this);
-    _mainWindow->addToolBar(Qt::LeftToolBarArea, toolbar);
-    toolbar->setOrientation(Qt::Vertical);
-    toolbar->addWidget(buttons["tbback"]);
-    toolbar->addWidget(buttons["tbreplay"]);
-    toolbar->addWidget(buttons["tbnext"]);*/
-    
     initLabels();
     initMenus();
     refresh();
@@ -219,7 +213,6 @@ void WindowUI::init() {
     view->resize(_mainWindow->_viewWidth, _mainWindow->_viewWidth);
 
     initLayouts();
-    //_mainWindow->setLayout(layouts["main"]);
 }
 
 void WindowUI::loadMapMenuTriggered(QAction* act)
@@ -259,30 +252,32 @@ void WindowUI::onGamePause(bool pause)
     buttons["pause"]->setText(pause ? "Resume" : "Pause");
 }
 
-
 void WindowUI::onPauseButtonClick() 
-{ //TODO
+{
     //pr("onPauseButtonClick");
-    _mainWindow->_scene->setGamePaused(!_mainWindow->_scene->getGamePaused()); //TODO
+    _mainWindow->toggleReplayPaused(); //TODO
 }
 
-void WindowUI::onStepForwardButtonClick() 
-{ //TODO
-    //pr("onNextButtonClick");
-    _mainWindow->_scene->ReplayStepForward();
-    //_mainWindow->_scene->setReplayMode(true);
+void WindowUI::onStepBackButtonClick()
+{
+    _mainWindow->replayStepBack();
+}
+
+void WindowUI::onStepNextButtonClick() 
+{
+    _mainWindow->replayStepNext();
 }
 
 void WindowUI::onReplayModeButtonClick()
 {
-    bool mode = _mainWindow->_scene->ToggleReplayMode();
-    buttons["replay_mode"]->setText(!mode ? "Step By Step Mode" : "Normal Mode");
-    //buttons["pause"]->setHidden(stepbystep);
-    if (mode) {
-        buttons["pause"]->hide();
-    } else {
-        buttons["pause"]->show();
-    }
+    //bool mode = _mainWindow->_scene->ToggleReplayMode();
+    //buttons["replay_mode"]->setText(!mode ? "Step By Step Mode" : "Normal Mode");
+    ////buttons["pause"]->setHidden(stepbystep);
+    //if (mode) {
+    //    buttons["pause"]->hide();
+    //} else {
+    //    buttons["pause"]->show();
+    //}
 }
 
 
@@ -319,12 +314,12 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded)
 }
 
 
-void WindowUI::onGameEnd(bool win, int score)
+void WindowUI::onGameEnd(bool win, int score, int steps)
 {
     if (win) {
         labels["win"]->setText("You won!\nScore: " + QString::number(score));
     } else {
-        labels["win"]->setText("You lost :(\nScore: " + QString::number(score));
+        labels["win"]->setText("You lost :(\nScore: " + QString::number(score) + "\nSteps: " + QString::number(steps));
     }
 
     centrals["play"]->hide();

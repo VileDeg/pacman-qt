@@ -4,17 +4,9 @@
 
 enum class MoveDir { None, Up, Left, Down, Right };
 
-class ISerializable {
-public:
-    virtual ~ISerializable() {}
-
-    virtual void SaveToStream(QDataStream& stream) = 0;
-    virtual void LoadFromStream(QDataStream& stream) = 0;
-};
-
 class GameScene;
 
-class AnimatedSprite : public Sprite, public ISerializable
+class AnimatedSprite : public Sprite
 {
 public:
     explicit AnimatedSprite(SpriteType type, TileData t, GameScene* parent);
@@ -23,10 +15,12 @@ public:
     virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
     MoveDir getMoveDir() { return _currentDir; }
     void setScene(GameScene* scene) { _scene = scene; }
-    void setSpriteByFrame(unsigned int frame, bool replay);
+    void setSpriteByFrame(unsigned int frame);
 
     virtual void action(bool isGameReplayed) = 0;
-   
+
+    void Serialize(QDataStream& stream) override;
+    void Deserialize(QDataStream& stream) override;
     
 protected:
     virtual void onTileOverlap() = 0;

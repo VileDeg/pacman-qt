@@ -22,7 +22,8 @@ private slots:
 
     void onReplayModeButtonClick();
     void onPauseButtonClick();
-    void onStepForwardButtonClick();
+    void onStepNextButtonClick();
+    void onStepBackButtonClick();
 
     void onGamePause(bool pause);
 
@@ -54,7 +55,7 @@ private:
     void refresh();
     
     void onGameStart(QString filePath, bool isRecorded);
-    void onGameEnd(bool win, int score);
+    void onGameEnd(bool win, int score, int steps);
 
     
 private:
