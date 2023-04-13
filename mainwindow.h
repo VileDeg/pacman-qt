@@ -21,37 +21,27 @@ class MainWindow : public QMainWindow
     using ErrorCallback = std::function<void(QString, int)>;
 
     Q_OBJECT
-public slots:
-    void toggleReplayPaused();
-    void toggleReplayDir();
-    void toggleReplayMode();
 
-    void replayStepNext();
-    void replayStepBack();
-
-    void replayJumpToStart();
-    void replayJumpToEnd();
 private slots:
     //void updateGameScore();
     void onGameStateChanged(GameState);
-
-    void onSerialize();
-    void onDeserialize();
-
-    void onStepTimeout();
+    void onDeserializationEnded(GameState);
+    
 //signals:
 //    void replayFlagsChanged(const ReplayFlags& rf);
 public:
     explicit MainWindow(QApplication* app, ErrorCallback errorCallback, QWidget *parent = 0);
     ~MainWindow();
+
+    const Serializer* getSerializer() const { return &_serializer; }
 private:
     void startGame(QString mapPath, bool recorded, bool replayFromStart);
     void cleanup();
 
-    void serializationEnd(GameState);
+    
     void sceneEnd(GameState);
-
-    void replayJumpTo(bool toStart);
+    GameState getGameState() { return _state; }
+    
 
     void keyPressEvent(QKeyEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
@@ -68,6 +58,7 @@ private:
     int _offsetAroundView{ 200 };
 
     Serializer _serializer;
+    GameState _state;
    /* QFile _file;
     QDataStream _stream;
     QTimer* _serializationTimer;
@@ -91,7 +82,7 @@ private:
     int _framesPerStep = 10;
     int _msSinceLastStep = 0;*/
     //int _sceneDataSize = 0;
-    int _frameDataSize = 0;
+    
 
     /*int _filePosFrameDataStart = 0;
     int _filePosFrameDataEnd = 0;*/

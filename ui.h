@@ -23,7 +23,7 @@ private slots:
     void onReplayFromStartButtonClick();
     void onReplayFromEndButtonClick();
 
-    void onReplayFlagsChanged(const ReplayFlags& rf);
+    void onReplayFlagsChanged(ReplayFlags);
 
     void onGameStateChanged(GameState);
 public:
@@ -55,9 +55,10 @@ private:
     void onGameEnd(GameState);
 
     
+    
 private:
     MainWindow* _mainWindow;
-    GameState _gameState;
+    GameState _state;
 
     std::unordered_map<QString, QVector<QString>> _path;
 

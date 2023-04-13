@@ -9,13 +9,14 @@
 #define BTN_CREATE(_key, _name, _parent)\
     b = buttons[_key] = new QPushButton(_name, _parent)
 
-#define BTN_CONNECT(_b, _recv, _slot) connect(_b, SIGNAL(clicked()), _recv, SLOT(_slot))
+#define BTN_CONNECT(_recv, _slot) connect(b, SIGNAL(clicked()), _recv, SLOT(_slot))
 
 #define INTRO_STR\
     "How to play:\n"\
     "You can load a map by clicking the button below.\n"\
-    "You can choose one of the maps from \"saves/\" folder.\n"\
-    "After the game ends, you can replay it."
+    "These are the maps from \"saves/\" folder.\n"\
+    "After the game ends, you can replay it.\n\n"\
+    "You can also load a map or a recording from the \"File\" menu above."
 
 WindowUI::WindowUI(MainWindow* mainWindow)
     : QWidget(qobject_cast<QWidget*>(mainWindow)), _mainWindow(mainWindow)
@@ -85,37 +86,46 @@ void WindowUI::initButtons()
     BTN_CREATE("map", "Load map", this);
     {
         b->setMenu(menus["map"]);
+        //b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        //b->setAlignment(Qt::AlignCenter);
+    }
+
+    BTN_CREATE("rec", "Load recording", this);
+    {
+        b->setMenu(menus["rec"]);
+        //b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        //b->setAlignment(Qt::AlignCenter);
     }
 
     BTN_CREATE("replay_start", "Replay from start", this);
-    BTN_CONNECT(b, this, onReplayFromStartButtonClick());
+    BTN_CONNECT(this, onReplayFromStartButtonClick());
 
     BTN_CREATE("replay_end", "Replay from end", this);
-    BTN_CONNECT(b, this, onReplayFromEndButtonClick());
+    BTN_CONNECT(this, onReplayFromEndButtonClick());
 
     
     BTN_CREATE("pause", "Pause", this);
-    BTN_CONNECT(b, _mainWindow, toggleReplayPaused());
+    BTN_CONNECT(_mainWindow->getSerializer(), toggleReplayPaused());
 
     BTN_CREATE("next", "Step Forward", this);
-    BTN_CONNECT(b, _mainWindow, replayStepNext());
+    BTN_CONNECT(_mainWindow->getSerializer(), replayStepNext());
 
     BTN_CREATE("back", "Step Back", this);
-    BTN_CONNECT(b, _mainWindow, replayStepBack());
+    BTN_CONNECT(_mainWindow->getSerializer(), replayStepBack());
 
     BTN_CREATE("replay_mode", "Step by Step Mode", this);
-    BTN_CONNECT(b, _mainWindow, toggleReplayMode());
+    BTN_CONNECT(_mainWindow->getSerializer(), toggleReplayMode());
 
 
     BTN_CREATE("jump_start", "Jump to Start", this);
-    BTN_CONNECT(b, _mainWindow, replayJumpToStart());
+    BTN_CONNECT(_mainWindow->getSerializer(), replayJumpToStart());
 
     BTN_CREATE("jump_end", "Jump to End", this);
-    BTN_CONNECT(b, _mainWindow, replayJumpToEnd());
+    BTN_CONNECT(_mainWindow->getSerializer(), replayJumpToEnd());
 
 
     BTN_CREATE("replay_dir", "Play Backward", this);
-    BTN_CONNECT(b, _mainWindow, toggleReplayDir());
+    BTN_CONNECT(_mainWindow->getSerializer(), toggleReplayDir());
 }
 
 void WindowUI::initLayouts() {
@@ -184,6 +194,7 @@ void WindowUI::initLayouts() {
         {
             l->addWidget(labels["intro"]);
             l->addWidget(buttons["map"]);
+            l->addWidget(buttons["rec"]);
             l->setAlignment(Qt::AlignCenter);
         }
     }
@@ -223,6 +234,7 @@ void WindowUI::initMenus() {
 
 void WindowUI::refresh()
 {
+    _state = GameState();
     initActions();
     menus["map"]->clear();
     for (auto& act : actions["map"]) {
@@ -286,7 +298,7 @@ void WindowUI::loadRecordingMenuTriggered(QAction* act)
 
 
 
-void WindowUI::onReplayFlagsChanged(const ReplayFlags& rf)
+void WindowUI::onReplayFlagsChanged(ReplayFlags rf)
 {
     buttons["replay_dir"]->setText(rf.Forward ? "Play Backward" : "Play Forward");
     buttons["pause"]->setText(rf.Paused ? "Resume" : "Pause");
@@ -305,16 +317,17 @@ void WindowUI::onReplayFlagsChanged(const ReplayFlags& rf)
 
 void WindowUI::onGameStateChanged(GameState gs)
 {
-    if (gs.gameOver) {
+    //pr("UI game state change");
+    if (gs.gameOver && _state.gameOver != gs.gameOver) {
         onGameEnd(gs);
     } 
-    if (_gameState.score != gs.score) {
+    if (_state.score != gs.score) {
         labels["score"]->setText("Score: " + QString::number(gs.score));
     }
-    if (_gameState.steps != gs.steps) {
+    if (_state.steps != gs.steps) {
         labels["steps"]->setText("Steps: " + QString::number(gs.steps));
     }
-    _gameState = gs;
+    _state = gs;
 }
 
 
@@ -364,6 +377,7 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromSta
 
 void WindowUI::onGameEnd(GameState ged)
 {
+    pr("UI on game end");
     if (ged.win) {
         labels["win"]->setText("You won!\nScore: " + QString::number(ged.score));
     } else {

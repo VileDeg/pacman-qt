@@ -7,6 +7,8 @@
 
 #include "interfaces.h"
 
+class GameScene;
+
 struct ReplayFlags {
     bool StepByStep = false;
     bool OneStep = false;
@@ -23,14 +25,18 @@ struct GameState {
 
     friend QDataStream& operator<<(QDataStream& stream, const GameState& data)
     {
-        stream << data.win << data.score << data.steps;
+        stream << data.gameOver << data.win << data.score << data.steps;
         return stream;
     }
 
     friend QDataStream& operator>>(QDataStream& stream, GameState& data)
     {
-        stream >> data.win >> data.score >> data.steps;
+        stream >> data.gameOver >> data.win >> data.score >> data.steps;
         return stream;
+    }
+
+    static int sizeOf() {
+        return (2 * sizeof(bool) + 2 * sizeof(int));
     }
 };
 
@@ -38,13 +44,35 @@ class Serializer : public QObject {
 
     Q_OBJECT
 signals:
-    void replayFlagsChanged(const ReplayFlags& rf);
-public:
-    Serializer(QString filePath, bool replay, QObject* parent = nullptr);
-    ~Serializer();
+    void replayFlagsChanged(ReplayFlags);
+    void gameStateChanged(GameState);
+public slots:
+    void onGameStateChanged(GameState);
 
+    void toggleReplayPaused();
+    void toggleReplayDir();
+    void toggleReplayMode();
+
+    void replayStepNext();
+    void replayStepBack();
+
+    void replayJumpToStart();
+    void replayJumpToEnd();
+private slots:
+    void onSerialize();
+    void onDeserialize();
+
+    void onStepTimeout();
+public:
+    Serializer(QObject* parent = nullptr) {}
+    ~Serializer() {}
+
+    void Init(GameScene* scene, QString filePath, bool recorded, bool replayFromStart);
 private:
-    ISerializable* _target = nullptr;
+    void serializationEnd(GameState);
+    void replayJumpTo(bool toStart);
+private:
+    GameScene* _scene = nullptr;
 
     QFile _file;
     QDataStream _stream;
@@ -52,12 +80,15 @@ private:
     QTimer* _stepTimer;
 
     ReplayFlags _rf;
+    GameState _state;
 
     int _serializationFPS = 24;
     int _serializationInterval = 100;
     int _stepInterval = 250;
     int _framesPerStep = 10;
     int _msSinceLastStep = 0;
+
+    int _frameDataSize = 0;
 
     int _filePosFrameDataStart = 0;
     int _filePosFrameDataEnd = 0;

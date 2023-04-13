@@ -43,6 +43,8 @@ public:
         std::unordered_map<SpriteType, QImage>& pixmapCache, QObject *parent = 0);
     ~GameScene();
     
+    GameState getGameState() { return _state; }
+
     void playerInteract(int x, int y, bool* win);
     void collideWithEnemy(QPoint playerPos, bool* died);
     void moveSprite(int fromx, int fromy, int tox, int toy);

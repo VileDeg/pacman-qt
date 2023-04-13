@@ -67,6 +67,9 @@
     <ClCompile Include="astar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="replay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameview.h">
@@ -87,9 +90,6 @@
     <ClInclude Include="interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="replay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res.txt" />
@@ -103,6 +103,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="player.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="replay.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

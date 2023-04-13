@@ -17,8 +17,13 @@
 
 //#define SER_FRAME_BYTE_SIZE 2945
 //#define SER_GAME_END_DATA (2 * sizeof(bool) + 2 * sizeof(int))
-#define SER_GAME_END_DATA (sizeof(GameState) + 1)
 
+#define CONNECT(_sender, _signal, _receiver, _slot) connect(_sender, SIGNAL(_signal), _receiver, SLOT(_slot))
+
+void MainWindow::onDeserializationEnded(GameState gs)
+{
+    sceneEnd(gs);
+}
 
 //ErrorCallback errorCallback, 
 MainWindow::MainWindow(QApplication* app, ErrorCallback errorCallback, QWidget *parent) :
@@ -33,7 +38,7 @@ MainWindow::MainWindow(QApplication* app, ErrorCallback errorCallback, QWidget *
     setFixedSize(_windowDim);
 
     _ui = new WindowUI(this);
-    connect(this, SIGNAL(replayFlagsChanged(const ReplayFlags&)), _ui, SLOT(onReplayFlagsChanged(const ReplayFlags&)));
+    CONNECT(&_serializer, replayFlagsChanged(const ReplayFlags&), _ui, onReplayFlagsChanged(const ReplayFlags&));
 
     setCentralWidget(_ui);
 
@@ -64,175 +69,29 @@ void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
 
     _ui->view->setScene(_scene);
 
-    connect(_scene, SIGNAL(gameStateChanged(GameState)), this, SLOT(onGameStateChanged(GameState)));
-    connect(_scene, SIGNAL(gameStateChanged(GameState)), _ui, SLOT(onGameStateChanged(GameState)));
+    CONNECT(_scene, gameStateChanged(GameState), &_serializer, onGameStateChanged(GameState));
+    CONNECT(_scene, gameStateChanged(GameState), &_serializer, onGameStateChanged(GameState));
+    CONNECT(_scene, gameStateChanged(GameState), this        , onGameStateChanged(GameState));
+    CONNECT(_scene, gameStateChanged(GameState), _ui         , onGameStateChanged(GameState));
 
-    //connect(_scene, SIGNAL(gamePause(bool)), _ui, SLOT(onGamePause(bool)));
-    //connect(_scene, SIGNAL(gameDataChanged(int)), _ui, SLOT(onGameDataChanged(int)));
+
+    CONNECT(&_serializer, gameStateChanged(GameState), this, onGameStateChanged(GameState));
+    CONNECT(&_serializer, gameStateChanged(GameState), _ui, onGameStateChanged(GameState));
+    CONNECT(&_serializer, replayFlagsChanged(ReplayFlags), _ui, onReplayFlagsChanged(ReplayFlags));
 
     auto w = _scene->sceneRect().width();
     auto h = _scene->sceneRect().height();
     
     _ui->view->setFixedSize(w, h);
 
-    
+    try {
+        _serializer.Init(_scene, mapPath, recorded, replayFromStart);
+    } catch (std::runtime_error& e) {
+        _errorCallback("Serialization error: " + QString(e.what()), 3);
+        return;
+    }
 
     _cleanupNeeded = true;
-}
-
-void MainWindow::onSerialize()
-{
-    ASSERT(_scene != nullptr);
-
-    bool isLastFrame = false;
-    /*if (_gameEnded) {
-        
-        return;
-    }*/
-
-    _stream << false;
-
-    _scene->Serialize(_stream);
-}
-
-void MainWindow::onDeserialize()
-{
-    ASSERT(_scene != nullptr);
-
-    if (_rf.Paused) {
-        return;
-    }
-
-    if (_rf.OneStep || _rf.StepByStep) {
-        //qint64 pos = _file.pos();
-        //pr("DES file pos 0: " << pos);
-        qint64 seekPos = _file.pos();
-        if (_rf.Forward) {
-            seekPos += _framesPerStep * _frameDataSize;
-            while (seekPos >= _file.size()) {
-                seekPos -= _frameDataSize;
-            }
-
-        } else {
-            seekPos -= _framesPerStep * _frameDataSize;
-            while (seekPos < _filePosFrameDataStart) {
-                seekPos += _frameDataSize;
-            }
-        }
-        ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-        _file.seek(seekPos);
-        //pr("DES file pos 1: " << pos);
-        pr("DES paused");
-        _rf.Paused = true;
-        if (_rf.StepByStep) {
-            _stepTimer->start(_stepInterval);
-        }
-    } else if (!_rf.Forward) {
-        qint64 seekPos = _file.pos() - _frameDataSize;
-        if (seekPos >= _filePosFrameDataStart) {
-            ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-            _file.seek(seekPos);
-        }
-    }
-
-    bool isLastFrame = false;
-    _stream >> isLastFrame;
-
-    if (isLastFrame) { //TODO:
-        GameState gs;
-        _stream >> gs;
-
-        sceneEnd(gs);
-
-        _serializationTimer->stop();
-        _file.flush();
-        _file.close();
-        return;
-    }
-
-    _scene->Deserialize(_stream);
-
-    //pr("DES file pos 1: " << _file.pos());
-
-    if (!_rf.Forward) {
-        if (_rf.OneStep) {
-            qint64 seekPos = _file.pos() - _framesPerStep * _frameDataSize;
-            while (seekPos < _filePosFrameDataStart) {
-                seekPos += _frameDataSize;
-            }
-            ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-            _file.seek(seekPos);
-        } else {
-            qint64 seekPos = _file.pos() - _frameDataSize;
-            if (seekPos >= _filePosFrameDataStart) {
-                ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-                _file.seek(seekPos);
-            }
-        }
-    }
-}
-
-void MainWindow::onStepTimeout()
-{
-    _stepTimer->stop();
-    _rf.Paused = false;
-}
-
-void MainWindow::toggleReplayPaused()
-{
-    _rf.OneStep = false;
-
-    _rf.Paused = !_rf.Paused;
-    emit replayFlagsChanged(_rf);
-}
-
-void MainWindow::toggleReplayDir()
-{
-    _rf.Paused = false;
-    _rf.OneStep = false;
-
-    _rf.Forward = !_rf.Forward;
-    emit replayFlagsChanged(_rf);
-}
-
-void MainWindow::toggleReplayMode()
-{
-    _rf.Paused = false;
-    _rf.OneStep = false;
-
-    _rf.StepByStep = !_rf.StepByStep;
-    if (!_rf.StepByStep) {
-        _stepTimer->stop();
-    }
-    emit replayFlagsChanged(_rf);
-}
-
-void MainWindow::replayJumpToStart()
-{
-    replayJumpTo(true);
-}
-
-void MainWindow::replayJumpToEnd()
-{
-    replayJumpTo(false);
-}
-
-void MainWindow::replayStepNext()
-{
-    _rf.Paused = false;
-    _rf.OneStep = true;
-
-    _rf.Forward = true;
-    emit replayFlagsChanged(_rf);
-}
-
-void MainWindow::replayStepBack()
-{
-    _rf.Paused = false;
-    _rf.OneStep = true;
-
-    _rf.Forward = false;
-    emit replayFlagsChanged(_rf);
 }
 
 
@@ -247,57 +106,26 @@ void MainWindow::cleanup()
     _cleanupNeeded = false;
 }
 
-void MainWindow::replayJumpTo(bool toStart)
-{
-    _rf.Paused = false;
-    _rf.OneStep = false;
-
-    ASSERT(_file.isOpen());
-    ASSERT(_file.size() >= _frameDataSize);
-
-    if (toStart) {
-        _file.seek(_filePosFrameDataStart);
-        _rf.Forward = true;
-    } else {
-        _file.seek(_filePosFrameDataEnd - _frameDataSize);
-        _rf.Forward = false;
-    }
-
-    emit replayFlagsChanged(_rf);
-}
 
 void MainWindow::onGameStateChanged(GameState gs)
 {
-    if (gs.gameOver) {
-        serializationEnd(gs);
+    if (gs.gameOver && gs.gameOver != _state.gameOver) {
+        //serializationEnd(gs);
         sceneEnd(gs);
     }
+    _state = gs;
 }
 
 void MainWindow::sceneEnd(GameState gs)
 {
-    _ui->onGameEnd(gs);
+    //_ui->onGameEnd(gs);
 
     if (_cleanupNeeded) {
         cleanup();
     }
 }
 
-void MainWindow::serializationEnd(GameState gs)
-{
-    bool isLastFrame = true;
-    pr("File pos end 0: " << _file.pos());
-    _stream << isLastFrame;
-    _stream << gs;
-    //Scene is already deleted by this moment
-    /*_stream << _playerScore;
-    _stream << _playerSteps;*/
-    pr("File pos end 1: " << _file.pos());
 
-    _serializationTimer->stop();
-    _file.flush();
-    _file.close();
-}
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {

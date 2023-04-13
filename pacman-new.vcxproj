@@ -92,6 +92,7 @@
     <ClCompile Include="astar.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="replay.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -110,7 +111,7 @@
     <ClInclude Include="gameview.h" />
     <QtMoc Include="ui.h" />
     <ClInclude Include="interfaces.h" />
-    <ClInclude Include="replay.h" />
+    <QtMoc Include="replay.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="sprite.h" />
     <QtMoc Include="player.h" />
