@@ -1,7 +1,8 @@
 #pragma once
 
 #include "animatedsprite.h"
-#include <QRandomGenerator>
+
+#include <random>
 #include <iostream>
 
 class Enemy : public AnimatedSprite
@@ -13,15 +14,13 @@ public:
     void action(bool isGameReplayed) override;
     void onTileOverlap() override;
 
-    
-
     void setRandomNextDir();
     
 private:
     void loadAnimationFrames() override;
 
 private:
-    quint64 _seed;
-    QRandomGenerator _generator;
+    size_t _seed;
+    std::mt19937 _generator;
 };
 

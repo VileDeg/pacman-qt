@@ -4,14 +4,10 @@
 #include <QDebug>
 #include <QPixmap>
 
-//#define _fdpr(_msg, _fd) _fd << _msg << std::endl
-//#define errpr(_msg) _fdpr("Error: " << _msg, std::cerr)
-//#define pr(_msg) _fdpr(_msg, std::cout)
 #define errpr(_msg) qCritical() << _msg
 #define pr(_msg) qDebug() << _msg
 #define vpr(_v) pr(#_v << ": " << _v)
 #define v2pr(_v) pr(#_v << ": (" << _v.x() << "," << _v.y() << ")")
-
 
 #define HHPR(_msg, _type, _file) do{ _file << "[" << __FILE__ << " " << __func__ << " " << __LINE__ << "] " << _type << ": " << _msg << std::endl; }while(0)
 #define HPR(_msg, _type) HHPR(_msg, _type, std::cerr)
@@ -23,7 +19,6 @@
 
 #define PRINF(_msg) HPRINFO(_msg, "Info");
 
-//do{ PRABRT(""); abort(); }while(0)
 //Macro for breaking into the debugger or aborting the program
 #ifdef NDEBUG
     #define TRAP() 

@@ -47,8 +47,10 @@ void Enemy::setRandomNextDir()
     if (dirs.isEmpty()) {
         return;
     }
+    std::uniform_int_distribution<int> dist(0, dirs.size()-1);
+    int index = dist(_generator);
 
-    _nextDir = dirs.at(_generator.generate() % dirs.size());
+    _nextDir = dirs.at(index);
 }
 
 void Enemy::loadAnimationFrames()

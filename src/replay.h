@@ -69,15 +69,14 @@ public:
 
     void Init(GameScene* scene, QString filePath, bool recorded, bool replayFromStart);
 private:
-    void serializationEnd(GameState);
     void replayJumpTo(bool toStart);
 private:
     GameScene* _scene = nullptr;
 
     QFile _file;
     QDataStream _stream;
-    QTimer* _serializationTimer;
-    QTimer* _stepTimer;
+    QTimer* _serializationTimer = nullptr;
+    QTimer* _stepTimer = nullptr;
 
     ReplayFlags _rf;
     GameState _state;

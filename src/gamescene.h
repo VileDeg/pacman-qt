@@ -22,14 +22,22 @@
 class GameScene : public QGraphicsScene, public ISerializable
 {
     Q_OBJECT
-signals:
-    //void gameEnded(GameEndData ged);
 
+private:
+    struct GameTimers {
+        QTimer* player, *playerAnim, *enemies, *enemiesAnim;
+
+        void stopAll() {
+            player->stop();
+            playerAnim->stop();
+            enemies->stop();
+            enemiesAnim->stop();
+        }
+    };
+
+signals:
     void gameStateChanged(GameState ged);
-    /*void playerScoreChanged(int score);
-    void playerStepsChanged(int steps);*/
-    
-    void errorOccured(QString message, int code);
+
 private slots:
     void playerHandler();
     void enemiesHandler();
@@ -47,19 +55,15 @@ public:
 
     void playerInteract(int x, int y, bool* win);
     void collideWithEnemy(QPoint playerPos, bool* died);
-    void moveSprite(int fromx, int fromy, int tox, int toy);
     bool canMoveTo(int x, int y);
     
-    bool _replayUntilNextTile = false;
-    
-    bool _replay = false;
     void parseMap(QString* inputStr);
-    QString _mapString;
+    QString getMapString() { return _mapString; }
+    void setMapString(QString mapString) { _mapString = mapString; }
+    
 
     void onKeyPress(QKeyEvent* event);
     void onMousePress(QMouseEvent* event, QPointF localPos);
-
-    bool _toBeRecorded = true;
 
     void Serialize(QDataStream& stream);
     void Deserialize(QDataStream& stream);
@@ -70,36 +74,25 @@ private:
     
     void playerSendToTile(QPoint tilePos);
     
-    void loadImages();
-    
     void loadFromMap(QString mapPath);
-    //void loadFromRecording(QString savePath);
     void endGame(bool win);
     void setAppearence();
 private:
     Astar* _astar = nullptr;
-    QString _mapFilePath;
+
+    QString _mapString;
     QSize _mapSize; //In tiles
 
-    /*int _playerScore = 0;
-    int _playerSteps = 0;*/
+    bool _replay = false;
     GameState _state;
     int _ballPoints = 10;
 
     uint64_t _playerAnimFrame = 0;
     uint64_t _enemiesAnimFrame = 0;
+
     bool _keyFound = false;
 
-    struct {
-        QTimer *player, *playerAnim, *enemies, *enemiesAnim;
-
-        void stopAll() {
-            player->stop();
-            playerAnim->stop();
-            enemies->stop();
-            enemiesAnim->stop();
-        }
-    } _timer;
+    GameTimers _timer;
   
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;

@@ -12,11 +12,10 @@ public:
     explicit AnimatedSprite(SpriteType type, TileData t, GameScene* parent);
     ~AnimatedSprite() {}
 
-    virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
-    MoveDir getMoveDir() { return _currentDir; }
     void setScene(GameScene* scene) { _scene = scene; }
     void setSpriteByFrame(unsigned int frame);
 
+    virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
     virtual void action(bool isGameReplayed) = 0;
 
     void Serialize(QDataStream& stream) override;

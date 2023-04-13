@@ -8,6 +8,22 @@
 #include "gamescene.h"
 #include <map>
 
+Player::Player(TileData t, GameScene* parent)
+    :AnimatedSprite(SpriteType::Player, t, parent)
+{
+    initAnimation(":/sprites/player/");
+}
+
+void Player::setMoveDir(MoveDir dir) {
+    _goToMouse = false;
+    AnimatedSprite::setMoveDir(dir);
+}
+
+void Player::setMouseClickPath(std::vector<QPoint> path) {
+    _path = path;
+    _goToMouse = true;
+}
+
 void Player::setDirTo(QPoint to) {
     auto diff = to - getTilePos();
     if (diff == QPoint(0, -1)) {
@@ -41,27 +57,6 @@ void Player::action(bool isGameReplayed) //TODO: remove arguments
         onTileOverlap();
         if (_tileOverlapped != overlapPrev) {
             emit tileOverlapped();
-        }
-    }
-
-    if (_scene->_toBeRecorded) { // Record next dir for replay
-        if (!_moveSeq.empty() && _moveSeq.back().first == _nextDir) { // If the last move is the same as the current one
-            ++_moveSeq.back().second; // Increment the count
-        } else { // If the last move is different from the current one
-            _moveSeq.push_back({ _nextDir,0 }); // Dir doesn't repeat so count is 0
-        }
-    } else if (_scene->_replay) { // Replay next dir
-        if (_moveSeqIndex < _moveSeq.size() && _moveSeqIndex >= 0) { // If there are still moves to replay
-            _nextDir = _moveSeq[_moveSeqIndex].first;
-            if (_moveSeq[_moveSeqIndex].second > 0) { // If the move repeats
-                --_moveSeq[_moveSeqIndex].second; // Decrement the count
-            } else { // If the move doesn't repeat
-                ++_moveSeqIndex; // Move to the next move
-            }
-        } else { // No more moves to replay
-            _nextDir = MoveDir::None;
-            PRINF("MoveSeq empty");
-            //ASSERTMSG(false, "MoveSeq empty");
         }
     }
 

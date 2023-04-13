@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     int ret = 0;
     QApplication a(argc, argv);
-    MainWindow w(&a, errorCallback);
+    MainWindow w(errorCallback);
     
     w.show();
     

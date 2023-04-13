@@ -86,15 +86,11 @@ void WindowUI::initButtons()
     BTN_CREATE("map", "Load map", this);
     {
         b->setMenu(menus["map"]);
-        //b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        //b->setAlignment(Qt::AlignCenter);
     }
 
     BTN_CREATE("rec", "Load recording", this);
     {
         b->setMenu(menus["rec"]);
-        //b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        //b->setAlignment(Qt::AlignCenter);
     }
 
     BTN_CREATE("replay_start", "Replay from start", this);
@@ -181,7 +177,6 @@ void WindowUI::initLayouts() {
         {
             l->setAlignment(Qt::AlignCenter);
             l->addWidget(labels["win"]);
-            l->addWidget(buttons["map"]);
             l->addWidget(buttons["replay_start"]);
             l->addWidget(buttons["replay_end"]);
         }
@@ -215,7 +210,7 @@ void WindowUI::initMenus() {
         menus["map"] = new QMenu("Load map", this);
         {
             menus["file"]->addMenu(menus["map"]);
-            connect(menus["map"], SIGNAL(triggered(QAction*)), this, SLOT(loadMapMenuTriggered(QAction*)));
+            connect(menus["map"], SIGNAL(triggered(QAction*)), this, SLOT(onloadMapMenuTriggered(QAction*)));
         }
         for (auto& act : actions["map"]) {
             menus["map"]->addAction(act);
@@ -224,7 +219,7 @@ void WindowUI::initMenus() {
         menus["rec"] = new QMenu("Load recording", this);
         {
             menus["file"]->addMenu(menus["rec"]);
-            connect(menus["rec"], SIGNAL(triggered(QAction*)), this, SLOT(loadRecordingMenuTriggered(QAction*)));
+            connect(menus["rec"], SIGNAL(triggered(QAction*)), this, SLOT(onloadRecordingMenuTriggered(QAction*)));
         }
         for (auto& act : actions["rec"]) {
             menus["rec"]->addAction(act);
@@ -245,6 +240,7 @@ void WindowUI::refresh()
        menus["rec"]->addAction(act);
     }
     layouts["gameend"]->addWidget(buttons["map"]);
+    layouts["gameend"]->addWidget(buttons["rec"]);
 
     buttons["replay_mode"]->setText("Step By Step Mode");
     buttons["replay_dir"]->setText("Play Backward");
@@ -264,15 +260,13 @@ void WindowUI::init() {
     initLayouts();
 }
 
-void WindowUI::loadMapMenuTriggered(QAction* act)
+void WindowUI::onloadMapMenuTriggered(QAction* act)
 {
-    //pr("loadMapMenuTriggered");
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["map"]->actions();
     auto paths = _path["map"];
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            //_mainWindow->cleanup();
             onGameStart(paths[i], false, true);
             return;
         }
@@ -280,23 +274,20 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
     assert(false);
 }
 
-void WindowUI::loadRecordingMenuTriggered(QAction* act)
+void WindowUI::onloadRecordingMenuTriggered(QAction* act)
 {
-    //pr("loadRecordingMenuTriggered");
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["rec"]->actions();
     auto paths = _path["rec"];
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            std::cout << "Ui: recording selected: " << paths[i].toStdString() << std::endl;
+            //std::cout << "Ui: recording selected: " << paths[i].toStdString() << std::endl;
             onGameStart(paths[i], true, true);
             return;
         }
     }
     assert(false);
 }
-
-
 
 void WindowUI::onReplayFlagsChanged(ReplayFlags rf)
 {
@@ -317,7 +308,6 @@ void WindowUI::onReplayFlagsChanged(ReplayFlags rf)
 
 void WindowUI::onGameStateChanged(GameState gs)
 {
-    //pr("UI game state change");
     if (gs.gameOver && _state.gameOver != gs.gameOver) {
         onGameEnd(gs);
     } 
@@ -329,8 +319,6 @@ void WindowUI::onGameStateChanged(GameState gs)
     }
     _state = gs;
 }
-
-
 
 void WindowUI::onReplayFromStartButtonClick()
 {
@@ -356,7 +344,6 @@ void WindowUI::onReplayFromEndButtonClick()
     ASSERT(false);
 }
 
-
 void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromStart)
 {
     centrals["intro"]->hide();
@@ -373,7 +360,6 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromSta
     currentMapName = filePath.split("/").last().split(".").first();
     _mainWindow->startGame(filePath, isRecorded, replayFromStart);
 }
-
 
 void WindowUI::onGameEnd(GameState ged)
 {

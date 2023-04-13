@@ -26,8 +26,8 @@ void MainWindow::onDeserializationEnded(GameState gs)
 }
 
 //ErrorCallback errorCallback, 
-MainWindow::MainWindow(QApplication* app, ErrorCallback errorCallback, QWidget *parent) :
-    QMainWindow(parent), _app(app) , _errorCallback(errorCallback)
+MainWindow::MainWindow(ErrorCallback errorCallback, QWidget *parent) :
+    QMainWindow(parent), _errorCallback(errorCallback)
 {
     QPalette pal = palette();
     pal.setColor(QPalette::Window, Qt::black);

@@ -11,7 +11,6 @@
 
 #include "interfaces.h"
 
-
 struct TileData {
     int x;
     int y;
@@ -24,11 +23,11 @@ class Sprite : public QObject, public QGraphicsItem, public ISerializable
 {
 public:
     explicit Sprite(SpriteType type, TileData t, QObject* parent = 0);
-
     ~Sprite() {}
 
     QPoint getTilePos() { return QPoint(_t.x, _t.y); }
     SpriteType getType() { return _type; }
+
     void setPen(QPen pen) { _pen = pen; }
     void setBrush(QBrush brush) { _brush = brush; }
     void setImage(QImage* image) { _spriteImage = image; }
@@ -42,7 +41,6 @@ protected:
 protected:
     SpriteType _type;
     TileData _t;
-    //QPoint _pixPos; //Position in pixels
 
     QPen _pen;
     QBrush _brush = Qt::magenta;

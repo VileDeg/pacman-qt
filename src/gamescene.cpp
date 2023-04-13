@@ -10,7 +10,7 @@
 GameScene::GameScene(QString filePath, int viewWidth, bool replay, 
     std::unordered_map<SpriteType, QImage>& pixmapCache, QObject *parent)
     : QGraphicsScene(parent), 
-    _viewWidth(viewWidth), _replay(replay), _mapFilePath(filePath), _pixmapCache(pixmapCache)
+    _viewWidth(viewWidth), _replay(replay), _pixmapCache(pixmapCache)
 {
     setAppearence();
 
@@ -94,7 +94,6 @@ void GameScene::onPlayerTileOverlapped()
     emit gameStateChanged(_state);
 }
 
-
 bool GameScene::canMoveTo(int x, int y)
 {
     if (x < 0 || y < 0 || x >= _mapSize.width() || y >= _mapSize.height())
@@ -109,10 +108,6 @@ bool GameScene::canMoveTo(int x, int y)
 
     return true;
 }
-
-
-
-
 
 void GameScene::setPlayerScore(int score)
 {
@@ -159,17 +154,6 @@ void GameScene::collideWithEnemy(QPoint playerPos, bool * died)
             break; //Without break will crash!
         }
     }
-}
-
-void GameScene::moveSprite(int fromx, int fromy, int tox, int toy)
-{
-    assert(_map[fromx][fromy]);
-    assert(_map[tox][toy]);
-
-    auto tmp = _map[fromx][fromy];
-    _map[fromx][fromy] = _map[tox][toy];
-    _map[tox][toy] = tmp;
-
 }
 
 Sprite* GameScene::addSprite(SpriteType type, int ci, int li)
@@ -256,7 +240,7 @@ void GameScene::parseMap(QString* inputStr)
             Sprite* tmp = nullptr;
             TileData t{ci, li, _tileWidth};
 
-            quint64 seed;
+            size_t seed;
             switch (cu)
             {
                 case 'T': //Target(door)
@@ -271,11 +255,10 @@ void GameScene::parseMap(QString* inputStr)
                 case 'G': //Ghost
                     addSprite(SpriteType::Empty, ci, li);
                     if (_replay) {
-                        //saveStream >> seed;
+                        //Seed doesn't matter since the game won't be running anyway
                         enemy = new Enemy(t, 0, this);
-                        
                     } else {
-                        seed = QDateTime::currentMSecsSinceEpoch() / 1000;
+                        seed = QDateTime::currentMSecsSinceEpoch() / 1'000'000;
                         enemy = new Enemy(t, seed, this);
                     }
                     enemy->setZValue(2);
