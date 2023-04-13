@@ -15,95 +15,11 @@
 #include "utils.h"
 #include "ui.h"
 
-#define SER_FRAME_BYTE_SIZE 2945
+//#define SER_FRAME_BYTE_SIZE 2945
+//#define SER_GAME_END_DATA (2 * sizeof(bool) + 2 * sizeof(int))
+#define SER_GAME_END_DATA (10)
 
-void MainWindow::onSerialize()
-{
-    ASSERT(_scene != nullptr);
 
-    bool isLastFrame = false;
-    if (_gameEnded) {
-        isLastFrame = true;
-        _stream << isLastFrame;
-        _stream << _gameWon;
-        _stream << _scene->getScore();
-        _stream << _scene->getSteps();
-
-        _serializationTimer->stop();
-        _file.flush();
-        _file.close();
-        return;
-    }
-
-    _stream << isLastFrame;
-    
-    _scene->Serialize(_stream);
-}
-
-void MainWindow::onDeserialize()
-{
-    ASSERT(_scene != nullptr);
-
-    if (_replayPaused) {
-        return;
-    }
-
-    
-    bool isLastFrame = false;
-    _stream >> isLastFrame;
-
-    if (isLastFrame) { //TODO:
-        bool gameWon;
-        int score, steps;
-        _stream >> gameWon;
-        _stream >> score;
-        _stream >> steps;
-
-        gameEnd(gameWon, score, steps);
-        _serializationTimer->stop();
-        _file.close();
-        return;
-    }
-
-    
-    if (_replayOneStep) {
-        //qint64 pos = _file.pos();
-        //pr("DES file pos 0: " << pos);
-        qint64 seekPos = _file.pos();
-        if (_replayForward) {
-            seekPos += _framesPerStep * SER_FRAME_BYTE_SIZE;
-            while (seekPos >= _file.size()) {
-                seekPos -= SER_FRAME_BYTE_SIZE;
-            }
-            
-        } else {
-            seekPos -= _framesPerStep * SER_FRAME_BYTE_SIZE;
-            while (seekPos < 0) {
-                seekPos += SER_FRAME_BYTE_SIZE;
-            }
-        }
-        ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-        _file.seek(seekPos);
-        //pr("DES file pos 1: " << pos);
-        pr("DES paused");
-        _replayPaused = true;
-    }
-    
-    _scene->Deserialize(_stream);
-
-    //pr("DES file pos 1: " << _file.pos());
-
-    if (!_replayForward) {
-        if (_replayOneStep) {
-            qint64 seekPos = _file.pos() - _framesPerStep * SER_FRAME_BYTE_SIZE;
-            while (seekPos < 0) {
-                seekPos += SER_FRAME_BYTE_SIZE;
-            }
-            ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-            _file.seek(seekPos);
-        }
-    }
-}
 
 MainWindow::MainWindow(QApplication* app, QWidget *parent) :
     QMainWindow(parent), _app(app)
@@ -124,7 +40,7 @@ MainWindow::MainWindow(QApplication* app, QWidget *parent) :
 
 MainWindow::~MainWindow() {}
 
-void MainWindow::startGame(QString mapPath, bool recorded)
+void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
 {
     if (_cleanupNeeded) {
         cleanup();
@@ -150,13 +66,13 @@ void MainWindow::startGame(QString mapPath, bool recorded)
     _ui->view->setFixedSize(w, h);
 
     _serializationTimer = new QTimer(this);
+    _serializationInterval = 1000 / _serializationFPS;
     _framesPerStep = _stepInterval / _serializationInterval;
     
-    if (!recorded) {
+    auto name = mapPath.split('/').last().split('.').first();
+    _file.setFileName("saves/" + name + ".bin");
+    if (!recorded) { // Game wasn't recorded so we need to record it
         connect(_serializationTimer, SIGNAL(timeout()), this, SLOT(onSerialize()));
-        
-        auto name = mapPath.split('/').last().split('.').first();
-        _file.setFileName("saves/" + name + ".bin");
 
         if (!_file.open(QIODevice::WriteOnly)) {
             throw std::runtime_error("Could not open file");
@@ -165,26 +81,41 @@ void MainWindow::startGame(QString mapPath, bool recorded)
         _stream.setDevice(&_file);
 
         _stream << _scene->_mapString;
-    } else {
+    } else { // Replay game
         connect(_serializationTimer, SIGNAL(timeout()), this, SLOT(onDeserialize()));
-
-        auto name = mapPath.split('/').last().split('.').first();
-        _file.setFileName("saves/" + name + ".bin");
-
+        
         if (!_file.open(QIODevice::ReadOnly)) {
             throw std::runtime_error("Could not open file");
         }
         _file.resize(0);
         _stream.setDevice(&_file);
 
-        // Read all data from stream
-
-
-
-
-
+        qint64 pos = _file.pos();
         _stream >> _scene->_mapString;
+        auto diff = _file.pos() - pos;
+        _filePosFrameDataStart = pos + diff;
+
+        _filePosFrameDataEnd = _file.size() - SER_GAME_END_DATA;
         _scene->parseMap(&_scene->_mapString);
+
+        { // Read first frame to determine it's size
+            pos = _file.pos();
+            bool isLastFrame;
+            _stream >> isLastFrame;
+            _scene->Deserialize(_stream);
+            //_sceneDataSize = _file.pos() - pos;
+            _frameDataSize = _file.pos() - pos;
+            pr("Frame Data Size: " << _frameDataSize);
+            _file.seek(_file.pos() - _frameDataSize); // Go back to start of frame data
+        }
+
+        
+
+        replayJumpTo(replayFromStart);
+        pr("Starting at: " << _file.pos());
+
+        /*pr("Frame data start at: " << _file.pos());
+        pr("MapString size: " << _scene->_mapString);*/
     }
     _serializationTimer->start(0);
     _serializationTimer->stop();
@@ -193,6 +124,139 @@ void MainWindow::startGame(QString mapPath, bool recorded)
     _cleanupNeeded = true;
 }
 
+void MainWindow::onSerialize()
+{
+    ASSERT(_scene != nullptr);
+
+    bool isLastFrame = false;
+    if (_gameEnded) {
+        isLastFrame = true;
+        pr("File pos end 0: " << _file.pos());
+        _stream << isLastFrame;
+        _stream << _gameWon;
+        //Scene is already deleted by this moment
+        _stream << _playerScore;
+        _stream << _playerSteps;
+        pr("File pos end 1: " << _file.pos());
+
+        _serializationTimer->stop();
+        _file.flush();
+        _file.close();
+        return;
+    }
+
+    _stream << isLastFrame;
+
+    _scene->Serialize(_stream);
+}
+
+void MainWindow::onDeserialize()
+{
+    ASSERT(_scene != nullptr);
+
+    if (_replayPaused) {
+        return;
+    }
+
+    if (_replayOneStep) {
+        //qint64 pos = _file.pos();
+        //pr("DES file pos 0: " << pos);
+        qint64 seekPos = _file.pos();
+        if (_replayForward) {
+            seekPos += _framesPerStep * _frameDataSize;
+            while (seekPos >= _file.size()) {
+                seekPos -= _frameDataSize;
+            }
+
+        } else {
+            seekPos -= _framesPerStep * _frameDataSize;
+            while (seekPos < _filePosFrameDataStart) {
+                seekPos += _frameDataSize;
+            }
+        }
+        ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
+        _file.seek(seekPos);
+        //pr("DES file pos 1: " << pos);
+        pr("DES paused");
+        _replayPaused = true;
+    } else if (!_replayForward) {
+        qint64 seekPos = _file.pos() - _frameDataSize;
+        if (seekPos >= _filePosFrameDataStart) {
+            ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
+            _file.seek(seekPos);
+        }
+    }
+
+    bool isLastFrame = false;
+    _stream >> isLastFrame;
+
+    if (isLastFrame) { //TODO:
+        bool gameWon;
+        int score, steps;
+        _stream >> gameWon;
+        _stream >> score;
+        _stream >> steps;
+
+        gameEnd(gameWon, score, steps);
+        _serializationTimer->stop();
+        _file.flush();
+        _file.close();
+        return;
+    }
+
+    _scene->Deserialize(_stream);
+
+    //pr("DES file pos 1: " << _file.pos());
+
+    if (!_replayForward) {
+        if (_replayOneStep) {
+            qint64 seekPos = _file.pos() - _framesPerStep * _frameDataSize;
+            while (seekPos < _filePosFrameDataStart) {
+                seekPos += _frameDataSize;
+            }
+            ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
+            _file.seek(seekPos);
+        } else {
+            qint64 seekPos = _file.pos() - _frameDataSize;
+            if (seekPos >= _filePosFrameDataStart) {
+                ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
+                _file.seek(seekPos);
+            }
+        }
+    }
+}
+
+void MainWindow::toggleReplayPaused()
+{
+    _replayOneStep = false;
+
+    _replayPaused = !_replayPaused;
+}
+
+bool MainWindow::toggleReplayDir()
+{
+    _replayPaused = false;
+    _replayOneStep = false;
+
+    _replayForward = !_replayForward;
+    return _replayForward;
+}
+
+void MainWindow::replayJumpTo(bool toStart)
+{
+    _replayPaused = false;
+    _replayOneStep = false;
+
+    ASSERT(_file.isOpen());
+    ASSERT(_file.size() >= _frameDataSize);
+    if (toStart) {
+        _file.seek(_filePosFrameDataStart);
+        _replayForward = true;
+    } else {
+        _file.seek(_filePosFrameDataEnd - _frameDataSize);
+        _replayForward = false;
+    }
+}
 
 void MainWindow::replayStepNext()
 {
@@ -221,13 +285,16 @@ void MainWindow::cleanup()
 
 void MainWindow::gameEnd(bool win, int score, int steps)
 {
+    _gameEnded = true;
+    _gameWon = win;
+    _playerScore = score;
+    _playerSteps = steps;
+
+    _ui->onGameEnd(win, score, steps);
+
     if (_cleanupNeeded) {
         cleanup();
     }
-    _gameEnded = true;
-    _gameWon = win;
-
-    _ui->onGameEnd(win, score, steps);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event)

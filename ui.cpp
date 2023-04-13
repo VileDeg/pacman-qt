@@ -11,6 +11,12 @@
 
 #define BTN_CONNECT(_b, _slot) connect(_b, SIGNAL(clicked()), this, SLOT(_slot))
 
+#define INTRO_STR\
+    "How to play:\n"\
+    "You can load a map by clicking the button below.\n"\
+    "You can choose one of the maps from \"saves/\" folder.\n"\
+    "After the game ends, you can replay it."
+
 WindowUI::WindowUI(MainWindow* mainWindow)
     : QWidget(qobject_cast<QWidget*>(mainWindow)), _mainWindow(mainWindow)
 {
@@ -18,24 +24,31 @@ WindowUI::WindowUI(MainWindow* mainWindow)
 }
 
 void WindowUI::initLabels() {
-    labels["score"] = new QLabel(this);
+    auto l = labels["score"] = new QLabel(this);
     {
-        labels["score"]->setStyleSheet("font-family: Fixedsys; color: white; font-size: 20px;");
-        labels["score"]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        labels["score"]->setText("Score: ");
+        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 80px;");
+        l->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        l->setText("Score: ");
     }
 
-    labels["steps"] = new QLabel(this);
+    l = labels["steps"] = new QLabel(this);
     {
-        labels["steps"]->setStyleSheet("font-family: Fixedsys; color: white; font-size: 20px;");
-        labels["steps"]->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        labels["steps"]->setText("Steps: ");
+        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 80px;");
+        l->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        l->setText("Steps: ");
     }
 
-    labels["win"] = new QLabel(this);
+    l = labels["win"] = new QLabel(this);
     {
-        labels["win"]->setStyleSheet("font-family: Fixedsys; color: white; font-size: 100px;");
-        labels["win"]->setAlignment(Qt::AlignCenter);
+        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 100px;");
+        l->setAlignment(Qt::AlignCenter);
+    }
+
+    l = labels["intro"] = new QLabel(this);
+    {
+        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 100px;");
+        l->setAlignment(Qt::AlignCenter);
+        l->setText(INTRO_STR);
     }
 }
 
@@ -71,18 +84,16 @@ void WindowUI::initButtons()
     QPushButton* b;
     BTN_CREATE("map", "Load map", this);
     {
-        b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        //b->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         b->setMenu(menus["map"]);
     }
 
     BTN_CREATE("replay_start", "Replay from start", this);
-    BTN_CONNECT(b, onReplayStartButtonClick());
+    BTN_CONNECT(b, onReplayFromStartButtonClick());
 
-    /*BTN_CREATE("replay_end", "Replay from end", this);
-    BTN_CONNECT(b, onReplayEndButtonClick());*/
+    BTN_CREATE("replay_end", "Replay from end", this);
+    BTN_CONNECT(b, onReplayFromEndButtonClick());
 
-    /*BTN_CREATE("back", "Step Back", this);
-    BTN_CONNECT(b, onStepBackButtonClick());*/
     
     BTN_CREATE("pause", "Pause", this);
     BTN_CONNECT(b, onPauseButtonClick());
@@ -95,6 +106,17 @@ void WindowUI::initButtons()
 
     BTN_CREATE("replay_mode", "Step by Step Mode", this);
     BTN_CONNECT(b, onReplayModeButtonClick());
+
+
+    BTN_CREATE("jump_start", "Jump to Start", this);
+    BTN_CONNECT(b, onJumpToStartButtonClick());
+
+    BTN_CREATE("jump_end", "Jump to End", this);
+    BTN_CONNECT(b, onJumpToEndButtonClick());
+
+
+    BTN_CREATE("replay_dir", "Play Backward", this);
+    BTN_CONNECT(b, onReplayDirButtonClick());
 
     /*BTN_CREATE("normal", "Normal Mode", this);
     BTN_CONNECT(b, onNormalButtonClick());*/
@@ -123,9 +145,16 @@ void WindowUI::initLayouts() {
             l->addLayout(l1);
             auto l2 = layouts["replay2"] = new QHBoxLayout();
             {
+                l2->addWidget(buttons["replay_dir"]);
                 l2->addWidget(buttons["replay_mode"]);
             }
             l->addLayout(l2);
+            auto l3 = layouts["replay2"] = new QHBoxLayout();
+            {
+                l3->addWidget(buttons["jump_start"]);
+                l3->addWidget(buttons["jump_end"]);
+            }
+            l->addLayout(l3);
         }
     }
     centrals["replay"]->hide();
@@ -157,10 +186,20 @@ void WindowUI::initLayouts() {
             l->addWidget(labels["win"]);
             l->addWidget(buttons["map"]);
             l->addWidget(buttons["replay_start"]);
-            //l->addWidget(buttons["replay_end"]);
+            l->addWidget(buttons["replay_end"]);
         }
     }
     centrals["gameend"]->hide();
+
+    centrals["intro"] = new QWidget(this);
+    {
+        auto l = layouts["intro"] = new QVBoxLayout(centrals["intro"]);
+        {
+            l->addWidget(labels["intro"]);
+            l->addWidget(buttons["map"]);
+            l->setAlignment(Qt::AlignCenter);
+        }
+    }
 
     layouts["main"] = new QVBoxLayout(this);
     {
@@ -168,6 +207,7 @@ void WindowUI::initLayouts() {
 
         layouts["main"]->addWidget(centrals["play"]);
         layouts["main"]->addWidget(centrals["gameend"]);
+        layouts["main"]->addWidget(centrals["intro"]);
     }
 }
 
@@ -179,11 +219,17 @@ void WindowUI::initMenus() {
             menus["file"]->addMenu(menus["map"]);
             connect(menus["map"], SIGNAL(triggered(QAction*)), this, SLOT(loadMapMenuTriggered(QAction*)));
         }
+        for (auto& act : actions["map"]) {
+            menus["map"]->addAction(act);
+        }
 
         menus["rec"] = new QMenu("Load recording", this);
         {
             menus["file"]->addMenu(menus["rec"]);
             connect(menus["rec"], SIGNAL(triggered(QAction*)), this, SLOT(loadRecordingMenuTriggered(QAction*)));
+        }
+        for (auto& act : actions["rec"]) {
+            menus["rec"]->addAction(act);
         }
     }
 }
@@ -199,12 +245,16 @@ void WindowUI::refresh()
     for (auto& act : actions["rec"]) {
        menus["rec"]->addAction(act);
     }
+    layouts["gameend"]->addWidget(buttons["map"]);
+
+    //buttons["forward"]->setText("Play Backward");
 }
 
 void WindowUI::init() {
     initLabels();
+    initActions();
     initMenus();
-    refresh();
+    //refresh();
     initButtons();
     
 
@@ -224,7 +274,7 @@ void WindowUI::loadMapMenuTriggered(QAction* act)
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
             //_mainWindow->cleanup();
-            onGameStart(paths[i], false);
+            onGameStart(paths[i], false, true);
             return;
         }
     }
@@ -240,11 +290,29 @@ void WindowUI::loadRecordingMenuTriggered(QAction* act)
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
             std::cout << "Ui: recording selected: " << paths[i].toStdString() << std::endl;
-            onGameStart(paths[i], true);
+            onGameStart(paths[i], true, true);
             return;
         }
     }
     assert(false);
+}
+
+
+
+void WindowUI::onJumpToStartButtonClick()
+{
+    _mainWindow->replayJumpTo(true);
+}
+
+void WindowUI::onJumpToEndButtonClick()
+{
+    _mainWindow->replayJumpTo(false);
+}
+
+void WindowUI::onReplayDirButtonClick()
+{
+    bool forw = _mainWindow->toggleReplayDir();
+    buttons["replay_dir"]->setText(!forw ? "Play Forward" : "Play Backward");
 }
 
 void WindowUI::onGamePause(bool pause)
@@ -281,14 +349,26 @@ void WindowUI::onReplayModeButtonClick()
 }
 
 
-void WindowUI::onReplayStartButtonClick()
+void WindowUI::onReplayFromStartButtonClick()
 {
     //pr("onReplayButtonClick");
     
     for (auto& rec : _path["rec"]) {
         if (rec.split("/").last().split(".").first() == currentMapName) {
             std::cout << "UI replay: " << rec.toStdString() << std::endl;
-            onGameStart(rec, true);
+            onGameStart(rec, true, true);
+            return;
+        }
+    }
+    ASSERT(false);
+}
+
+void WindowUI::onReplayFromEndButtonClick()
+{
+    for (auto& rec : _path["rec"]) {
+        if (rec.split("/").last().split(".").first() == currentMapName) {
+            std::cout << "UI replay: " << rec.toStdString() << std::endl;
+            onGameStart(rec, true, false);
             return;
         }
     }
@@ -296,9 +376,9 @@ void WindowUI::onReplayStartButtonClick()
 }
 
 
-
-void WindowUI::onGameStart(QString filePath, bool isRecorded)
+void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromStart)
 {
+    centrals["intro"]->hide();
     centrals["gameend"]->hide();
     centrals["play"]->show();
     if (isRecorded) {
@@ -310,7 +390,7 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded)
     }
 
     currentMapName = filePath.split("/").last().split(".").first();
-    _mainWindow->startGame(filePath, isRecorded);
+    _mainWindow->startGame(filePath, isRecorded, replayFromStart);
 }
 
 

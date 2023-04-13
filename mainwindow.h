@@ -29,10 +29,13 @@ public:
     ~MainWindow();
 
 private:
-    void startGame(QString mapPath, bool recorded);
+    void startGame(QString mapPath, bool recorded, bool replayFromStart);
     void cleanup();
 
-    void toggleReplayPaused() { _replayPaused = !_replayPaused; }
+    void toggleReplayPaused();
+    bool toggleReplayDir();
+
+    void replayJumpTo(bool toStart);
     void replayStepNext();
     void replayStepBack();
 
@@ -61,10 +64,18 @@ private:
     bool _gameWon = false;
     bool _cleanupNeeded = false;
 
+    int _playerScore, _playerSteps;
+
+    int _serializationFPS = 24;
     int _serializationInterval = 100;
     int _stepInterval = 500;
     int _framesPerStep = 10;
     int _msSinceLastStep = 0;
+    //int _sceneDataSize = 0;
+    int _frameDataSize = 0;
+
+    int _filePosFrameDataStart = 0;
+    int _filePosFrameDataEnd = 0;
 
     std::unordered_map<SpriteType, QImage> _pixmapCache;
 

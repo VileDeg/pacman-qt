@@ -28,19 +28,8 @@ void Sprite::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
 
 void Sprite::Serialize(QDataStream& stream)
 {
-    /*if (_type == SpriteType::Wall) {
-        return;
-    }*/
-
     stream << _type;
     stream << pos();
-    
-    int t = 0;
-    if (_type == SpriteType::Player) {
-        pr("SER player: " << pos().x() << " " << pos().y());
-    } else if (_type == SpriteType::Enemy) {
-        pr("SER enemy: " << pos().x() << " " << pos().y());
-    }
 }
 
 void Sprite::Deserialize(QDataStream& stream)
@@ -50,10 +39,4 @@ void Sprite::Deserialize(QDataStream& stream)
     QPointF pos;
     stream >> pos;
     setPos(pos);
-
-    if (_type == SpriteType::Player) {
-        pr("DES player: " << pos.x() << " " << pos.y());
-    } else if (_type == SpriteType::Enemy) {
-        pr("DES enemy: " << pos.x() << " " << pos.y());
-    }
 }

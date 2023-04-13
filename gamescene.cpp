@@ -9,8 +9,6 @@
 
 #include <deque>
 
-
-
 GameScene::GameScene(QString filePath, int viewWidth, bool replay, 
     std::unordered_map<SpriteType, QImage>& pixmapCache, QObject *parent)
     : QGraphicsScene(parent), 
@@ -63,9 +61,6 @@ GameScene::~GameScene()
         delete[] _map[i]; // Delete row
     }
     delete[] _map; // Delete map
-
-    /*saveFile.flush();
-    saveFile.close();*/
 }
 
 void GameScene::playerHandler()
@@ -75,17 +70,6 @@ void GameScene::playerHandler()
     }
 
     _player->action(_replay); //Move player
-
-    /*if (_replayUntilNextTile) {
-        MoveDir playerCurrDir = _player->getMoveDir();
-        if (_player->getTileOverlapped() && playerCurrDir != MoveDir::None ||
-            _player->getTileOverlapped() && _playerLastDir != playerCurrDir)
-        {
-            setGamePaused(true);
-            _replayUntilNextTile = false;
-        }
-        _playerLastDir = playerCurrDir;
-    }*/
 }
 
 void GameScene::enemiesHandler()
@@ -525,30 +509,6 @@ void GameScene::loadFromMap(QString mapPath)
     parseMap(&_mapString);
 }
 
-//void GameScene::loadFromRecording(QString savePath)
-//{
-//    pr("Replay loading from: " << savePath);
-//    auto name = savePath.split('/').last().split('.').first();
-//    QFile saveFile("saves/" + name + ".bin");
-//    if (!saveFile.open(QIODevice::ReadOnly)) {
-//        throw std::runtime_error("Could not open file");
-//    }
-//
-//    QDataStream saveStream(&saveFile);
-//
-//    saveStream >> _mapString;
-//    
-//    
-//    parseMap(&_mapString);
-//
-//    for (auto& enemy : _enemies) {
-//        enemy->LoadFromStream(saveStream);
-//    }
-//
-//    _player->Deserialize(saveStream);
-//   
-//    std::cout << std::endl;
-//}
 
 void GameScene::endGame(bool win)
 {
@@ -604,13 +564,11 @@ void GameScene::Serialize(QDataStream& stream)
 {
     for (int i = 0; i < _mapSize.width(); ++i) {
         for (int j = 0; j < _mapSize.height(); ++j) {
-            if (_map[i][j]) {
-                /*if (_map[i][j]->getType() == SpriteType::Player) {
-                    int t = 0;
-                    t++;
-                }*/
-                _map[i][j]->Serialize(stream);
+            ASSERT(_map[i][j] != nullptr);
+            if (_map[i][j]->getType() == SpriteType::Wall) {
+                continue;
             }
+            _map[i][j]->Serialize(stream);
         }
     }
 
@@ -627,11 +585,13 @@ void GameScene::Deserialize(QDataStream& stream)
 {
     for (int i = 0; i < _mapSize.width(); ++i) {
         for (int j = 0; j < _mapSize.height(); ++j) {
-            if (_map[i][j]) {
-                _map[i][j]->Deserialize(stream);
-                _map[i][j]->setImage(&_pixmapCache[_map[i][j]->getType()]);
-                _map[i][j]->update(); // Repaint
+            ASSERT(_map[i][j] != nullptr);
+            if (_map[i][j]->getType() == SpriteType::Wall) {
+                continue;
             }
+            _map[i][j]->Deserialize(stream);
+            _map[i][j]->setImage(&_pixmapCache[_map[i][j]->getType()]);
+            _map[i][j]->update(); // Repaint
         }
     }
 

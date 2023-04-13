@@ -18,12 +18,18 @@ class WindowUI : public QWidget {
 private slots:
     void loadMapMenuTriggered(QAction* action);
     void loadRecordingMenuTriggered(QAction* action);
-    void onReplayStartButtonClick();
+    void onReplayFromStartButtonClick();
+    void onReplayFromEndButtonClick();
 
     void onReplayModeButtonClick();
     void onPauseButtonClick();
     void onStepNextButtonClick();
     void onStepBackButtonClick();
+
+    void onJumpToStartButtonClick();
+    void onJumpToEndButtonClick();
+
+    void onReplayDirButtonClick();
 
     void onGamePause(bool pause);
 
@@ -54,7 +60,7 @@ private:
     void initMenus();
     void refresh();
     
-    void onGameStart(QString filePath, bool isRecorded);
+    void onGameStart(QString filePath, bool isRecorded, bool replayFromStart);
     void onGameEnd(bool win, int score, int steps);
 
     
