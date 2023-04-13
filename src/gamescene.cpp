@@ -104,6 +104,8 @@ bool GameScene::canMoveTo(int x, int y)
         case SpriteType::Wall:
         case SpriteType::Lock:
             return false;
+        default:
+            break;
     }
 
     return true;
@@ -189,10 +191,9 @@ void GameScene::parseMap(QString* inputStr)
         height = std::stoi(tks[0].toStdString());
         width = std::stoi(tks[1].toStdString());
     }
-    catch (std::exception) {
+    catch (std::exception&) {
         throw std::runtime_error("Invalid map dimensions(failed to convert)");
     }
-    vpr(width); vpr(height);
     int wFull = width + 2;
     int hFull = height + 2;
 
@@ -237,7 +238,6 @@ void GameScene::parseMap(QString* inputStr)
             char cu = line[ci-1].unicode();
 
             Enemy* enemy = nullptr;
-            Sprite* tmp = nullptr;
             TileData t{ci, li, _tileWidth};
 
             size_t seed;
@@ -246,7 +246,6 @@ void GameScene::parseMap(QString* inputStr)
                 case 'T': //Target(door)
                     _doorPos = { ci, li };
                     targetInMap = true;
-                    pr("Door pos: " << ci << " " << li);
                     break;
                 case 'K': //Key
                     addSprite(SpriteType::Key, ci, li);
@@ -272,7 +271,6 @@ void GameScene::parseMap(QString* inputStr)
                     addSprite(SpriteType::Wall, ci, li);
                     break;
                 case 'S': //Start(player)
-                    pr("Player pos: " << ci << " " << li);
                     addSprite(SpriteType::Empty, ci, li);
                     _player = new Player(t, this);
                     _player->setScene(this);

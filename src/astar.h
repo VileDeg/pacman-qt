@@ -18,6 +18,8 @@ struct Node {
     Node* parent;
     std::vector<Node*> nbs;
 
+    Node() : x(0), y(0), g(0), h(0), f(0), isWall(false), parent(nullptr) {}
+
     friend std::ostream& operator<<(std::ostream& os, const Node& n) {
         os << "(" << n.x << ", " << n.y << ") ";
         return os;

@@ -19,6 +19,9 @@ struct TileData {
 
 enum class SpriteType { None, Background, Empty, Player, Wall, Enemy, Ball, Key, Lock, Door };
 
+QDataStream& operator>>(QDataStream& stream, SpriteType& dir);
+QDataStream& operator<<(QDataStream& stream, SpriteType& dir);
+
 class Sprite : public QObject, public QGraphicsItem, public ISerializable
 {
 public:

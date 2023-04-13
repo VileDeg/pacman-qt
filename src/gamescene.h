@@ -83,12 +83,15 @@ private:
     QString _mapString;
     QSize _mapSize; //In tiles
 
+    int _viewWidth;
+    int _tileWidth; //Will be set according on map dimensions
+
     bool _replay = false;
     GameState _state;
     int _ballPoints = 10;
 
-    uint64_t _playerAnimFrame = 0;
-    uint64_t _enemiesAnimFrame = 0;
+    qint64 _playerAnimFrame = 0;
+    qint64 _enemiesAnimFrame = 0;
 
     bool _keyFound = false;
 
@@ -99,9 +102,9 @@ private:
   
     QVector<Enemy*> _enemies{};
     std::unordered_map<SpriteType, QImage>& _pixmapCache;
-    int _viewWidth;
-    //int _maxTilesInRow{ 10 };
-    int _tileWidth; //Will be set according on map dimensions
+
+    
+
     Sprite*** _map = nullptr;
     Player* _player = nullptr;
 };

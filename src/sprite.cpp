@@ -40,3 +40,17 @@ void Sprite::Deserialize(QDataStream& stream)
     stream >> pos;
     setPos(pos);
 }
+
+QDataStream& operator>>(QDataStream& stream, SpriteType& dir)
+{
+    quint8 value;
+    stream >> value;
+    dir = static_cast<SpriteType>(value);
+    return stream;
+}
+
+QDataStream& operator<<(QDataStream& stream, SpriteType& dir)
+{
+    stream << static_cast<quint8>(dir);
+    return stream;
+}

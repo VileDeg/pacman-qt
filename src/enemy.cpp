@@ -29,8 +29,6 @@ void Enemy::onTileOverlap()
 void Enemy::setRandomNextDir()
 {
     QVector<MoveDir> dirs{};
-    int tpx = _t.x;
-    int tpy = _t.y;
 
     if (_aroundFree[0]) {
         dirs.push_back(MoveDir::Up);

@@ -22,7 +22,7 @@ void Astar::init()
     memset(_asMap, 0, sizeof(Node*) * _mapSize.width());
     for (int i = 0; i < _mapSize.width(); ++i) {
         _asMap[i] = new Node[_mapSize.height()];
-        memset(_asMap[i], 0, sizeof(Node) * _mapSize.height());
+        //memset(_asMap[i], 0, sizeof(Node) * _mapSize.height());
 
         for (int j = 0; j < _mapSize.height(); ++j) {
             _asMap[i][j] = {};
@@ -35,8 +35,8 @@ void Astar::init()
 
     int dimx = _mapSize.width();
     int dimy = _mapSize.height();
-    for (std::size_t r = 0; r < _mapSize.width(); ++r) {
-        for (std::size_t c = 0; c < _mapSize.height(); ++c) {
+    for (int r = 0; r < _mapSize.width(); ++r) {
+        for (int c = 0; c < _mapSize.height(); ++c) {
             Node& curr = _asMap[r][c];
 
             if (r > 0) {

@@ -25,31 +25,37 @@ WindowUI::WindowUI(MainWindow* mainWindow)
 }
 
 void WindowUI::initLabels() {
+    QFont font("Fixedsys", 12);
+    QString sheet = "color: white;";
     auto l = labels["score"] = new QLabel(this);
     {
-        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 80px;");
+        l->setStyleSheet(sheet);
         l->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         l->setText("Score: ");
+        l->setFont(font);
     }
 
     l = labels["steps"] = new QLabel(this);
     {
-        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 80px;");
+        l->setStyleSheet(sheet);
         l->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         l->setText("Steps: ");
+        l->setFont(font);
     }
 
     l = labels["win"] = new QLabel(this);
     {
-        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 100px;");
+        l->setStyleSheet(sheet);
         l->setAlignment(Qt::AlignCenter);
+        l->setFont(font);
     }
 
     l = labels["intro"] = new QLabel(this);
     {
-        l->setStyleSheet("font-family: Fixedsys; color: white; font-size: 100px;");
+        l->setStyleSheet(sheet);
         l->setAlignment(Qt::AlignCenter);
         l->setText(INTRO_STR);
+        l->setFont(font);
     }
 }
 
@@ -59,9 +65,8 @@ void WindowUI::initActions()
         actions["map"].clear();
         _path["map"].clear();
        
-        QDirIterator it("maps/", { "*.txt" }, QDir::Files, QDirIterator::Subdirectories);
+        QDirIterator it("examples/", { "*.txt" }, QDir::Files, QDirIterator::Subdirectories);
         while (it.hasNext()) {
-            pr(it.next());
             QAction* act = new QAction(it.fileInfo().fileName(), this);
             actions["map"].append(act);
             _path["map"].append(it.filePath());
@@ -72,7 +77,6 @@ void WindowUI::initActions()
         _path["rec"].clear();
         QDirIterator it("saves/", { "*.bin" }, QDir::Files, QDirIterator::Subdirectories);
         while (it.hasNext()) {
-            pr(it.next());
             QAction* act = new QAction(it.fileInfo().fileName(), this);
             actions["rec"].append(act);
             _path["rec"].append(it.filePath());
@@ -205,7 +209,14 @@ void WindowUI::initLayouts() {
 }
 
 void WindowUI::initMenus() {
-    menus["file"] = _mainWindow->menuBar()->addMenu("File");
+    
+    auto mb = _mainWindow->menuBar();
+    QPalette menuPalette = mb->palette();
+    menuPalette.setColor(QPalette::WindowText, Qt::white);
+    mb->setPalette(menuPalette);
+    mb->setStyleSheet("QMenuBar { background-color: black; color: white; }");
+
+    menus["file"] = mb->addMenu("File");
     {
         menus["map"] = new QMenu("Load map", this);
         {

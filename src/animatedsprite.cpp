@@ -133,3 +133,19 @@ std::string AnimatedSprite::dir_to_str(MoveDir d) {
     }
     return "None";
 }
+
+
+
+QDataStream& operator>>(QDataStream& stream, MoveDir& dir)
+{
+    quint8 value;
+    stream >> value;
+    dir = static_cast<MoveDir>(value);
+    return stream;
+}
+
+QDataStream& operator<<(QDataStream& stream, MoveDir& dir)
+{
+    stream << static_cast<quint8>(dir);
+    return stream;
+}

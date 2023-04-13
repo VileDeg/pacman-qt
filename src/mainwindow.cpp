@@ -11,7 +11,6 @@
 #include <cstdlib>
 
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include "utils.h"
 #include "ui.h"
 
@@ -31,6 +30,7 @@ MainWindow::MainWindow(ErrorCallback errorCallback, QWidget *parent) :
 {
     QPalette pal = palette();
     pal.setColor(QPalette::Window, Qt::black);
+    pal.setColor(QPalette::WindowText, Qt::white);
     setPalette(pal);
     setWindowTitle("Pac-Man");
     int w = _viewWidth + _offsetAroundView;

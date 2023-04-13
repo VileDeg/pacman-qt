@@ -46,19 +46,19 @@ private:
     void onGameEnd(GameState);
     
 private:
-    std::unordered_map<QString, QLabel*> labels;
-    std::unordered_map<QString, QPushButton*> buttons;
-    std::unordered_map<QString, QBoxLayout*> layouts;
-    std::unordered_map<QString, QMenu*> menus;
-    std::unordered_map<QString, QVector<QAction*>> actions;
-    std::unordered_map<QString, QWidget*> centrals;
+    std::unordered_map<std::string, QLabel*> labels;
+    std::unordered_map<std::string, QPushButton*> buttons;
+    std::unordered_map<std::string, QBoxLayout*> layouts;
+    std::unordered_map<std::string, QMenu*> menus;
+    std::unordered_map<std::string, QVector<QAction*>> actions;
+    std::unordered_map<std::string, QWidget*> centrals;
 
     QGraphicsView* view;
     QString currentMapName;
 
     MainWindow* _mainWindow;
     GameState _state;
-    std::unordered_map<QString, QVector<QString>> _path;
+    std::unordered_map<std::string, QVector<QString>> _path;
 
     friend class MainWindow;
 };

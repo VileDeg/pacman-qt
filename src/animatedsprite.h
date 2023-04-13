@@ -4,6 +4,9 @@
 
 enum class MoveDir { None, Up, Left, Down, Right };
 
+QDataStream& operator>>(QDataStream& stream, MoveDir& dir);
+QDataStream& operator<<(QDataStream& stream, MoveDir& dir);
+
 class GameScene;
 
 class AnimatedSprite : public Sprite

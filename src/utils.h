@@ -20,6 +20,7 @@
 #define PRINF(_msg) HPRINFO(_msg, "Info");
 
 //Macro for breaking into the debugger or aborting the program
+#define NDEBUG
 #ifdef NDEBUG
     #define TRAP() 
 #else
@@ -31,7 +32,7 @@
             #define TRAP() __debugbreak()
         #endif // _MSC_VER
     #else
-        #include <signal.h>
+        #include <csignal>
         #define TRAP() raise(SIGTRAP)
     #endif // _WIN32
 #endif // NDEBUG
