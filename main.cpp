@@ -1,21 +1,23 @@
 #include <QApplication>
+#include <QString>
 
 #include "mainwindow.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])
 {
-    int ret = 0;
+    auto errorCallback = [](QString message, int errorCode) {
+        qCritical() << "Error[" << errorCode << "]: " << message;
+        QApplication::exit(errorCode);
+    };
 
-    try {
-        QApplication a(argc, argv);
-        MainWindow w(&a);
-        w.show();
-        ret = a.exec();
-    } catch (std::exception& e) {
-        errpr(e.what());
-        return 1;
-    }
+    int ret = 0;
+    QApplication a(argc, argv);
+    MainWindow w(&a, errorCallback);
+    
+    w.show();
+    
+    ret = a.exec();
 
     return ret;
 }

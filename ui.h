@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <functional>
 
+#include "replay.h"
+
 class MainWindow;
 
 class WindowUI : public QWidget {
@@ -21,20 +23,9 @@ private slots:
     void onReplayFromStartButtonClick();
     void onReplayFromEndButtonClick();
 
-    void onReplayModeButtonClick();
-    void onPauseButtonClick();
-    void onStepNextButtonClick();
-    void onStepBackButtonClick();
+    void onReplayFlagsChanged(const ReplayFlags& rf);
 
-    void onJumpToStartButtonClick();
-    void onJumpToEndButtonClick();
-
-    void onReplayDirButtonClick();
-
-    void onGamePause(bool pause);
-
-    void onPlayerScoreChanged(int score);
-    void onPlayerStepsChanged(int steps);
+    void onGameStateChanged(GameState);
 public:
     WindowUI(MainWindow* mainWindow);
     ~WindowUI() {}
@@ -61,11 +52,12 @@ private:
     void refresh();
     
     void onGameStart(QString filePath, bool isRecorded, bool replayFromStart);
-    void onGameEnd(bool win, int score, int steps);
+    void onGameEnd(GameState);
 
     
 private:
     MainWindow* _mainWindow;
+    GameState _gameState;
 
     std::unordered_map<QString, QVector<QString>> _path;
 

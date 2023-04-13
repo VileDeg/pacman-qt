@@ -89,9 +89,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="animatedsprite.cpp" />
+    <ClCompile Include="astar.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="player.cpp" />
-    <ClCompile Include="replay.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -116,6 +116,7 @@
     <QtMoc Include="player.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="astar.h" />
     <None Include="res.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

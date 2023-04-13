@@ -64,7 +64,7 @@
     <ClCompile Include="animatedsprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="replay.cpp">
+    <ClCompile Include="astar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res.txt" />
+    <None Include="astar.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gamescene.h">

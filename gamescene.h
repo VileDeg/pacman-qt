@@ -16,31 +16,20 @@
 #include "enemy.h"
 #include "interfaces.h"
 
-struct Node {
-    int x;
-    int y;
-    int g;
-    int h;
-    int f;
-    bool isWall;
-    Node* parent;
-    std::vector<Node*> nbs;
-
-    friend std::ostream& operator<<(std::ostream& os, const Node& n) {
-        os << "(" << n.x << ", " << n.y << ") ";
-        return os;
-    }
-};
+#include "astar.h"
+#include "replay.h"
 
 class GameScene : public QGraphicsScene, public ISerializable
 {
     Q_OBJECT
 signals:
-    void gameEnd(bool win, int score, int steps);
-    //void gamePause(bool pause);
-    void playerScoreChanged(int score);
-    void playerStepsChanged(int steps);
+    //void gameEnded(GameEndData ged);
+
+    void gameStateChanged(GameState ged);
+    /*void playerScoreChanged(int score);
+    void playerStepsChanged(int steps);*/
     
+    void errorOccured(QString message, int code);
 private slots:
     void playerHandler();
     void enemiesHandler();
@@ -57,10 +46,7 @@ public:
     void playerInteract(int x, int y, bool* win);
     void collideWithEnemy(QPoint playerPos, bool* died);
     void moveSprite(int fromx, int fromy, int tox, int toy);
-    int getScore() { return _playerScore; }
-    int getSteps() { return _playerSteps; }
     bool canMoveTo(int x, int y);
-    std::vector<QPoint> findPath(QPoint start, QPoint end);
     
     bool _replayUntilNextTile = false;
     
@@ -81,55 +67,48 @@ private:
     void makeEmptyAt(int li, int ci);
     
     void playerSendToTile(QPoint tilePos);
-    void printAstar();
-    void initAstar();
-    void cleanupAstar();
+    
     void loadImages();
     
     void loadFromMap(QString mapPath);
     //void loadFromRecording(QString savePath);
     void endGame(bool win);
+    void setAppearence();
 private:
+    Astar* _astar = nullptr;
     QString _mapFilePath;
     QSize _mapSize; //In tiles
-    int _playerScore = 0;
-    int _playerSteps = 0;
+
+    /*int _playerScore = 0;
+    int _playerSteps = 0;*/
+    GameState _state;
     int _ballPoints = 10;
 
     uint64_t _playerAnimFrame = 0;
     uint64_t _enemiesAnimFrame = 0;
     bool _keyFound = false;
-    bool _loggingEnabled = true;
-    QTimer* _playerTimer;
-    QTimer* _enemiesTimer;
-    QTimer* _playerAnimTimer;
-    QTimer* _enemiesAnimTimer;
-    //bool _isPaused = false;
-    QTimer* _replayStepTimer;
 
-    MoveDir _playerLastDir = MoveDir::None;
-    //bool _replayForward = true;
-    bool _replayStepByStep = false;
+    struct {
+        QTimer *player, *playerAnim, *enemies, *enemiesAnim;
 
-    QString _saveFilePath{ "saves/save.bin" };
+        void stopAll() {
+            player->stop();
+            playerAnim->stop();
+            enemies->stop();
+            enemiesAnim->stop();
+        }
+    } _timer;
+  
     QPoint _tileClicked{ -1,-1 };
     QPoint _doorPos;
-    
-    //QByteArray _recBytes;
-    Node** _asMap;
-    bool _astarInitialized = false;
+  
     QVector<Enemy*> _enemies{};
     std::unordered_map<SpriteType, QImage>& _pixmapCache;
     int _viewWidth;
-    int _maxTilesInRow{ 10 };
+    //int _maxTilesInRow{ 10 };
     int _tileWidth; //Will be set according on map dimensions
     Sprite*** _map = nullptr;
     Player* _player = nullptr;
-
-    //QFile _saveFile;
-    //QDataStream _saveStream;
-    
-    //QTimer* _replayTimer;
 };
 
 #endif // GAMESCENE_H
