@@ -1,6 +1,10 @@
 #include "replay.h"
 #include "gamescene.h"
 
+Serializer::Serializer(QObject* parent) 
+    : QObject(parent)
+{}
+
 void Serializer::Init(GameScene* scene, QString mapPath, bool recorded, bool replayFromStart)
 {
     _scene = scene;

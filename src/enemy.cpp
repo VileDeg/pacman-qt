@@ -1,3 +1,11 @@
+/** @file enemy.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with enemy class definition.
+ *  @details This file contatins definition for enemy class.
+ *  Enemies overrides action method of animated sprite 
+ *  and randomly chooses movement directory on every tile.
+ */
+
 #include "enemy.h"
 #include "utils.h"
 #include "gamescene.h"

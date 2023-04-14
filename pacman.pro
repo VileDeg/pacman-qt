@@ -7,6 +7,8 @@ TEMPLATE = app
 INCLUDEPATH += .
 QT+=core gui widgets
 QMAKE_CXXFLAGS+=-std=c++17
+DESTDIR = ../
+OBJECTS_DIR = ../
 
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
@@ -25,7 +27,6 @@ HEADERS += src/animatedsprite.h \
            src/enemy.h \
            src/gamescene.h \
            src/gameview.h \
-           src/interfaces.h \
            src/mainwindow.h \
            src/player.h \
            src/replay.h \

@@ -1,3 +1,10 @@
+/** @file enemy.h
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with enemy class declaration.
+ *  @details This file contatins declaration for enemy class.
+ *  Enemies move in random directions and kill player on touch.
+ */
+
 #ifndef ENEMY_H
 #define ENEMY_H
 
@@ -6,6 +13,10 @@
 #include <random>
 #include <iostream>
 
+/**
+ * @brief Class for enemy.
+ * @details This class is used for enemy movement and animation.
+ */
 class Enemy : public AnimatedSprite
 {
 public:

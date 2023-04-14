@@ -1,3 +1,10 @@
+/** @file astar.h
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with A* algorithm class declaration.
+ *  @details This file contatins declaration for node struct and A* algorithm class.
+ *  This algorithm is used for find the shortest path from player position to mouse click.
+ */
+
 #ifndef ASTAR_H
 #define ASTAR_H
 
@@ -9,14 +16,19 @@
 
 class GameScene;
 
+/**
+ * @brief Struct for node in A* algorithm.
+ * @details This struct is used for storing information about node in A* algorithm.
+ * It contains information about position, g, h, f values, parent node and neighbours.
+ */
 struct Node {
     int x;
     int y;
-    int g;
-    int h;
-    int f;
-    bool isWall;
-    Node* parent;
+    int g; /**< Distance(in tiles) from start. */
+    int h; /**< Heuristic(real distance to target). */
+    int f; /**< Sum of 'g' and 'h'. */
+    bool isWall; /**< Is the node walkable? */
+    Node* parent; /**< Node from which this node was opened. */
     std::vector<Node*> nbs;
 
     Node() : x(0), y(0), g(0), h(0), f(0), isWall(false), parent(nullptr) {}
@@ -27,6 +39,11 @@ struct Node {
     }
 };
 
+/**
+ * @brief Class for A* algorithm.
+ * @details This class is used for find the shortest path from player position to mouse click.
+ * It contains information about map size, scene and map of nodes.
+ */
 class Astar {
 public:
     Astar(GameScene* scene, QSize mapSize);

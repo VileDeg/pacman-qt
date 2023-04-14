@@ -5,11 +5,11 @@
 #include <QDebug>
 #include <QPixmap>
 
-#define NDEBUG 0
+#define DEBUG 0
 
 #define errpr(_msg) qCritical() << _msg
 
-#if NDEBUG == 1
+#if DEBUG == 1
     #define pr(_msg) qDebug() << _msg
     #define vpr(_v) pr(#_v << ": " << _v)
     #define v2pr(_v) pr(#_v << ": (" << _v.x() << "," << _v.y() << ")")
@@ -31,9 +31,7 @@
 
 //Macro for breaking into the debugger or aborting the program
 
-#if NDEBUG == 1
-    #define TRAP() 
-#else
+#if DEBUG == 1
     #ifdef _WIN32
         #ifdef _MSC_VER
             #define TRAP() __debugbreak()
@@ -43,8 +41,10 @@
         #endif // _MSC_VER
     #else
         #include <csignal>
-        #define TRAP() raise(SIGTRAP)
+        #define TRAP() std::raise(SIGTRAP)
     #endif // _WIN32
+#else
+    #define TRAP() 
 #endif // NDEBUG
 
 //Assert macros for boolean expressions

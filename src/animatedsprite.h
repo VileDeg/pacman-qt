@@ -1,8 +1,16 @@
+/** @file animatedsprite.sh
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with animated sprite class declaration.
+ */
+
 #ifndef ANIMATEDSPRITE_H
 #define ANIMATEDSPRITE_H
 
 #include "sprite.h"
 
+/**
+ * @brief Enumeration of possible directions of movement.
+ */
 enum class MoveDir { None, Up, Left, Down, Right };
 
 QDataStream& operator>>(QDataStream& stream, MoveDir& dir);
@@ -10,6 +18,11 @@ QDataStream& operator<<(QDataStream& stream, MoveDir& dir);
 
 class GameScene;
 
+/**
+ * @brief Base class for moving sprites.
+ * @details Serves as base class to player and enemy classes.
+ * Handles movement and animation.
+ */
 class AnimatedSprite : public Sprite
 {
 public:

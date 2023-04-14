@@ -16,9 +16,9 @@
 
 #define CONNECT(_sender, _signal, _receiver, _slot) connect(_sender, SIGNAL(_signal), _receiver, SLOT(_slot))
 
-void MainWindow::onDeserializationEnded(GameState gs)
+void MainWindow::onDeserializationEnded(GameState)
 {
-    sceneEnd(gs);
+    sceneEnd();
 }
 
 MainWindow::MainWindow(ErrorCallback errorCallback, QWidget *parent) :
@@ -70,7 +70,6 @@ void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
     CONNECT(_scene, gameStateChanged(GameState), this        , onGameStateChanged(GameState));
     CONNECT(_scene, gameStateChanged(GameState), _ui         , onGameStateChanged(GameState));
 
-
     CONNECT(&_serializer, gameStateChanged(GameState), this, onGameStateChanged(GameState));
     CONNECT(&_serializer, gameStateChanged(GameState), _ui, onGameStateChanged(GameState));
     CONNECT(&_serializer, replayFlagsChanged(ReplayFlags), _ui, onReplayFlagsChanged(ReplayFlags));
@@ -104,12 +103,12 @@ void MainWindow::cleanup()
 void MainWindow::onGameStateChanged(GameState gs)
 {
     if (gs.gameOver && gs.gameOver != _state.gameOver) {
-        sceneEnd(gs);
+        sceneEnd();
     }
     _state = gs;
 }
 
-void MainWindow::sceneEnd(GameState gs)
+void MainWindow::sceneEnd()
 {
     if (_cleanupNeeded) {
         cleanup();

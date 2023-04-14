@@ -1,3 +1,11 @@
+/** @file gamescene.h
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with game scene class declaration.
+ *  @details This file contains declaration for game scene class.
+ *  Game scene implements core game functionaly and keyboard/mouse input.
+ *  It is also responsible for loading and parsing the game map.
+ */
+
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
@@ -11,11 +19,19 @@
 #include "astar.h"
 #include "replay.h"
 
+/**
+ * @brief Game scene class.
+ * @details This class is responsible for game logic, 
+ * keyboard/mouse input and loading and parsing of the game map.
+ */
 class GameScene : public QGraphicsScene, public ISerializable
 {
     Q_OBJECT
 
 private:
+    /**
+     * @brief Structure with all scene timers.
+     */
     struct GameTimers {
         QTimer* player, *playerAnim, *enemies, *enemiesAnim;
 
@@ -94,8 +110,6 @@ private:
   
     QVector<Enemy*> _enemies{};
     std::unordered_map<SpriteType, QImage>& _pixmapCache;
-
-    
 
     Sprite*** _map = nullptr;
     Player* _player = nullptr;

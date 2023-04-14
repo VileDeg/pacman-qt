@@ -1,0 +1,2073 @@
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp: In member function ‘void WindowUI::onLoadRecordingMenuTriggered(QAction*)’:
+ui.cpp:315:43: error: no match for ‘operator<<’ (operand types are ‘QDebug’ and ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’})
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                           ^~ ~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                  |
+      |                                                                  std::string {aka std::__cxx11::basic_string<char>}
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:136:20: note: candidate: ‘QDebug& QDebug::operator<<(QChar)’
+  136 |     inline QDebug &operator<<(QChar t) { putUcs4(t.unicode()); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:137:20: note: candidate: ‘QDebug& QDebug::operator<<(bool)’
+  137 |     inline QDebug &operator<<(bool t) { stream->ts << (t ? "true" : "false"); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:137:36: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘bool’
+  137 |     inline QDebug &operator<<(bool t) { stream->ts << (t ? "true" : "false"); return maybeSpace(); }
+      |                               ~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:138:20: note: candidate: ‘QDebug& QDebug::operator<<(char)’
+  138 |     inline QDebug &operator<<(char t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:138:36: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘char’
+  138 |     inline QDebug &operator<<(char t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:139:20: note: candidate: ‘QDebug& QDebug::operator<<(short int)’
+  139 |     inline QDebug &operator<<(signed short t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:139:44: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘short int’
+  139 |     inline QDebug &operator<<(signed short t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:140:20: note: candidate: ‘QDebug& QDebug::operator<<(short unsigned int)’
+  140 |     inline QDebug &operator<<(unsigned short t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:142:20: note: candidate: ‘QDebug& QDebug::operator<<(char16_t)’
+  142 |     inline QDebug &operator<<(char16_t t) { return *this << QChar(ushort(t)); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:142:40: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘char16_t’
+  142 |     inline QDebug &operator<<(char16_t t) { return *this << QChar(ushort(t)); }
+      |                               ~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:143:20: note: candidate: ‘QDebug& QDebug::operator<<(char32_t)’
+  143 |     inline QDebug &operator<<(char32_t t) { putUcs4(t); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:143:40: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘char32_t’
+  143 |     inline QDebug &operator<<(char32_t t) { putUcs4(t); return maybeSpace(); }
+      |                               ~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:145:20: note: candidate: ‘QDebug& QDebug::operator<<(int)’
+  145 |     inline QDebug &operator<<(signed int t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:145:42: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘int’
+  145 |     inline QDebug &operator<<(signed int t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:146:20: note: candidate: ‘QDebug& QDebug::operator<<(unsigned int)’
+  146 |     inline QDebug &operator<<(unsigned int t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:146:44: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘unsigned int’
+  146 |     inline QDebug &operator<<(unsigned int t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:147:20: note: candidate: ‘QDebug& QDebug::operator<<(long int)’
+  147 |     inline QDebug &operator<<(signed long t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:147:43: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘long int’
+  147 |     inline QDebug &operator<<(signed long t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:148:45: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘long unsigned int’
+  148 |     inline QDebug &operator<<(unsigned long t) { stream-/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:149:20: note: candidate: ‘QDebug& QDebug::operator<<(qint64)’
+  149 |     inline QDebug &operator<<(qint64 t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:149:38: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘qint64’ {aka ‘long long int’}
+  149 |     inline QDebug &operator<<(qint64 t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:150:20: note: candidate: ‘QDebug& QDebug::operator<<(quint64)’
+  150 |     inline QDebug &operator<<(quint64 t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:150:39: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘quint64’ {aka ‘long long unsigned int’}
+  150 |     inline QDebug &operator<<(quint64 t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:151:20: note: candidate: ‘QDebug& QDebug::operator<<(float)’
+  151 |     inline QDebug &operator<<(float t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:151:37: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘float’
+  151 |     inline QDebug &operator<<(float t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:152:20: note: candidate: ‘QDebug& QDebug::operator<<(double)’
+  152 |     inline QDebug &operator<<(double t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:152:38: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘double’
+  152 |     inline QDebug &operator<<(double t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:153:20: note: candidate: ‘QDebug& QDebug::operator<<(const char*)’
+  153 |     inline QDebug &operator<<(const char* t) { stream->ts << QString::fromUtf8(t); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:153:43: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const char*’
+  153 |     inline QDebug &operator<<(const char* t) { stream->ts << QString::fromUtf8(t); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:155:20: note: candidate: ‘QDebug& QDebug::operator<<(const QString&)’
+  155 |     inline QDebug &operator<<(const QString & t) { putString(t.constData(), uint(t.length())); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:155:47: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QString&’
+  155 |     inline QDebug &operator<<(const QString & t) { putString(t.constData(), uint(t.length())); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:156:20: note: candidate: ‘QDebug& QDebug::operator<<(const QStringRef&)’
+  156 |     inline QDebug &operator<<(const QStringRef & t) { putString(t.constData(), uint(t.length())); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:156:50: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QStringRef&’
+  156 |     inline QDebug &operator<<(const QStringRef & t) { putString(t.constData(), uint(t.length())); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:158:20: note: candidate: ‘QDebug& QDebug::operator<<(QStringView)’
+  158 |     inline QDebug &operator<<(QStringView s) { putString(s.data(), size_t(s.size())); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:158:43: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QStringView’
+  158 |     inline QDebug &operator<<(QStringView s) { putString(s.data(), size_t(s.size())); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:159:20: note: candidate: ‘QDebug& QDebug::operator<<(QLatin1String)’
+  159 |     inline QDebug &operator<<(QLatin1String t) { putByteArray(t.latin1(), t.size(), ContainsLatin1); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:159:45: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QLatin1String’
+  159 |     inline QDebug &operator<<(QLatin1String t) { putByteArray(t.latin1(), t.size(), ContainsLatin1); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:160:20: note: candidate: ‘QDebug& QDebug::operator<<(const QByteArray&)’
+  160 |     inline QDebug &operator<<(const QByteArray & t) { putByteArray(t.constData(), t.size(), ContainsBinary); return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:160:50: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QByteArray&’
+  160 |     inline QDebug &operator<<(const QByteArray & t) { putByteArray(t.constData(), t.size(), ContainsBinary); return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~~~~~~~^
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:161:20: note: candidate: ‘QDebug& QDebug::operator<<(const void*)’
+  161 |     inline QDebug &operator<<(const void * t) { stream->ts << t; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:161:44: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const void*’
+  161 |     inline QDebug &operator<<(const void * t) { stream->ts << t; return maybeSpace(); }
+      |                               ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:163:20: note: candidate: ‘QDebug& QDebug::operator<<(std::nullptr_t)’
+  163 |     inline QDebug &operator<<(std::nullptr_t) { stream->ts << "(nullptr)"; return maybeSpace(); }
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:163:31: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘std::nullptr_t’
+  163 |     inline QDebug &operator<<(std::nullptr_t) { stream->ts << "(nullptr)"; return maybeSpace(); }
+      |                               ^~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:165:20: note: candidate: ‘QDebug& QDebug::operator<<(QTextStreamFunction)’
+  165 |     inline QDebug &operator<<(QTextStreamFunction f) {
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:165:51: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QTextStreamFunction’ {aka ‘QTextStream& (*)(QTextStream&)’}
+  165 |     inline QDebug &operator<<(QTextStreamFunction f) {
+      |                               ~~~~~~~~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:170:20: note: candidate: ‘QDebug& QDebug::operator<<(QTextStreamManipulator)’
+  170 |     inline QDebug &operator<<(QTextStreamManipulator m)
+      |                    ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:170:54: note:   no known conversion for argument 1 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QTextStreamManipulator’
+  170 |     inline QDebug &operator<<(QTextStreamManipulator m)
+      |                               ~~~~~~~~~~~~~~~~~~~~~~~^
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h:625:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, QChar)’
+  625 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, QChar);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qchar.h:625:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  625 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, QChar);
+      |                                       ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:695:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QByteArray&)’
+  695 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QByteArray &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:695:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  695 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QByteArray &);
+      |                                       ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:1415:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QString&)’
+ 1415 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QString &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:1415:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+ 1415 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QString &);
+      |                                       ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstringlist.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qlist.h:1097,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h:124:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QRegExp&)’
+  124 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &out, const QRegExp &regExp);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h:124:52: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  124 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &out, const QRegExp &regExp);
+      |                                       ~~~~~~~~~~~~~^~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h:129:22: note: candidate: ‘QDebug operator<<(QDebug, const QRegExp&)’
+  129 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QRegExp &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qregexp.h:129:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QRegExp&’
+  129 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QRegExp &);
+      |                                         ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:531:22: note: candidate: ‘QDebug operator<<(QDebug, const QObject*)’
+  531 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QObject *);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:531:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QObject*’
+  531 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QObject *);
+      |                                         ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:94:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QMargins&)’
+   94 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QMargins &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:94:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+   94 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QMargins &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:278:22: note: candidate: ‘QDebug operator<<(QDebug, const QMargins&)’
+  278 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QMargins &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:278:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QMargins&’
+  278 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QMargins &);
+      |                                         ^~~~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:327:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QMarginsF&)’
+  327 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QMarginsF &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:327:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  327 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QMarginsF &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:487:22: note: candidate: ‘QDebug operator<<(QDebug, const QMarginsF&)’
+  487 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QMarginsF &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qmargins.h:487:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QMarginsF&’
+  487 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QMarginsF &);
+      |                                         ^~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:108:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QSize&)’
+  108 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSize &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:108:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  108 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSize &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:211:22: note: candidate: ‘QDebug operator<<(QDebug, const QSize&)’
+  211 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QSize &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:211:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QSize&’
+  211 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QSize &);
+      |                                         ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:276:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QSizeF&)’
+  276 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSizeF &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:276:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  276 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QSizeF &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:386:22: note: candidate: ‘QDebug operator<<(QDebug, const QSizeF&)’
+  386 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QSizeF &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qsize.h:386:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QSizeF&’
+  386 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QSizeF &);
+      |                                         ^~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:112:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPoint&)’
+  112 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QPoint &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:112:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  112 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QPoint &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:212:22: note: candidate: ‘QDebug operator<<(QDebug, const QPoint&)’
+  212 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QPoint &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:277:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPointF&)’
+  277 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QPointF &);
+      |                            ^~~~~~~~
+     |                                         ^~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:277:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  277 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QPointF &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:413:22: note: candidate: ‘QDebug operator<<(QDebug, const QPointF&)’
+  413 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QPointF &p);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qpoint.h:413:58: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPointF&’
+  413 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QPointF &p);
+      |                                           ~~~~~~~~~~~~~~~^
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpaintdevice.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:176:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QRect&)’
+  176 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QRect &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:176:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  176 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QRect &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:507:22: note: candidate: ‘QDebug operator<<(QDebug, const QRect&)’
+  507 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QRect &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:636:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QRectF&)’
+  636 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QRectF &);
+      |                            ^~~~~~~~
+     |                                         ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:636:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  636 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QRectF &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qrect.h:919:22: note: candidate: ‘QDebug operator<<(QDebug, const QRectF&)’
+  919 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QRectF &);
+      |                      ^~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+   /usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h:57:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QColor&’
+   57 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QColor &);
+      |                                        ^~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h:277:38: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QColor&)’
+  277 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QColor &);
+      |                                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcolor.h:60:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+   60 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QColor &);
+      |                                      ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:109:21: note: candidate: ‘QDebug operator<<(QDebug, const QPolygon&)’
+  109 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPolygon &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:109:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPolygon&’
+  109 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPolygon &);
+      |                                        ^~~~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:116:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPolygon&)’
+  116 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPolygon &polygon);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:116:51: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  116 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPolygon &polygon);
+      |                                      ~~~~~~~~~~~~~^~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:188:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPolygonF&’
+  188 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPolygonF &);
+      |                                        ^~~~~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:195:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPolygonF&)’
+  195 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPolygonF &array);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpolygon.h:195:51: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  195 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &stream, const QPolygonF &array);
+      |                                      ~~~~~~~~~~~~~^~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qiodevice.h:189:22: note: candidate: ‘QDebug operator<<(QDebug, QIODevice::OpenMode)’
+  189 | Q_CORE_EXPORT QDebug operator<<(QDebug debug, QIODevice::OpenMode modes);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qiodevice.h:189:67: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QIODevice::OpenMode’ {aka ‘QFlags<QIODevice::OpenModeFlag>’}
+  189 | Q_CORE_EXPORT QDebug operator<<(QDebug debug, QIODevice::OpenMode modes);
+      |                                               ~~~~~~~~~~~~~~~~~~~~^~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:368:21: note: candidate: ‘template<class E> QDataStream& operator<<(QDataStream&, QFlags<T>)’
+  368 | inline QDataStream &operator<<(QDataStream &s, QFlags<Enum> e)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:368:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::__cxx11::basic_string<char>’ is not derived from ‘QFlags<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:382:21: note: candidate: ‘template<class T> QDataStream& operator<<(QDataStream&, const QList<T>&)’
+  382 | inline QDataStream &operator<<(QDataStream &s, const QList<T> &l)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:382:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QList<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:394:21: note: candidate: ‘template<class T> QDataStream& operator<<(QDataStream&, const QLinkedList<T>&)’
+  394 | inline QDataStream &operator<<(QDataStream &s, const QLinkedList<T> &l)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:394:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QLinkedList<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:406:21: note: candidate: ‘template<class T> QDataStream& operator<<(QDataStream&, const QVector<T>&)’
+  406 | inline QDataStream &operator<<(QDataStream &s, const QVector<T> &v)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:406:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QVector<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:418:21: note: candidate: ‘template<class T> QDataStream& operator<<(QDataStream&, const QSet<T>&)’
+  418 | inline QDataStream &operator<<(QDataStream &s, const QSet<T> &set)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:418:21: note:   template argument deduction/substitution failed:
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:430:21: note: candidate: ‘template<class Key, class T> QDataStream& operator<<(QDataStream&, const QHash<K, V>&)’
+  430 | inline QDataStream &operator<<(QDataStream &s, const QHash<Key, T> &hash)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:430:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QHash<K, V>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:442:21: note: candidate: ‘template<class Key, class T> QDataStream& operator<<(QDataStream&, const QMap<K, V>&)’
+  442 | inline QDataStream &operator<<(QDataStream &s, const QMap<Key, T> &map)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:442:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QMap<K, V>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:456:21: note: candidate: ‘template<class T1, class T2> QDataStream& operator<<(QDataStream&, const QPair<T1, T2>&)’
+  456 | inline QDataStream& operator<<(QDataStream& s, const QPair<T1, T2>& p)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdatastream.h:456:21: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QPair<T1, T2>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:162:49: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  162 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QRegion &);
+      |                                                 ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:196:21: note: candidate: ‘QDebug operator<<(QDebug, const QRegion&)’
+  196 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QRegion &);
+      |                     ^~~~~~~~
+Widgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:191:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QRegion&)’
+  191 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QRegion &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qregion.h:196:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QRegion&’
+  196 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QRegion &);
+      |                                        ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:203:22: note: candidate: ‘QDebug operator<<(QDebug, const QLine&)’
+  203 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QLine &p);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:203:56: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QLine&’
+  203 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QLine &p);
+      |                                           ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:207:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QLine&)’
+  207 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLine &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:207:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  207 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLine &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:424:22: note: candidate: ‘QDebug operator<<(QDebug, const QLineF&)’
+  424 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QLineF &p);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:424:57: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QLineF&’
+  424 | Q_CORE_EXPORT QDebug operator<<(QDebug d, const QLineF &p);
+      |                                           ~~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:428:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QLineF&)’
+  428 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLineF &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qline.h:428:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  428 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLineF &);
+      |                                       ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:184:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QMatrix&)’
+  184 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QMatrix &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:184:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  184 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QMatrix &);
+      |                                      ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:189:21: note: candidate: ‘QDebug operator<<(QDebug, const QMatrix&)’
+  189 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QMatrix &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qmatrix.h:189:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QMatrix&’
+  189 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QMatrix &);
+      |                                        ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:50,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h:238:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPainterPath&)’
+  238 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPainterPath &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h:229:49: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  229 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPainterPath &);
+      |                                                 ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h:373:21: note: candidate: ‘QDebug operator<<(QDebug, const QPainterPath&)’
+  373 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPainterPath &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpainterpath.h:373:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPainterPath&’
+  373 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPainterPath &);
+      |                                        ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:50,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h:373:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QTransform&)’
+  373 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QTransform &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h:373:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  373 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QTransform &);
+      |                                      ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h:378:21: note: candidate: ‘QDebug operator<<(QDebug, const QTransform&)’
+  378 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QTransform &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qtransform.h:378:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QTransform&’
+  378 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QTransform &);
+      |                                        ^~~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:51,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h:490:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QImage&)’
+  490 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QImage &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h:490:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  490 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QImage &);
+      |                                      ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h:495:21: note: candidate: ‘QDebug operator<<(QDebug, const QImage&)’
+  495 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QImage &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qimage.h:495:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QImage&’
+  495 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QImage &);
+      |                                        ^~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:52,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h:243:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPixmap&)’
+  243 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPixmap &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h:243:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  243 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPixmap &);
+      |                                      ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h:248:21: note: candidate: ‘QDebug operator<<(QDebug, const QPixmap&)’
+  248 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPixmap &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpixmap.h:248:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPixmap&’
+  248 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPixmap &);
+      |                                        ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:144:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QBrush&)’
+  144 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QBrush &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:144:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  144 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QBrush &);
+      |                                      ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qbrush.h:149:21: note: candidate: ‘QDebug operator<<(QDebug, const QBrush&)’
+  149 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QBrush &);
+      |                     ^~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:48,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:207:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPalette&)’
+  207 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &ds, const QPalette &p);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:190:62: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  190 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &s, const QPalette &p);
+      |                                                 ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:212:21: note: candidate: ‘QDebug operator<<(QDebug, const QPalette&)’
+  212 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPalette &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpalette.h:212:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QPalette&’
+  212 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPalette &);
+      |                                        ^~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h:359:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QFont&)’
+  359 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QFont &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h:325:49: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  325 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QFont &);
+      |                                                 ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h:364:21: note: candidate: ‘QDebug operator<<(QDebug, const QFont&)’
+  364 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QFont &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qfont.h:364:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QFont&’
+  364 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QFont &);
+      |                                        ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:52,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h:237:31: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QSizePolicy&)’
+  237 | Q_WIDGETS_EXPORT QDataStream &operator<<(QDataStream &, const QSizePolicy &);
+      |                               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h:173:53: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  173 |     friend Q_WIDGETS_EXPORT QDataStream &operator<<(QDataStream &, const QSizePolicy &);
+      |                                                     ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h:242:25: note: candidate: ‘QDebug operator<<(QDebug, const QSizePolicy&)’
+  242 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug dbg, const QSizePolicy &);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qsizepolicy.h:242:48: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QSizePolicy&’
+  242 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug dbg, const QSizePolicy &);
+      |                                                ^~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:55,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:127:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QCursor&)’
+  127 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &outS, const QCursor &cursor);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:127:51: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  127 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &outS, const QCursor &cursor);
+      |                                      ~~~~~~~~~~~~~^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:132:21: note: candidate: ‘QDebug operator<<(QDebug, const QCursor&)’
+  132 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QCursor &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qcursor.h:132:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QCursor&’
+  132 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QCursor &);
+      |                                        ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:56,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h:215:38: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QKeySequence&)’
+  215 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &in, const QKeySequence &ks);
+      |                                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h:58:51: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+   58 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &in, const QKeySequence &ks);
+      |                                      ~~~~~~~~~~~~~^~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h:229:21: note: candidate: ‘QDebug operator<<(QDebug, const QKeySequence&)’
+  229 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QKeySequence &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qkeysequence.h:229:40: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QKeySequence&’
+  229 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QKeySequence &);
+      |                                        ^~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:876:25: note: candidate: ‘QDebug operator<<(QDebug, const QWidget*)’
+  876 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug, const QWidget *);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:876:44: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QWidget*’
+  876 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug, const QWidget *);
+      |                                            ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:147:27: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QIcon&)’
+  147 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QIcon &);
+      |                           ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:135:49: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  135 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QIcon &);
+      |                                                 ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:152:21: note: candidate: ‘QDebug operator<<(QDebug, const QIcon&)’
+  152 | Q_GUI_EXPORT QDebug operator<<(QDebug dbg, const QIcon &);
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h:152:44: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QIcon&’
+  152 | Q_GUI_EXPORT QDebug operator<<(QDebug dbg, const QIcon &);
+      |                                            ^~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:565:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QVariant&)’
+  565 | Q_CORE_EXPORT QDataStream& operator<< (QDataStream& s, const QVariant& p);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:565:53: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  565 | Q_CORE_EXPORT QDataStream& operator<< (QDataStream& s, const QVariant& p);
+      |                                        ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:567:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, QVariant::Type)’
+  567 | Q_CORE_EXPORT QDataStream& operator<< (QDataStream& s, const QVariant::Type p);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:567:53: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+  567 | Q_CORE_EXPORT QDataStream& operator<< (QDataStream& s, const QVariant::Type p);
+      |                                        ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:885:22: note: candidate: ‘QDebug operator<<(QDebug, const QVariant&)’
+  885 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QVariant &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:472:52: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QVariant&’
+  472 |     friend Q_CORE_EXPORT QDebug operator<<(QDebug, const QVariant &);
+      |                                                    ^~~~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:886:22: note: candidate: ‘QDebug operator<<(QDebug, QVariant::Type)’
+  886 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QVariant::Type);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qvariant.h:886:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QVariant::Type’
+  886 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QVariant::Type);
+      |                                         ^~~~~~~~~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qaction.h:217:44: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QAction*’
+  217 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug, const QAction *);
+      |                                            ^~~~~~~~~~~~~~~
+te: candidate: ‘QDebug operator<<(QDebug, const QAction*)’
+  217 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug, const QAction *);
+      |                         ^~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdiriterator.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDirIterator:1,
+                 from ui.cpp:2:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qfileinfo.h:162:22: note: candidate: ‘QDebug operator<<(QDebug, const QFileInfo&)’
+  162 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QFileInfo &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qfileinfo.h:162:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QFileInfo&’
+  162 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QFileInfo &);
+      |                                         ^~~~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdiriterator.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDirIterator:1,
+                 from ui.cpp:2:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h:239:22: note: candidate: ‘QDebug operator<<(QDebug, QDir::Filters)’
+  239 | Q_CORE_EXPORT QDebug operator<<(QDebug debug, QDir::Filters filters);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h:239:61: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QDir::Filters’ {aka ‘QFlags<QDir::Filter>’}
+  239 | Q_CORE_EXPORT QDebug operator<<(QDebug debug, QDir::Filters filters);
+      |                                               ~~~~~~~~~~~~~~^~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdir.h:240:59: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QDir&’
+  240 | Q_CORE_EXPORT QDebug operator<<(QDebug debug, const QDir &dir);
+      |                                               ~~~~~~~~~~~~^~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h:56:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+   56 | Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPen &);
+      |                                      ^~~~~~~~~~~~~
+h:4,
+                 from ui.cpp:4:
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h:123:38: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QPen&)’
+  123 |     friend Q_GUI_EXPORT QDataStream &operator<<(QDataStream &, const QPen &);
+      |                                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtGui/qpen.h:136:21: note: candidate: ‘QDebug operator<<(QDebug, const QPen&)’
+  136 | Q_GUI_EXPORT QDebug operator<<(QDebug, const QPen &);
+      |                     ^~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsItem:1,
+                 from sprite.h:5,
+                 from mainwindow.h:8,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1041:25: note: candidate: ‘QDebug operator<<(QDebug, QGraphicsItem*)’
+ 1041 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem *item);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1041:65: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QGraphicsItem*’
+ 1041 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem *item);
+      |                                                  ~~~~~~~~~~~~~~~^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1042:25: note: candidate: ‘QDebug operator<<(QDebug, QGraphicsObject*)’
+ 1042 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsObject *item);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1042:67: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QGraphicsObject*’
+ 1042 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsObject *item);
+      |                                                  ~~~~~~~~~~~~~~~~~^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1043:25: note: candidate: ‘QDebug operator<<(QDebug, QGraphicsItem::GraphicsItemChange)’
+ 1043 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemChange change);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1043:84: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QGraphicsItem::GraphicsItemChange’
+ 1043 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemChange change);
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1044:82: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QGraphicsItem::GraphicsItemFlag’
+ 1044 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemFlag flag);
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1045:25: note: candidate: ‘QDebug operator<<(QDebug, QGraphicsItem::GraphicsItemFlags)’
+ 1045 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemFlags flags);
+      |                         ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtWidgets/qgraphicsitem.h:1045:83: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘QGraphicsItem::GraphicsItemFlags’ {aka ‘QFlags<QGraphicsItem::GraphicsItemFlag>’}
+ 1045 | Q_WIDGETS_EXPORT QDebug operator<<(QDebug debug, QGraphicsItem::GraphicsItemFlags flags);
+      |                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+In file included from mainwindow.h:8,
+                 from ui.cpp:6:
+sprite.h:26:14: note: candidate: ‘QDataStream& operator<<(QDataStream&, SpriteType&)’
+   26 | QDataStream& operator<<(QDataStream& stream, SpriteType& dir);
+      |              ^~~~~~~~
+sprite.h:26:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+   26 | QDataStream& operator<<(QDataStream& stream, SpriteType& dir);
+      |                         ~~~~~~~~~~~~~^~~~~~
+In file included from player.h:4,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+animatedsprite.h:9:14: note: candidate: ‘QDataStream& operator<<(QDataStream&, MoveDir&)’
+    9 | QDataStream& operator<<(QDataStream& stream, MoveDir& dir);
+      |              ^~~~~~~~
+animatedsprite.h:9:38: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+    9 | QDataStream& operator<<(QDataStream& stream, MoveDir& dir);
+      |                         ~~~~~~~~~~~~~^~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:1122:28: note: candidate: ‘QDataStream& operator<<(QDataStream&, const QLocale&)’
+ 1122 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLocale &);
+      |                            ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:1122:39: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QDataStream&’
+ 1122 | Q_CORE_EXPORT QDataStream &operator<<(QDataStream &, const QLocale &);
+      |                                       ^~~~~~~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:1127:22: note: candidate: ‘QDebug operator<<(QDebug, const QLocale&)’
+ 1127 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QLocale &);
+      |                      ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qlocale.h:1127:41: note:   no known conversion for argument 2 from ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} to ‘const QLocale&’
+ 1127 | Q_CORE_EXPORT QDebug operator<<(QDebug, const QLocale &);
+      |                                         ^~~~~~~~~~~~~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:230:21: note: candidate: ‘QTextStream& operator<<(QTextStream&, QTextStreamFunction)’
+  230 | inline QTextStream &operator<<(QTextStream &s, QTextStreamFunction f)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:230:45: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QTextStream&’
+  230 | inline QTextStream &operator<<(QTextStream &s, QTextStreamFunction f)
+      |                                ~~~~~~~~~~~~~^
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:233:21: note: candidate: ‘QTextStream& operator<<(QTextStream&, QTextStreamManipulator)’
+  233 | inline QTextStream &operator<<(QTextStream &s, QTextStreamManipulator m)
+      |                     ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qtextstream.h:233:45: note:   no known conversion for argument 1 from ‘QDebug’ to ‘QTextStream&’
+  233 | inline QTextStream &operator<<(QTextStream &s, QTextStreamManipulator m)
+      |                                ~~~~~~~~~~~~~^
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:236:15: note: candidate: ‘template<class T> QDebug operator<<(QDebug, const QList<T>&)’
+  236 | inline QDebug operator<<(QDebug debug, const QList<T> &list)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:236:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QList<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:242:15: note: candidate: ‘template<class T> QDebug operator<<(QDebug, const QVector<T>&)’
+  242 | inline QDebug operator<<(QDebug debug, const QVector<T> &vec)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:242:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QVector<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:248:15: note: candidate: ‘template<class T, class Alloc> QDebug operator<<(QDebug, const std::vector<_Tp, _Alloc>&)’
+  248 | inline QDebug operator<<(QDebug debug, const std::vector<T, Alloc> &vec)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:248:15: note:   template argument deduction/substitution failed:
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:254:15: note: candidate: ‘template<class T, class Alloc> QDebug operator<<(QDebug, const std::__cxx11::list<_Tp, _Alloc>&)’
+  254 | inline QDebug operator<<(QDebug debug, const std::list<T, Alloc> &vec)
+      |               ^~~~~~~~
+g
+      |                                  ^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:254:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::__cxx11::list<_Tp, _Alloc>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:260:15: note: candidate: ‘template<class Key, class T, class Compare, class Alloc> QDebug operator<<(QDebug, const std::map<_Key, _Tp, _Compare, _Allocator>&)’
+  260 | inline QDebug operator<<(QDebug debug, const std::map<Key, T, Compare, Alloc> &map)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:260:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::map<_Key, _Tp, _Compare, _Allocator>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:266:15: note: candidate: ‘template<class Key, class T, class Compare, class Alloc> QDebug operator<<(QDebug, const std::multimap<_Key, _Tp, _Compare, _Allocator>&)’
+  266 | inline QDebug operator<<(QDebug debug, const std::multimap<Key, T, Compare, Alloc> &map)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:266:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const std::multimap<_Key, _Tp, _Compare, _Allocator>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:272:15: note: candidate: ‘template<class Key, class T> QDebug operator<<(QDebug, const QMap<K, V>&)’
+  272 | inline QDebug operator<<(QDebug debug, const QMap<Key, T> &map)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:272:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QMap<K, V>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:286:15: note: candidate: ‘template<class Key, class T> QDebug operator<<(QDebug, const QHash<K, V>&)’
+  286 | inline QDebug operator<<(QDebug debug, const QHash<Key, T> &hash)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:286:15: note:   template argument deduction/substitution failed:
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:299:15: note: candidate: ‘template<class T1, class T2> QDebug operator<<(QDebug, const QPair<T1, T2>&)’
+  299 | inline QDebug operator<<(QDebug debug, const QPair<T1, T2> &pair)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:299:15: note:   template argument deduction/substitution failed:
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:308:15: note: candidate: ‘template<class T1, class T2> QDebug operator<<(QDebug, const std::pair<_T1, _T2>&)’
+  308 | inline QDebug operator<<(QDebug debug, const std::pair<T1, T2> &pair)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:308:15: note:   template argument deduction/substitution failed:
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:317:15: note: candidate: ‘template<class T> QDebug operator<<(QDebug, const QSet<T>&)’
+  317 | inline QDebug operator<<(QDebug debug, const QSet<T> &set)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:317:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QSet<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:323:15: note: candidate: ‘template<class T> QDebug operator<<(QDebug, const QContiguousCache<T>&)’
+  323 | inline QDebug operator<<(QDebug debug, const QContiguousCache<T> &cache)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:323:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QContiguousCache<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:338:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QSharedPointer<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/QDebug:1,
+                 from utils.h:5,
+                 from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:372:1: note: candidate: ‘template<class T> typename std::enable_if<QtPrivate::IsQEnumHelper<T>::Value, QDebug>::type operator<<(QDebug, T)’
+  372 | operator<<(QDebug dbg, T value)
+      | ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:372:1: note:   template argument deduction/substitution failed:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h: In substitution of ‘template<class T> typename std::enable_if<QtPrivate::IsQEnumHelper<T>::Value, QDebug>::type operator<<(QDebug, T) [with T = std::__cxx11::basic_string<char>]’:
+ui.cpp:315:13:   required from here
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:372:1: error: no type named ‘type’ in ‘struct std::enable_if<false, QDebug>’
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:384:15: note:   template argument deduction/substitution failed:
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:380:10: error: no type named ‘type’ in ‘struct std::enable_if<false, void>’
+  380 |          typename A = typename std::enable_if<std::is_enum<T>::value, void>::type,
+      |          ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:418:15: note: candidate: ‘template<class T> QDebug operator<<(QDebug, const QFlags<T>&)’
+  418 | inline QDebug operator<<(QDebug debug, const QFlags<T> &flags)
+      |               ^~~~~~~~
+/usr/include/x86_64-linux-gnu/qt5/QtCore/qdebug.h:418:15: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘std::string’ {aka ‘std::__cxx11::basic_string<char>’} is not derived from ‘const QFlags<T>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h:46,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qtguiglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/cstddef:130:5: note: candidate: ‘template<class _IntegerType> constexpr std::__byte_op_t<_IntegerType> std::operator<<(std::byte, _IntegerType)’
+  130 |     operator<<(byte __b, _IntegerType __shift) noexcept
+      |     ^~~~~~~~
+/usr/include/c++/9/cstddef:130:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+utils.h:13:31: note:   cannot convert ‘QMessageLogger::debug() const().QDebug::operator<<(((const char*)"Ui: recording selected: "))’ (type ‘QDebug’) to type ‘std::byte’
+   13 |     #define pr(_msg) qDebug() << _msg
+ui.cpp:315:13: note: in expansion of macro ‘pr’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |             ^~
+In file included from /usr/include/c++/9/bits/basic_string.h:48,
+                 from /usr/include/c++/9/string:55,
+                 from /usr/include/c++/9/stdexcept:39,
+                 from /usr/include/c++/9/array:39,
+                 from /usr/include/c++/9/tuple:39,
+                 from /usr/include/c++/9/functional:54,
+                 from /usr/include/c++/9/pstl/glue_algorithm_defs.h:13,
+                 from /usr/include/c++/9/algorithm:71,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h:142,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qtguiglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/string_view:580:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, std::basic_string_view<_CharT, _Traits>)’
+  580 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/string_view:580:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/string:55,
+                 from /usr/include/c++/9/stdexcept:39,
+                 from /usr/include/c++/9/array:39,
+                 from /usr/include/c++/9/tuple:39,
+                 from /usr/include/c++/9/functional:54,
+                 from /usr/include/c++/9/pstl/glue_algorithm_defs.h:13,
+                 from /usr/include/c++/9/algorithm:71,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h:142,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtGui/qtguiglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:43,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/bits/basic_string.h:6419:5: note: candidate: ‘template<class _CharT, class _Traits, class _Alloc> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::__cxx11::basic_string<_CharT, _Traits, _Allocator>&)’
+ 6419 |     operator<<(basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/basic_string.h:6419:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/bits/ios_base.h:46,
+                 from /usr/include/c++/9/ios:42,
+                 from /usr/include/c++/9/ostream:38,
+                 from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/system_error:217:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::error_code&)’
+  217 |     operator<<(basic_ostream<_CharT, _Traits>& __os, const error_code& __e)
+      |     ^~~~~~~~
+/usr/include/c++/9/system_error:217:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:506:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, _CharT)’
+  506 |     operator<<(basic_ostream<_CharT, _Traits>& __out, _CharT __c)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:506:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:511:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, char)’
+  511 |     operator<<(basic_ostream<_CharT, _Traits>& __out, char __c)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:511:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:517:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, char)’
+  517 |     operator<<(basic_ostream<char, _Traits>& __out, char __c)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:517:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:523:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, signed char)’
+  523 |     operator<<(basic_ostream<char, _Traits>& __out, signed char __c)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:523:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:528:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, unsigned char)’
+  528 |     operator<<(basic_ostream<char, _Traits>& __out, unsigned char __c)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:528:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:548:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const _CharT*)’
+  548 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const _CharT* __s)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:548:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/ostream:702,
+                 from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/bits/ostream.tcc:321:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const char*)’
+  321 |     operator<<(basic_ostream<_CharT, _Traits>& __out, const char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/ostream.tcc:321:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:565:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char*)’
+  565 |     operator<<(basic_ostream<char, _Traits>& __out, const char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:565:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/c++/9/ostream:578:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+i.cpp:1:
+/usr/include/c++/9/ostream:578:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const signed char*)’
+  578 |     operator<<(basic_ostream<char, _Traits>& __out, const signed char* __s)
+      |     ^~~~~~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:583:5: note: candidate: ‘template<class _Traits> std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const unsigned char*)’
+  583 |     operator<<(basic_ostream<char, _Traits>& __out, const unsigned char* __s)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:583:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<char, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/iterator:64,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearray.h:53,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qstring.h:49,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtCore/qobject.h:47,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h:45,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenu.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qmenubar.h:44,
+                 from /usr/include/x86_64-linux-gnu/qt5/QtWidgets/QMenuBar:1,
+                 from ui.cpp:1:
+/usr/include/c++/9/ostream:691:5: note: candidate: ‘template<class _Ostream, class _Tp> typename std::enable_if<std::__and_<std::__not_<std::is_lvalue_reference<_Tp> >, std::__is_convertible_to_basic_ostream<_Ostream>, std::__is_insertable<typename std::__is_convertible_to_basic_ostream<_Tp>::__ostream_type, const _Tp&, void> >::value, typename std::__is_convertible_to_basic_ostream<_Tp>::__ostream_type>::type std::operator<<(_Ostream&&, const _Tp&)’
+  691 |     operator<<(_Ostream&& __os, const _Tp& __x)
+      |     ^~~~~~~~
+/usr/include/c++/9/ostream:691:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/9/ostream: In substitution of ‘template<class _Ostream, class _Tp> typename std::enable_if<std::__and_<std::__not_<std::is_lvalue_reference<_Tp> >, std::__is_convertible_to_basic_ostream<_Ostream>, std::__is_insertable<typename std::__is_convertible_to_basic_ostream<_Tp>::__ostream_type, const _Tp&, void> >::value, typename std::__is_convertible_to_basic_ostream<_Tp>::__ostream_type>::type std::operator<<(_Ostream&&, const _Tp&) [with _Ostream = QDebug&; _Tp = std::__cxx11::basic_string<char>]’:
+ui.cpp:315:13:   required from here
+/usr/include/c++/9/ostream:691:5: error: no type named ‘type’ in ‘struct std::enable_if<false, void>’
+In file included from /usr/include/c++/9/random:49,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.h:1298:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __w, class _UIntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::independent_bits_engine<_RandomNumberEngine, __w, _UIntType>&)’
+ 1298 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.h:1298:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:877:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::uniform_int_distribution<_IntType>&)’
+  877 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:877:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:936:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::uniform_real_distribution<_IntType>&)’
+  936 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:936:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2133:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::cauchy_distribution<_RealType>&)’
+ 2133 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:998:5: note: candidate: ‘template<class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::bernoulli_distribution&)’
+  998 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:998:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1080:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::geometric_distribution<_IntType>&)’
+ 1080 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1080:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1737:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::exponential_distribution<_RealType>&)’
+ 1737 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1737:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2532:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::weibull_distribution<_RealType>&)’
+ 2532 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:2532:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2608:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::extreme_value_distribution<_RealType>&)’
+ 2608 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:2608:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:154:5: note: candidate: ‘template<class _UIntType, _UIntType __a, _UIntType __c, _UIntType __m, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::linear_congruential_engine<_UIntType, __a, __c, __m>&)’
+  154 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:154:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:476:5: note: candidate: ‘template<class _UIntType1, long unsigned int __w1, long unsigned int __n1, long unsigned int __m1, long unsigned int __r1, _UIntType1 __a1, long unsigned int __u1, _UIntType1 __d1, long unsigned int __s1, _UIntType1 __b1, long unsigned int __t1, _UIntType1 __c1, long unsigned int __l1, _UIntType1 __f1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::mersenne_twister_engine<_UIntType, __w, __n, __m, __r, __a, __u, __d, __s, __b, __t, __c, __l, __f>&)’
+  476 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:476:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:632:5: note: candidate: ‘template<class _UIntType, long unsigned int __w, long unsigned int __s, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::subtract_with_carry_engine<_UIntType, __w, __s, __r>&)’
+  632 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:632:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:702:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __p, long unsigned int __r, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::discard_block_engine<_RandomNumberEngine, __p, __r>&)’
+  702 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:702:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:831:5: note: candidate: ‘template<class _RandomNumberEngine, long unsigned int __k, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::shuffle_order_engine<_RandomNumberEngine, __k>&)’
+  831 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:831:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1195:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::negative_binomial_distribution<_IntType>&)’
+ 1195 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1195:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1406:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::poisson_distribution<_IntType>&)’
+ 1406 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1406:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1673:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::binomial_distribution<_IntType>&)’
+ 1673 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1673:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1904:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::normal_distribution<_RealType>&)’
+ 1904 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:1904:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/c++/9/bits/random.tcc:1973:5: note:   template argument deduction/substitution failed:
+  from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:1973:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::lognormal_distribution<_RealType>&)’
+ 1973 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/c++/9/bits/random.tcc:2046:5: note:   template argument deduction/substitution failed:
+  from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2046:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::chi_squared_distribution<_RealType>&)’
+ 2046 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2210:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::fisher_f_distribution<_RealType>&)’
+ 2210 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:2210:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2285:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::student_t_distribution<_RealType>&)’
+ 2285 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:2285:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/c++/9/bits/random.tcc:2454:5: note:   template argument deduction/substitution failed:
+  from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2454:5: note: candidate: ‘template<class _RealType1, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::gamma_distribution<_RealType>&)’
+ 2454 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2745:5: note: candidate: ‘template<class _IntType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::discrete_distribution<_IntType>&)’
+ 2745 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:2745:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+/usr/include/c++/9/bits/random.tcc:2969:5: note:   template argument deduction/substitution failed:
+  from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:2969:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::piecewise_constant_distribution<_RealType>&)’
+ 2969 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+In file included from /usr/include/c++/9/random:51,
+                 from enemy.h:6,
+                 from gamescene.h:10,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+/usr/include/c++/9/bits/random.tcc:3177:5: note: candidate: ‘template<class _RealType, class _CharT, class _Traits> std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const std::piecewise_linear_distribution<_RealType>&)’
+ 3177 |     operator<<(std::basic_ostream<_CharT, _Traits>& __os,
+      |     ^~~~~~~~
+/usr/include/c++/9/bits/random.tcc:3177:5: note:   template argument deduction/substitution failed:
+In file included from player.h:5,
+                 from gamescene.h:9,
+                 from mainwindow.h:10,
+                 from ui.cpp:6:
+ui.cpp:315:67: note:   ‘QDebug’ is not derived from ‘std::basic_ostream<_CharT, _Traits>’
+  315 |             pr("Ui: recording selected: " << paths[i].toStdString());
+      |                                                                   ^
+utils.h:13:34: note: in definition of macro ‘pr’
+   13 |     #define pr(_msg) qDebug() << _msg
+      |                                  ^~~~
+make[1]: *** [Makefile:567: ../ui.o] Error 1
+make: *** [Makefile:7: all] Error 2

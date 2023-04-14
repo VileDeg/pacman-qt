@@ -28,7 +28,7 @@ public:
     const Serializer* getSerializer() const { return &_serializer; }
 private:
     void startGame(QString mapPath, bool recorded, bool replayFromStart);
-    void sceneEnd(GameState);
+    void sceneEnd();
 
     void loadImages();
     void cleanup();

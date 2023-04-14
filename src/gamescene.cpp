@@ -238,7 +238,6 @@ void GameScene::parseMap(QString* inputStr)
             Enemy* enemy = nullptr;
             TileData t{ci, li, _tileWidth};
 
-            size_t seed;
             switch (cu)
             {
                 case 'T': //Target(door)

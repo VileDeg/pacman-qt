@@ -312,7 +312,6 @@ void WindowUI::onLoadRecordingMenuTriggered(QAction* act)
     auto paths = _path["rec"];
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            pr("Ui: recording selected: " << paths[i].toStdString());
             onGameStart(paths[i], true, true);
             return;
         }

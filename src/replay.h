@@ -63,7 +63,7 @@ private slots:
 
     void onStepTimeout();
 public:
-    Serializer(QObject* parent = nullptr) {}
+    Serializer(QObject* parent = nullptr);
     ~Serializer() {}
 
     void Init(GameScene* scene, QString filePath, bool recorded, bool replayFromStart);

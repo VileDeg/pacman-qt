@@ -1,3 +1,8 @@
+/** @file animatedsprite.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with animated sprite class definition.
+ */
+
 #include "animatedsprite.h"
 #include "utils.h"
 #include "gamescene.h"
@@ -120,9 +125,6 @@ void AnimatedSprite::Deserialize(QDataStream& stream) {
     stream >> _currentDir;
 };
 
-
-
-
 std::string AnimatedSprite::dir_to_str(MoveDir d) {
     switch (d) {
         case MoveDir::None: return "None";
@@ -133,8 +135,6 @@ std::string AnimatedSprite::dir_to_str(MoveDir d) {
     }
     return "None";
 }
-
-
 
 QDataStream& operator>>(QDataStream& stream, MoveDir& dir)
 {

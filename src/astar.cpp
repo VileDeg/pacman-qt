@@ -1,3 +1,9 @@
+/** @file astar.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with A* pathfinding algorithm implementation.
+ *  @details This file contains implementation of A* pathfinding algorithm.
+ */
+
 #include "astar.h"
 #include "gamescene.h"
 
