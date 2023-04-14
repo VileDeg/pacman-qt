@@ -1,0 +1,218 @@
+/mnt/c/dev/Qt/pacman-qt/src/gameview.h:14: warning: Compound GameView is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.cpp:139: warning: Member operator>>(QDataStream &stream, MoveDir &dir) (function) of file animatedsprite.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.cpp:147: warning: Member operator<<(QDataStream &stream, MoveDir &dir) (function) of file animatedsprite.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:16: warning: Member operator>>(QDataStream &stream, MoveDir &dir) (function) of file animatedsprite.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:17: warning: Member operator<<(QDataStream &stream, MoveDir &dir) (function) of file animatedsprite.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/main.cpp:15: warning: Member main(int argc, char *argv[]) (function) of file main.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/mainwindow.cpp:23: warning: Member CONNECT(_sender, _signal, _receiver, _slot) (macro definition) of file mainwindow.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.cpp:50: warning: Member operator>>(QDataStream &stream, SpriteType &dir) (function) of file sprite.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.cpp:58: warning: Member operator<<(QDataStream &stream, SpriteType &dir) (function) of file sprite.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:42: warning: Member operator>>(QDataStream &stream, SpriteType &dir) (function) of file sprite.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:43: warning: Member operator<<(QDataStream &stream, SpriteType &dir) (function) of file sprite.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/ui.cpp:15: warning: Member BTN_CREATE(_key, _name, _parent) (macro definition) of file ui.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/ui.cpp:18: warning: Member BTN_CONNECT(_recv, _slot) (macro definition) of file ui.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/ui.cpp:20: warning: Member SAVES_FOLDER (macro definition) of file ui.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/ui.cpp:21: warning: Member INTRO_STR (macro definition) of file ui.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.cpp:9: warning: Member loadPixmap(QString path) (function) of file utils.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.cpp:18: warning: Member setImageBrightness(QImage &img, int brightness) (function) of file utils.cpp is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:14: warning: Member DEBUG (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:16: warning: Member errpr(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:23: warning: Member pr(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:24: warning: Member vpr(_v) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:25: warning: Member v2pr(_v) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:28: warning: Member HHPR(_msg, _type, _file) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:29: warning: Member HPR(_msg, _type) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:30: warning: Member HPRINFO(_msg, _type) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:32: warning: Member PRERR(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:33: warning: Member PRWRN(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:34: warning: Member PRABRT(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:36: warning: Member PRINF(_msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:53: warning: Member TRAP() (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:57: warning: Member HASSERT(_x, _tru) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:58: warning: Member HASSERTMSG(_x, _tru, _msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:61: warning: Member ASSERT(_x) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:62: warning: Member ASSERTMSG(_x, _msg) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:64: warning: Member V2PR(_v) (macro definition) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:66: warning: Member loadPixmap(QString path) (function) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/utils.h:67: warning: Member setImageBrightness(QImage &img, int brightness) (function) of file utils.h is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:29: warning: Member AnimatedSprite(SpriteType type, TileData t, GameScene *parent) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:32: warning: Member setScene(GameScene *scene) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:33: warning: Member setSpriteByFrame(unsigned int frame) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:35: warning: Member setMoveDir(MoveDir dir) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:36: warning: Member action()=0 (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:38: warning: Member Serialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:39: warning: Member Deserialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:53: warning: Member Sprite(SpriteType type, TileData t, QObject *parent=0) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:56: warning: Member getTilePos() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:57: warning: Member getType() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:59: warning: Member setPen(QPen pen) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:60: warning: Member setBrush(QBrush brush) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:61: warning: Member setImage(QImage *image) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:63: warning: Member Serialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:64: warning: Member Deserialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:42: warning: Member onTileOverlap()=0 (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:43: warning: Member loadAnimationFrames()=0 (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:45: warning: Member moveUp() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:46: warning: Member moveLeft() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:47: warning: Member moveDown() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:48: warning: Member moveRight() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:50: warning: Member loadAnimationFrame(MoveDir dir, QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:51: warning: Member initAnimation(QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:52: warning: Member processMovement() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:53: warning: Member scanAround() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:54: warning: Member updatePosition() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:67: warning: Member paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:68: warning: Member boundingRect() const override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:56: warning: Member dir_to_str(MoveDir d) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:59: warning: Member _scene (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:60: warning: Member _currentDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:61: warning: Member _nextDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:70: warning: Member _type (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:71: warning: Member _t (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:73: warning: Member _pen (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:74: warning: Member _brush (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:75: warning: Member _spriteImage (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/astar.h:49: warning: Member Astar(GameScene *scene, QSize mapSize) (function) of class Astar is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/astar.h:61: warning: Member print() (function) of class Astar is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/enemy.h:23: warning: Member Enemy(TileData t, size_t seed, GameScene *parent) (function) of class Enemy is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/enemy.h:26: warning: Member action() override (function) of class Enemy is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/enemy.h:27: warning: Member onTileOverlap() override (function) of class Enemy is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/enemy.h:29: warning: Member setRandomNextDir() (function) of class Enemy is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:29: warning: Member AnimatedSprite(SpriteType type, TileData t, GameScene *parent) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:32: warning: Member setScene(GameScene *scene) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:33: warning: Member setSpriteByFrame(unsigned int frame) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:35: warning: Member setMoveDir(MoveDir dir) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:38: warning: Member Serialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:39: warning: Member Deserialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:53: warning: Member Sprite(SpriteType type, TileData t, QObject *parent=0) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:56: warning: Member getTilePos() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:57: warning: Member getType() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:59: warning: Member setPen(QPen pen) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:60: warning: Member setBrush(QBrush brush) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:61: warning: Member setImage(QImage *image) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:63: warning: Member Serialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:64: warning: Member Deserialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:45: warning: Member moveUp() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:46: warning: Member moveLeft() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:47: warning: Member moveDown() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:48: warning: Member moveRight() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:50: warning: Member loadAnimationFrame(MoveDir dir, QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:51: warning: Member initAnimation(QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:52: warning: Member processMovement() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:53: warning: Member scanAround() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:54: warning: Member updatePosition() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:67: warning: Member paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:68: warning: Member boundingRect() const override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:56: warning: Member dir_to_str(MoveDir d) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:59: warning: Member _scene (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:60: warning: Member _currentDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:61: warning: Member _nextDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:70: warning: Member _type (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:71: warning: Member _t (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:73: warning: Member _pen (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:74: warning: Member _brush (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:75: warning: Member _spriteImage (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:45: warning: Member gameStateChanged(GameState ged) (signal) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:56: warning: Member GameScene(QString filePath, int viewWidth, bool replay, std::unordered_map< SpriteType, QImage > &pixmapCache, QObject *parent=0) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:60: warning: Member getGameState() (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:62: warning: Member playerInteract(int x, int y, bool *win) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:63: warning: Member collideWithEnemy(QPoint playerPos, bool *died) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:64: warning: Member canMoveTo(int x, int y) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:66: warning: Member parseMap(QString *inputStr) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:67: warning: Member getMapString() (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:68: warning: Member setMapString(QString mapString) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:70: warning: Member onKeyPress(QKeyEvent *event) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:71: warning: Member onMousePress(QMouseEvent *event, QPointF localPos) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:73: warning: Member Serialize(QDataStream &stream) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gamescene.h:74: warning: Member Deserialize(QDataStream &stream) (function) of class GameScene is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:52: warning: Member sizeOf() (function) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:34: warning: Member gameOver (variable) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:36: warning: Member win (variable) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:37: warning: Member score (variable) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:38: warning: Member steps (variable) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:40: warning: Member operator<<(QDataStream &stream, const GameState &data) (friend) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:46: warning: Member operator>>(QDataStream &stream, GameState &data) (friend) of class GameState is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/gameview.h:16: warning: Member GameView(QWidget *parent=0) (function) of class GameView is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:23: warning: Member Serialize(QDataStream &stream)=0 (function) of class ISerializable is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:24: warning: Member Deserialize(QDataStream &stream)=0 (function) of class ISerializable is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/mainwindow.h:39: warning: Member MainWindow(ErrorCallback errorCallback, QWidget *parent=0) (function) of class MainWindow is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/mainwindow.h:42: warning: Member getSerializer() const (function) of class MainWindow is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/astar.h:25: warning: Member x (variable) of class Node is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/astar.h:26: warning: Member y (variable) of class Node is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/astar.h:36: warning: Member operator<<(std::ostream &os, const Node &n) (friend) of class Node is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:23: warning: Member tileOverlapped() (signal) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:26: warning: Member Player(TileData t, GameScene *parent) (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:29: warning: Member action() override (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:30: warning: Member onTileOverlap() override (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:31: warning: Member setMoveDir(MoveDir dir) override (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:33: warning: Member setMouseClickPath(std::vector< QPoint > path) (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:34: warning: Member getTileOverlapped() (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/player.h:36: warning: Member getTilePos() (function) of class Player is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:29: warning: Member AnimatedSprite(SpriteType type, TileData t, GameScene *parent) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:32: warning: Member setScene(GameScene *scene) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:33: warning: Member setSpriteByFrame(unsigned int frame) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:38: warning: Member Serialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:39: warning: Member Deserialize(QDataStream &stream) override (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:53: warning: Member Sprite(SpriteType type, TileData t, QObject *parent=0) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:56: warning: Member getTilePos() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:57: warning: Member getType() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:59: warning: Member setPen(QPen pen) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:60: warning: Member setBrush(QBrush brush) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:61: warning: Member setImage(QImage *image) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:63: warning: Member Serialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:64: warning: Member Deserialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:45: warning: Member moveUp() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:46: warning: Member moveLeft() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:47: warning: Member moveDown() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:48: warning: Member moveRight() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:50: warning: Member loadAnimationFrame(MoveDir dir, QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:51: warning: Member initAnimation(QString path) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:52: warning: Member processMovement() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:53: warning: Member scanAround() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:54: warning: Member updatePosition() (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:67: warning: Member paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:68: warning: Member boundingRect() const override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:56: warning: Member dir_to_str(MoveDir d) (function) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:59: warning: Member _scene (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:60: warning: Member _currentDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/animatedsprite.h:61: warning: Member _nextDir (variable) of class AnimatedSprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:70: warning: Member _type (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:71: warning: Member _t (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:73: warning: Member _pen (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:74: warning: Member _brush (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:75: warning: Member _spriteImage (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:22: warning: Member StepByStep (variable) of class ReplayFlags is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:23: warning: Member OneStep (variable) of class ReplayFlags is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:24: warning: Member Forward (variable) of class ReplayFlags is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:25: warning: Member Paused (variable) of class ReplayFlags is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:69: warning: Member onGameStateChanged(GameState) (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:71: warning: Member toggleReplayPaused() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:72: warning: Member toggleReplayDir() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:73: warning: Member toggleReplayMode() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:75: warning: Member replayStepNext() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:76: warning: Member replayStepBack() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:78: warning: Member replayJumpToStart() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:79: warning: Member replayJumpToEnd() (slot) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:66: warning: Member replayFlagsChanged(ReplayFlags) (signal) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:67: warning: Member gameStateChanged(GameState) (signal) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:86: warning: Member Serializer(QObject *parent=nullptr) (function) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/replay.h:89: warning: Member Init(GameScene *scene, QString filePath, bool recorded, bool replayFromStart) (function) of class Serializer is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:53: warning: Member Sprite(SpriteType type, TileData t, QObject *parent=0) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:56: warning: Member getTilePos() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:57: warning: Member getType() (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:59: warning: Member setPen(QPen pen) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:60: warning: Member setBrush(QBrush brush) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:61: warning: Member setImage(QImage *image) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:63: warning: Member Serialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:64: warning: Member Deserialize(QDataStream &stream) (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:67: warning: Member paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:68: warning: Member boundingRect() const override (function) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:70: warning: Member _type (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:71: warning: Member _t (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:73: warning: Member _pen (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:74: warning: Member _brush (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:75: warning: Member _spriteImage (variable) of class Sprite is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:32: warning: Member x (variable) of class TileData is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:33: warning: Member y (variable) of class TileData is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/sprite.h:34: warning: Member width (variable) of class TileData is not documented.
+/mnt/c/dev/Qt/pacman-qt/src/ui.h:43: warning: Member WindowUI(MainWindow *mainWindow) (function) of class WindowUI is not documented.

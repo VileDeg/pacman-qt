@@ -1,3 +1,9 @@
+/** @file ui.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with definition of window UI class.
+ *  @details This file contains definition of window UI class.
+ */
+
 #include <QMenuBar>
 #include <QDirIterator>
 

@@ -1,3 +1,9 @@
+/** @file utils.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with utility function definition.
+ *  @details This file contains utility function definition.
+ */
+
 #include "utils.h"
 
 QImage loadPixmap(QString path)

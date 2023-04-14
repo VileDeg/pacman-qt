@@ -1,3 +1,9 @@
+/** @file utils.h
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with utility macros and utility function declaration.
+ *  @details This file contains utility macros and utility function declaration.
+ */
+
 #ifndef UTILS_H
 #define UTILS_H
 

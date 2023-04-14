@@ -1,3 +1,9 @@
+/** @file player.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with player class definition.
+ *  @details This file contains player class definition.
+ */
+
 #include "player.h"
 #include "utils.h"
 #include "gamescene.h"

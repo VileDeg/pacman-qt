@@ -32,8 +32,8 @@ private:
     void loadAnimationFrames() override;
 
 private:
-    size_t _seed;
-    std::mt19937 _generator;
+    size_t _seed = 0; /**< Seed for random number generator. */
+    std::mt19937 _generator; /**< Random number generator. */
 };
 
 #endif // ENEMY_H

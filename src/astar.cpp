@@ -30,7 +30,6 @@ void Astar::init()
     memset(_asMap, 0, sizeof(Node*) * _mapSize.width());
     for (int i = 0; i < _mapSize.width(); ++i) {
         _asMap[i] = new Node[_mapSize.height()];
-        //memset(_asMap[i], 0, sizeof(Node) * _mapSize.height());
 
         for (int j = 0; j < _mapSize.height(); ++j) {
             _asMap[i][j] = {};
@@ -77,7 +76,7 @@ std::vector<QPoint> Astar::findPath(QPoint start, QPoint end)
     }
     init();
 
-    //Find shortest path from start to end in _map using A* algorithm
+    //Find shortest path from start to end in using A* algorithm
     std::vector<Node*> open{}, closed{};
     open.push_back(&_asMap[start.x()][start.y()]);
 
@@ -86,7 +85,7 @@ std::vector<QPoint> Astar::findPath(QPoint start, QPoint end)
 
     while (true) {
         if (iteration > maxIterations) {
-            std::cout << "Max iterations reached. Path not found." << std::endl;
+            errpr("Max iterations reached. Path not found.");
             break;
         }
 
@@ -102,7 +101,7 @@ std::vector<QPoint> Astar::findPath(QPoint start, QPoint end)
         );
 
         if (it == open.end()) { //No path found
-            std::cout << "Open list is empty. Path not found. Iteration: " << iteration << std::endl;
+            errpr("Open list is empty. Path not found. Iteration: " << iteration);
             break;
         }
         Node* curr = *it;
@@ -113,7 +112,6 @@ std::vector<QPoint> Astar::findPath(QPoint start, QPoint end)
         closed.push_back(curr);
         //If curr is the end node, we are done
         if (curr->x == end.x() && curr->y == end.y()) {
-            std::cout << "Path found in " + std::to_string(iteration) + " iterations\n";
             break;
         }
 
@@ -153,19 +151,19 @@ std::vector<QPoint> Astar::findPath(QPoint start, QPoint end)
         ++iteration;
     }
 
+    // Reconstruct path
     std::deque<Node*> path{};
     Node* curr = &_asMap[end.x()][end.y()];
     while (curr) {
         path.push_front(curr);
         curr = curr->parent;
     }
+
+    // Convert path to QPoint vector
     std::vector<QPoint> pathPoints{};
-    std::cout << "Path: ";
     for (auto node : path) {
-        std::cout << *node;
         pathPoints.push_back(QPoint(node->x, node->y));
     }
-    std::cout << std::endl;
     return pathPoints;
 }
 

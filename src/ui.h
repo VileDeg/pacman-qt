@@ -1,3 +1,10 @@
+/** @file ui.h
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with declration of window UI class.
+ *  @details This file contains declration of window UI class.
+ *  Every UI element in project was created manually. Qt Designer was not used at all.
+ */
+
 #ifndef UI_H
 #define UI_H
 
@@ -13,6 +20,11 @@
 
 class MainWindow;
 
+/**
+ * @brief Window UI class.
+ * @details This class is responsible for window UI.
+ * It contains all UI elements and is responsible for their layout. 
+ */
 class WindowUI : public QWidget {
     Q_OBJECT
 
@@ -47,19 +59,19 @@ private:
     void onGameEnd(GameState);
     
 private:
-    std::unordered_map<std::string, QLabel*> labels;
-    std::unordered_map<std::string, QPushButton*> buttons;
-    std::unordered_map<std::string, QBoxLayout*> layouts;
-    std::unordered_map<std::string, QMenu*> menus;
-    std::unordered_map<std::string, QVector<QAction*>> actions;
-    std::unordered_map<std::string, QWidget*> centrals;
+    std::unordered_map<std::string, QLabel*> labels = {};
+    std::unordered_map<std::string, QPushButton*> buttons = {};
+    std::unordered_map<std::string, QBoxLayout*> layouts = {};
+    std::unordered_map<std::string, QMenu*> menus = {};
+    std::unordered_map<std::string, QVector<QAction*>> actions = {};
+    std::unordered_map<std::string, QWidget*> centrals = {};
 
-    QGraphicsView* view;
+    QGraphicsView* view = nullptr;
     QString currentMapName;
 
-    MainWindow* _mainWindow;
+    MainWindow* _mainWindow = nullptr;
     GameState _state;
-    std::unordered_map<std::string, QVector<QString>> _path;
+    std::unordered_map<std::string, QVector<QString>> _path = {};
 
     friend class MainWindow;
 };

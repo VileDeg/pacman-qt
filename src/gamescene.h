@@ -31,6 +31,8 @@ class GameScene : public QGraphicsScene, public ISerializable
 private:
     /**
      * @brief Structure with all scene timers.
+     * @details This structure contains all timers used for controling game events,
+     * such as player movement/animation, enemy movement/animation.
      */
     struct GameTimers {
         QTimer* player, *playerAnim, *enemies, *enemiesAnim;
@@ -47,8 +49,8 @@ signals:
     void gameStateChanged(GameState ged);
 
 private slots:
-    void playerHandler();
-    void enemiesHandler();
+    void playerHandler(); /**< Player movement and interaction handler. */
+    void enemiesHandler(); /**< Enemies movement and interaction handler. */
 
     void playerAnimHandler();
     void enemiesAnimHandler();
@@ -61,14 +63,13 @@ public:
     
     GameState getGameState() { return _state; }
 
-    void playerInteract(int x, int y, bool* win);
+    void playerInteract(int x, int y, bool* win); /**< Player interaction with map. */
     void collideWithEnemy(QPoint playerPos, bool* died);
-    bool canMoveTo(int x, int y);
-    
+    bool canMoveTo(int x, int y); /**< Check if player can move to tile. */
+
     void parseMap(QString* inputStr);
     QString getMapString() { return _mapString; }
     void setMapString(QString mapString) { _mapString = mapString; }
-    
 
     void onKeyPress(QKeyEvent* event);
     void onMousePress(QMouseEvent* event, QPointF localPos);
@@ -77,41 +78,41 @@ public:
     void Deserialize(QDataStream& stream);
 private:
     void setPlayerScore(int score);
-    Sprite* addSprite(SpriteType type, int li, int ci);
-    void makeEmptyAt(int li, int ci);
-    
+    Sprite* addSprite(SpriteType type, int li, int ci); /**< Add sprite to map. */
+    void makeEmptyAt(int li, int ci); /**< Make tile empty. */
+     
     void playerSendToTile(QPoint tilePos);
     
     void loadFromMap(QString mapPath);
     void endGame(bool win);
     void setAppearence();
 private:
-    Astar* _astar = nullptr;
+    Astar* _astar = nullptr; /**< Astar object for pathfinding. */
 
-    QString _mapString;
-    QSize _mapSize; //In tiles
+    QString _mapString = ""; /**< Map text contents. */
+    QSize _mapSize = {0,0}; /**< Map size (in tiles) */
 
-    int _viewWidth;
-    int _tileWidth; //Will be set according on map dimensions
+    int _viewWidth = 0;
+    int _tileWidth = 0; /**< Is set according to map dimensions */
 
     bool _replay = false;
     GameState _state;
-    int _ballPoints = 10;
+    int _ballPoints = 10; /**< Score points for collecting a ball. */
 
     qint64 _playerAnimFrame = 0;
     qint64 _enemiesAnimFrame = 0;
 
     bool _keyFound = false;
 
-    GameTimers _timer;
+    GameTimers _timer = {}; /**< Player and enemy timers. */
   
-    QPoint _tileClicked{ -1,-1 };
-    QPoint _doorPos;
+    QPoint _tileClicked{ -1,-1 }; /**< Tile clicked by mouse. */
+    QPoint _doorPos; /**< Door position. */
   
     QVector<Enemy*> _enemies{};
-    std::unordered_map<SpriteType, QImage>& _pixmapCache;
+    std::unordered_map<SpriteType, QImage>& _pixmapCache; /**< Cache of all loaded images (passed from main window). */
 
-    Sprite*** _map = nullptr;
+    Sprite*** _map = nullptr; /**< Map of sprites (doesn't contain player and enemies). */
     Player* _player = nullptr;
 };
 

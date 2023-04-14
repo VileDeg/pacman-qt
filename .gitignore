@@ -364,4 +364,5 @@ FodyWeavers.xsd
 
 *.o
 .qmake.stash
-doc/
+doc/*
+xgonce00.zip

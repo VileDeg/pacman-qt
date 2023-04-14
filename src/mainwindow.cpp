@@ -1,3 +1,9 @@
+/** @file mainwindow.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with window class definition.
+ *  @details This file contains main window class definition.
+ */
+
 #include <QGraphicsScene>
 
 #include <QTimer>

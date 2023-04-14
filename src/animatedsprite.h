@@ -1,4 +1,4 @@
-/** @file animatedsprite.sh
+/** @file animatedsprite.h
  *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
  *  @brief File with animated sprite class declaration.
  */
@@ -29,11 +29,11 @@ public:
     explicit AnimatedSprite(SpriteType type, TileData t, GameScene* parent);
     ~AnimatedSprite() {}
 
-    void setScene(GameScene* scene) { _scene = scene; }
-    void setSpriteByFrame(unsigned int frame);
-
     virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
     virtual void action() = 0;
+
+    void setScene(GameScene* scene) { _scene = scene; }
+    void setSpriteByFrame(unsigned int frame); /**< Set animation image by frame number. */
 
     void Serialize(QDataStream& stream) override;
     void Deserialize(QDataStream& stream) override;
@@ -48,24 +48,24 @@ protected:
     void moveRight() { setPos(x() + 1, y()); }
     
     void loadAnimationFrame(MoveDir dir, QString path);
-    void initAnimation(QString path);
-    void processMovement();
-    void scanAround();
-    void updatePosition();
+    void initAnimation(QString path); /**< Load animation frames from file. */
 
-    static std::string dir_to_str(MoveDir d);
+    void processMovement(); /**< Set current direction and move based on it. */
+    void scanAround(); /**< Check for walkable tiles around. */
+    void updatePosition(); /**< Update tile position and remaining pixels. */
+
+    static std::string dir_to_str(MoveDir d); /**< Convert direction to string. */
   
 protected:
-
-    GameScene* _scene;
+    GameScene* _scene = nullptr;
     MoveDir _currentDir = MoveDir::None;
     MoveDir _nextDir = MoveDir::None;
-    QPoint _remPixels{0,0};
-    bool _aroundFree[4]{}; //WASD
+    QPoint _remPixels = {0,0}; /**< Remaining pixels to reach the next tile */
+    bool _aroundFree[4] = {}; /**< Up, Left, Down, Right */
+
 private:
     QString _animPath = "sprites/";
-
-    std::unordered_map<MoveDir, std::vector<QImage>> _animation{};
+    std::unordered_map<MoveDir, std::vector<QImage>> _animation = {};
 };
 
 #endif // ANIMATEDSPRITE_H

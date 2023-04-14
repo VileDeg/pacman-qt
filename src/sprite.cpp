@@ -1,3 +1,9 @@
+/** @file sprite.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with definition of sprite class.
+ *  @details This file contains definition of sprite class.
+ */
+
 #include "sprite.h"
 #include "utils.h"
 

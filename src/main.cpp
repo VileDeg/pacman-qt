@@ -1,3 +1,11 @@
+/** @file main.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief Program entry point.
+ *  @details This file contains main function definition.
+ *  Main function is only responsible for creating QT application and main window class.
+ *  An error callback is passed to main window class, to handle errors that occur during construction.
+ */
+
 #include <QApplication>
 #include <QString>
 

@@ -22,14 +22,14 @@ class GameScene;
  * It contains information about position, g, h, f values, parent node and neighbours.
  */
 struct Node {
-    int x;
-    int y;
-    int g; /**< Distance(in tiles) from start. */
-    int h; /**< Heuristic(real distance to target). */
-    int f; /**< Sum of 'g' and 'h'. */
-    bool isWall; /**< Is the node walkable? */
-    Node* parent; /**< Node from which this node was opened. */
-    std::vector<Node*> nbs;
+    int x = 0;
+    int y = 0;
+    int g = 0; /**< Distance(in tiles) from start. */
+    int h = 0; /**< Heuristic(real distance to target). */
+    int f = 0; /**< Sum of 'g' and 'h'. */
+    bool isWall = false; /**< Is the node walkable? */
+    Node* parent = nullptr; /**< Node from which this node was opened. */
+    std::vector<Node*> nbs = {}; /**< Neighbours of this node. */
 
     Node() : x(0), y(0), g(0), h(0), f(0), isWall(false), parent(nullptr) {}
 
@@ -49,6 +49,13 @@ public:
     Astar(GameScene* scene, QSize mapSize);
     ~Astar();
 
+    /**
+     * @brief Find path from player to mouse click position.
+     * 
+     * @param start Player position.
+     * @param end Mouse click position.
+     * @return std::vector<QPoint> 
+     */
     std::vector<QPoint> findPath(QPoint start, QPoint end);
 
     void print();
@@ -59,9 +66,9 @@ private:
 private:
     bool _initialized = true;
 
-    GameScene* _scene;
-    Node** _asMap;
-    QSize _mapSize; //In tiles
+    GameScene* _scene = nullptr;
+    Node** _asMap = nullptr; /**< Map of nodes */
+    QSize _mapSize = {0,0}; /**< Map size (in tiles) */
 };
 
 #endif // ASTAR_H

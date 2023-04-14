@@ -1,3 +1,11 @@
+/** @file gamescene.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with game scene class definition.
+ *  @details This file contains definition for game scene class.
+ *  When game scene is created in normal mode, it loads the game map and initializes all game objects.
+ *  In replay mode, the scene serves mainly as a container for game objects.
+ */
+
 #include "gamescene.h"
 
 #include <QKeyEvent>
@@ -127,9 +135,9 @@ void GameScene::playerInteract(int x, int y, bool* end)
         setPlayerScore(_state.score + _ballPoints);
         break;
     case SpriteType::Key:
-        makeEmptyAt(x, y); //Key -> Empty
-        makeEmptyAt(_doorPos.x(), _doorPos.y()); //Lock -> Empty
-        addSprite(SpriteType::Door, _doorPos.x(), _doorPos.y()); //Empty -> Door
+        makeEmptyAt(x, y); // Key -> Empty
+        makeEmptyAt(_doorPos.x(), _doorPos.y()); // Lock -> Empty
+        addSprite(SpriteType::Door, _doorPos.x(), _doorPos.y()); // Empty -> Door
         break;
     case SpriteType::Door:
         makeEmptyAt(x, y);
@@ -142,16 +150,16 @@ void GameScene::playerInteract(int x, int y, bool* end)
     }
 }
 
-void GameScene::collideWithEnemy(QPoint playerPos, bool * died)
+void GameScene::collideWithEnemy(QPoint playerPos, bool* died)
 {
-    //Check for collision with enemies
+    // Check for collision with enemies
     for (auto enemy : _enemies) {
 
         float dst = QVector2D(enemy->pos()).distanceToPoint(QVector2D(playerPos));
-        if (dst < _tileWidth/2) {
+        if (dst < _tileWidth / 2) {
             endGame(false);
             *died = true;
-            break; //Without break will crash!
+            break; // Without break will crash!
         }
     }
 }
@@ -160,9 +168,11 @@ Sprite* GameScene::addSprite(SpriteType type, int ci, int li)
 {
     TileData t{ ci, li, _tileWidth };
     Sprite* tmp = new Sprite(type, t);
+
     addItem(tmp);
     _map[ci][li] = tmp;
     tmp->setImage(&_pixmapCache[type]);
+
     return tmp;
 }
 
@@ -170,8 +180,10 @@ void GameScene::makeEmptyAt(int x, int y)
 {
     auto sprite = _map[x][y];
     ASSERT(sprite != nullptr);
+
     removeItem(sprite);
     delete sprite;
+
     addSprite(SpriteType::Empty, x, y);
 }
 
@@ -181,6 +193,7 @@ void GameScene::parseMap(QString* inputStr)
 
     QString dimLine = in.readLine();
     QStringList tks = dimLine.split(" ");
+    
     if (tks.size() != 2) {
         throw std::runtime_error("Invalid map dimensions(wrong number of values). Line is: " + dimLine.toStdString());
     }
@@ -192,12 +205,14 @@ void GameScene::parseMap(QString* inputStr)
     catch (std::exception&) {
         throw std::runtime_error("Invalid map dimensions(failed to convert)");
     }
-    int wFull = width + 2;
+
+    // Width and height with borders
+    int wFull = width + 2; 
     int hFull = height + 2;
 
     _tileWidth = (float)_viewWidth / std::max(wFull, hFull);
 
-    { //Allocate map array
+    { // Allocate map array
         _mapSize = { wFull, hFull };
         _map = new Sprite **[_mapSize.width()];
         for (int i = 0; i < _mapSize.width(); i++) {
@@ -207,12 +222,12 @@ void GameScene::parseMap(QString* inputStr)
         }
     }
     
-    { //Draw borders
-        for (int ci = 0; ci < width + 2; ++ci) { //Top and bottom border
+    { // Add border walls
+        for (int ci = 0; ci < width + 2; ++ci) { // Top and bottom border
             addSprite(SpriteType::Wall, ci, 0);
             addSprite(SpriteType::Wall, ci, height+1);
         }
-        for (int li = 1; li < height + 1; ++li) { //Left and right border
+        for (int li = 1; li < height + 1; ++li) { // Left and right border
             addSprite(SpriteType::Wall, 0, li);
             addSprite(SpriteType::Wall, width+1, li);
         }
@@ -220,7 +235,7 @@ void GameScene::parseMap(QString* inputStr)
 
     bool targetInMap = false;
     bool playerInMap = false;
-    bool keyInMap = false;
+    bool keyInMap    = false;
     for (int li = 1; li < _mapSize.height()-1; ++li) { //Lines
         if (in.atEnd()) {
             throw std::runtime_error("Too few lines in map");
@@ -232,7 +247,6 @@ void GameScene::parseMap(QString* inputStr)
         }
 
         for (int ci = 1; ci < _mapSize.width()-1; ++ci) { //Columns
-
             char cu = line[ci-1].unicode();
 
             Enemy* enemy = nullptr;
@@ -285,7 +299,7 @@ void GameScene::parseMap(QString* inputStr)
 
     if (!targetInMap || !playerInMap) {
         std::string errmsg = "";
-        errmsg += !targetInMap ? "target not found in map" : "";
+        errmsg += !targetInMap ? "target not found in map " : "";
         errmsg += !playerInMap ? "player not found in map" : "";
         throw std::runtime_error(errmsg);
     }
@@ -302,16 +316,15 @@ void GameScene::loadFromMap(QString mapPath)
     if (!f.open(QIODevice::ReadOnly)) {
         throw std::runtime_error("Could not open file");
     }
+
     QTextStream in(&f);
     _mapString = in.readAll();
     f.close();
-    //PRINF("Normal loading: " << _mapString.toStdString());
 
     parseMap(&_mapString);
 
     _astar = new Astar(this, _mapSize);
 }
-
 
 void GameScene::endGame(bool win)
 {
@@ -321,8 +334,6 @@ void GameScene::endGame(bool win)
     _state.gameOver = true;
     emit gameStateChanged(_state);
 }
-
-
 
 void GameScene::onKeyPress(QKeyEvent* event)
 {
@@ -364,7 +375,6 @@ void GameScene::onMousePress(QMouseEvent* event, QPointF localPos)
         playerSendToTile(tPos);
     }
 }
-
 
 void GameScene::Serialize(QDataStream& stream)
 {

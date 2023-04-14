@@ -1,3 +1,9 @@
+/** @file replay.cpp
+ *  @author Vadim Goncearenco <xgonce00@stud.fit.vutbr.cz>
+ *  @brief File with serializer class definition.
+ *  @details This file contains serializer class definition.
+ */
+
 #include "replay.h"
 #include "gamescene.h"
 
@@ -21,26 +27,28 @@ void Serializer::Init(GameScene* scene, QString mapPath, bool recorded, bool rep
         throw std::runtime_error("Error opening file: " + _file.fileName().toStdString() + ": " + _file.errorString().toStdString());
     }
     _stream.setDevice(&_file);
+
     if (!recorded) { // Game wasn't recorded so we need to record it
         connect(_serializationTimer, SIGNAL(timeout()), this, SLOT(onSerialize()));
 
         _stream << _scene->getMapString();
     } else { // Replay game
-        _rf = ReplayFlags(); // Reset replay flags
         connect(_serializationTimer, SIGNAL(timeout()), this, SLOT(onDeserialize()));
 
-        qint64 pos = _file.pos();
+        _rf = ReplayFlags(); // Reset replay flags
+
+        qint64 pos = _file.pos(); // Save current position in file
         QString mapString;
 
-        _stream >> mapString;
+        _stream >> mapString; // Read map contens from file
         _scene->setMapString(mapString);
 
-        auto diff = _file.pos() - pos;
-        _filePosFrameDataStart = pos + diff;
+        auto diff = _file.pos() - pos; // Calculate difference between current position and start
 
-        _filePosFrameDataEnd = _file.size() - GameState::sizeOf();
+        _filePosFrameDataStart = pos + diff; // Calculate start of frame (game state and scene) data
+        _filePosFrameDataEnd = _file.size() - GameState::sizeOf(); // Calculate end of frame (game state and scene) data
 
-        _scene->parseMap(&mapString);
+        _scene->parseMap(&mapString); // Load map from string
 
         { // Read first frame to determine it's size
             pos = _file.pos();
@@ -51,7 +59,8 @@ void Serializer::Init(GameScene* scene, QString mapPath, bool recorded, bool rep
             _file.seek(_file.pos() - _frameDataSize); // Go back to start of frame data
         }
 
-        replayJumpTo(replayFromStart);
+        // Jump to start of replay based on replay start point (start or end)
+        replayJumpTo(replayFromStart); 
     }
     _serializationTimer->start(0);
     _serializationTimer->stop();
@@ -62,6 +71,7 @@ void Serializer::onSerialize()
 {
     ASSERT(_scene != nullptr);
 
+    // Write game state and scene to file
     GameState gs = _scene->getGameState();
     _stream << gs;
     if (gs.gameOver) {
@@ -78,31 +88,35 @@ void Serializer::onDeserialize()
 {
     ASSERT(_scene != nullptr);
     
+    // If replay is paused, wait for unpause
     if (_rf.Paused) {
         return;
     }
 
+    // If replay by step is enabled, wait for step
     if (_rf.OneStep || _rf.StepByStep) {
-        
+        // A step is several frames long so we need to move file pointer to the end of step        
         qint64 seekPos = _file.pos();
-        if (_rf.Forward) {
+        if (_rf.Forward) { // If replay is forward, move file pointer further
             seekPos += _framesPerStep * _frameDataSize;
             while (seekPos >= _file.size()) {
                 seekPos -= _frameDataSize;
             }
-
-        } else {
+        } else { // If replay is backward, move file pointer back
             seekPos -= _framesPerStep * _frameDataSize;
             while (seekPos < _filePosFrameDataStart) {
                 seekPos += _frameDataSize;
             }
         }
         ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
-        _file.seek(seekPos);
-        _rf.Paused = true;
-        if (_rf.StepByStep) {
+
+        _file.seek(seekPos); // Move file pointer
+        // Pause replay until step button is clicked or step timer times out
+        _rf.Paused = true; 
+        if (_rf.StepByStep) { // If step by step is enabled, start step timer
             _stepTimer->start(_stepInterval);
         }
+    // If not replay by step and replay backward is enabled, move file pointer back by one frame
     } else if (!_rf.Forward) {
         qint64 seekPos = _file.pos() - _frameDataSize;
         if (seekPos >= _filePosFrameDataStart) {
@@ -111,10 +125,12 @@ void Serializer::onDeserialize()
         }
     }
 
+    // Read frame data (game state and scene) from file
+
     GameState gs;
     _stream >> gs;
     emit gameStateChanged(gs);
-    
+    // If it is the last frame, end replay
     if (gs.gameOver) {
         _serializationTimer->stop();
         _file.flush();
@@ -126,15 +142,16 @@ void Serializer::onDeserialize()
 
     _scene->Deserialize(_stream);
     
+    // If replay backward is enabled, move file pointer back
     if (!_rf.Forward) {
-        if (_rf.OneStep) {
+        if (_rf.OneStep) { // If replay by step is enabled, move file pointer back by one step
             qint64 seekPos = _file.pos() - _framesPerStep * _frameDataSize;
             while (seekPos < _filePosFrameDataStart) {
                 seekPos += _frameDataSize;
             }
             ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
             _file.seek(seekPos);
-        } else {
+        } else { // Else move file pointer back by one frame
             qint64 seekPos = _file.pos() - _frameDataSize;
             if (seekPos >= _filePosFrameDataStart) {
                 ASSERTMSG(seekPos >= 0 && seekPos < _file.size(), "Invalid position in file");
