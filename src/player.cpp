@@ -11,7 +11,7 @@
 Player::Player(TileData t, GameScene* parent)
     :AnimatedSprite(SpriteType::Player, t, parent)
 {
-    initAnimation(":/sprites/player/");
+    initAnimation("sprites/player/");
 }
 
 void Player::setMoveDir(MoveDir dir) {
@@ -41,7 +41,7 @@ void Player::setDirTo(QPoint to) {
     }
 }
 
-void Player::action(bool isGameReplayed) //TODO: remove arguments
+void Player::action() //TODO: remove arguments
 {
     bool overlapPrev = _tileOverlapped;
     _tileOverlapped = false; // Reset tile overlap flag

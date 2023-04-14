@@ -11,10 +11,11 @@
 
 #define BTN_CONNECT(_recv, _slot) connect(b, SIGNAL(clicked()), _recv, SLOT(_slot))
 
+#define SAVES_FOLDER "examples/"
 #define INTRO_STR\
     "How to play:\n"\
     "You can load a map by clicking the button below.\n"\
-    "These are the maps from \"saves/\" folder.\n"\
+    "These are the maps from \"" SAVES_FOLDER "\" folder.\n"\
     "After the game ends, you can replay it.\n\n"\
     "You can also load a map or a recording from the \"File\" menu above."
 
@@ -64,22 +65,35 @@ void WindowUI::initActions()
     {
         actions["map"].clear();
         _path["map"].clear();
-       
-        QDirIterator it("examples/", { "*.txt" }, QDir::Files, QDirIterator::Subdirectories);
+
+        QDirIterator it("examples/", { "*.txt" }, QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (it.hasNext()) {
-            QAction* act = new QAction(it.fileInfo().fileName(), this);
+            QString filePath = it.next();
+            if (filePath.isEmpty()) {
+                qDebug() << "Empty file path!";
+                continue;
+            }
+            // Do something with the file
+            QAction* act = new QAction(it.fileName(), this);
             actions["map"].append(act);
-            _path["map"].append(it.filePath());
+            _path["map"].append(filePath);
         }
     }
     {
         actions["rec"].clear();
         _path["rec"].clear();
-        QDirIterator it("saves/", { "*.bin" }, QDir::Files, QDirIterator::Subdirectories);
+
+        QDirIterator it("saves/", { "*.bin" }, QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (it.hasNext()) {
-            QAction* act = new QAction(it.fileInfo().fileName(), this);
+            QString filePath = it.next();
+            if (filePath.isEmpty()) {
+                qDebug() << "Empty file path!";
+                continue;
+            }
+            // Do something with the file
+            QAction* act = new QAction(it.fileName(), this);
             actions["rec"].append(act);
-            _path["rec"].append(it.filePath());
+            _path["rec"].append(filePath);
         }
     }
 }
@@ -96,6 +110,10 @@ void WindowUI::initButtons()
     {
         b->setMenu(menus["rec"]);
     }
+
+    BTN_CREATE("retry", "Try again", this);
+    BTN_CONNECT(this, onRetryButtonClick());
+
 
     BTN_CREATE("replay_start", "Replay from start", this);
     BTN_CONNECT(this, onReplayFromStartButtonClick());
@@ -181,6 +199,8 @@ void WindowUI::initLayouts() {
         {
             l->setAlignment(Qt::AlignCenter);
             l->addWidget(labels["win"]);
+
+            l->addWidget(buttons["retry"]);
             l->addWidget(buttons["replay_start"]);
             l->addWidget(buttons["replay_end"]);
         }
@@ -221,7 +241,7 @@ void WindowUI::initMenus() {
         menus["map"] = new QMenu("Load map", this);
         {
             menus["file"]->addMenu(menus["map"]);
-            connect(menus["map"], SIGNAL(triggered(QAction*)), this, SLOT(onloadMapMenuTriggered(QAction*)));
+            connect(menus["map"], SIGNAL(triggered(QAction*)), this, SLOT(onLoadMapMenuTriggered(QAction*)));
         }
         for (auto& act : actions["map"]) {
             menus["map"]->addAction(act);
@@ -230,7 +250,7 @@ void WindowUI::initMenus() {
         menus["rec"] = new QMenu("Load recording", this);
         {
             menus["file"]->addMenu(menus["rec"]);
-            connect(menus["rec"], SIGNAL(triggered(QAction*)), this, SLOT(onloadRecordingMenuTriggered(QAction*)));
+            connect(menus["rec"], SIGNAL(triggered(QAction*)), this, SLOT(onLoadRecordingMenuTriggered(QAction*)));
         }
         for (auto& act : actions["rec"]) {
             menus["rec"]->addAction(act);
@@ -271,7 +291,7 @@ void WindowUI::init() {
     initLayouts();
 }
 
-void WindowUI::onloadMapMenuTriggered(QAction* act)
+void WindowUI::onLoadMapMenuTriggered(QAction* act)
 {
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["map"]->actions();
@@ -285,14 +305,14 @@ void WindowUI::onloadMapMenuTriggered(QAction* act)
     assert(false);
 }
 
-void WindowUI::onloadRecordingMenuTriggered(QAction* act)
+void WindowUI::onLoadRecordingMenuTriggered(QAction* act)
 {
     //Iterate through menu actions and find the one that was triggered
     auto acts = menus["rec"]->actions();
     auto paths = _path["rec"];
     for (int i = 0; i < acts.size(); ++i) {
         if (acts[i] == act) {
-            //std::cout << "Ui: recording selected: " << paths[i].toStdString() << std::endl;
+            pr("Ui: recording selected: " << paths[i].toStdString());
             onGameStart(paths[i], true, true);
             return;
         }
@@ -331,11 +351,21 @@ void WindowUI::onGameStateChanged(GameState gs)
     _state = gs;
 }
 
+void WindowUI::onRetryButtonClick()
+{
+    for (auto& map : _path["map"]) {
+        if (map.split("/").last().split(".").first() == currentMapName) {
+            onGameStart(map, false, true);
+            return;
+        }
+    }
+    ASSERT(false);
+}
+
 void WindowUI::onReplayFromStartButtonClick()
 {
     for (auto& rec : _path["rec"]) {
         if (rec.split("/").last().split(".").first() == currentMapName) {
-            std::cout << "UI replay: " << rec.toStdString() << std::endl;
             onGameStart(rec, true, true);
             return;
         }
@@ -347,7 +377,6 @@ void WindowUI::onReplayFromEndButtonClick()
 {
     for (auto& rec : _path["rec"]) {
         if (rec.split("/").last().split(".").first() == currentMapName) {
-            std::cout << "UI replay: " << rec.toStdString() << std::endl;
             onGameStart(rec, true, false);
             return;
         }
@@ -375,11 +404,8 @@ void WindowUI::onGameStart(QString filePath, bool isRecorded, bool replayFromSta
 void WindowUI::onGameEnd(GameState ged)
 {
     pr("UI on game end");
-    if (ged.win) {
-        labels["win"]->setText("You won!\nScore: " + QString::number(ged.score));
-    } else {
-        labels["win"]->setText("You lost :(\nScore: " + QString::number(ged.score) + "\nSteps: " + QString::number(ged.steps));
-    }
+    QString text = ged.win ? "You won!" : "You lost :(";
+    labels["win"]->setText(text + "\nScore: " + QString::number(ged.score) + "\nSteps: " + QString::number(ged.steps));
 
     centrals["play"]->hide();
     centrals["replay"]->hide();

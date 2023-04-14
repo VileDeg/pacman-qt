@@ -23,89 +23,83 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="mainwindow.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="mainwindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="mainwindow.cpp">
+    <ClCompile Include="src\animatedsprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <QtRcc Include="resource.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\astar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gamescene.cpp">
+    <ClCompile Include="src\enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gameview.cpp">
+    <ClCompile Include="src\gamescene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
+    <ClCompile Include="src\gameview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sprite.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
+    <ClCompile Include="src\mainwindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ui.cpp">
+    <ClCompile Include="src\player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="enemy.cpp">
+    <ClCompile Include="src\replay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="animatedsprite.cpp">
+    <ClCompile Include="src\sprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="astar.cpp">
+    <ClCompile Include="src\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="replay.cpp">
+    <ClCompile Include="src\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gameview.h">
+    <ClInclude Include="src\animatedsprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils.h">
+    <ClInclude Include="src\astar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sprite.h">
+    <ClInclude Include="src\enemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="enemy.h">
+    <ClInclude Include="src\gameview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="animatedsprite.h">
+    <ClInclude Include="src\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interfaces.h">
+    <ClInclude Include="src\sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res.txt" />
-    <None Include="astar.h" />
+    <None Include="src\Makefile" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="gamescene.h">
+    <QtMoc Include="src\player.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ui.h">
+    <QtMoc Include="src\gamescene.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="player.h">
+    <QtMoc Include="src\ui.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="replay.h">
+    <QtMoc Include="src\mainwindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\replay.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

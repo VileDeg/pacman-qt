@@ -98,7 +98,7 @@ void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
 
 void MainWindow::cleanup()
 {
-    std::cout << "Main window cleanup" << std::endl;
+    pr("Main window cleanup");
     
     _scene->deleteLater();
     _scene = nullptr;
@@ -125,8 +125,6 @@ void MainWindow::sceneEnd(GameState gs)
     }
 }
 
-
-
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     if (!_scene || _currentlyReplaying) {
@@ -149,18 +147,19 @@ void MainWindow::mousePressEvent(QMouseEvent * event)
 
 void MainWindow::loadImages()
 {
+    QString path = "sprites/object";
     try {
-        QImage floor = loadPixmap(":/sprites/object/floor.jpg");
+        QImage floor = loadPixmap(path + "/floor.jpg");
         setImageBrightness(floor, 20);
         _pixmapCache[SpriteType::Background] = floor;
         
         _pixmapCache[SpriteType::Empty] = QImage();
-        _pixmapCache[SpriteType::Wall] = loadPixmap(":/sprites/object/wall.png");
-        _pixmapCache[SpriteType::Ball] = loadPixmap(":/sprites/object/dot.png");
-        _pixmapCache[SpriteType::Key] = loadPixmap(":/sprites/object/key.png");
-        _pixmapCache[SpriteType::Lock] = loadPixmap(":/sprites/object/lock.png");
+        _pixmapCache[SpriteType::Wall] = loadPixmap(path + "/wall.png");
+        _pixmapCache[SpriteType::Ball] = loadPixmap(path + "/dot.png");
+        _pixmapCache[SpriteType::Key] = loadPixmap(path + "/key.png");
+        _pixmapCache[SpriteType::Lock] = loadPixmap(path + "/lock.png");
 
-        QImage door = loadPixmap(":/sprites/object/door.png");
+        QImage door = loadPixmap(path + "/door.png");
         setImageBrightness(door, 70);
         _pixmapCache[SpriteType::Door] = door;
     }

@@ -64,13 +64,13 @@ void GameScene::playerHandler()
         playerSendToTile(_tileClicked);
     }
 
-    _player->action(_replay); //Move player
+    _player->action(); //Move player
 }
 
 void GameScene::enemiesHandler()
 {
     for (auto enemy : _enemies) {
-        enemy->action(_replay);
+        enemy->action();
     }
 }
 
@@ -257,8 +257,9 @@ void GameScene::parseMap(QString* inputStr)
                         //Seed doesn't matter since the game won't be running anyway
                         enemy = new Enemy(t, 0, this);
                     } else {
-                        seed = QDateTime::currentMSecsSinceEpoch() / 1'000'000;
-                        enemy = new Enemy(t, seed, this);
+                        //seed = QDateTime::currentMSecsSinceEpoch() / 1'000'000;
+                        std::random_device rd;
+                        enemy = new Enemy(t, rd(), this);
                     }
                     enemy->setZValue(2);
                     addItem(enemy);

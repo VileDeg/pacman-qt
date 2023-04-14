@@ -17,7 +17,7 @@ public:
     explicit Player(TileData t, GameScene* parent);
     ~Player() {}
 
-    void action(bool isGameReplayed) override;
+    void action() override;
     void onTileOverlap() override;
     void setMoveDir(MoveDir dir) override;
 

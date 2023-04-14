@@ -19,7 +19,7 @@ public:
     void setSpriteByFrame(unsigned int frame);
 
     virtual void setMoveDir(MoveDir dir) { _nextDir = dir; }
-    virtual void action(bool isGameReplayed) = 0;
+    virtual void action() = 0;
 
     void Serialize(QDataStream& stream) override;
     void Deserialize(QDataStream& stream) override;
@@ -49,7 +49,7 @@ protected:
     QPoint _remPixels{0,0};
     bool _aroundFree[4]{}; //WASD
 private:
-    QString _animPath = ":/sprites/";
+    QString _animPath = "sprites/";
 
     std::unordered_map<MoveDir, std::vector<QImage>> _animation{};
 };

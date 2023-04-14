@@ -11,7 +11,7 @@ public:
     explicit Enemy(TileData t, size_t seed, GameScene* parent);
     ~Enemy() {}
 
-    void action(bool isGameReplayed) override;
+    void action() override;
     void onTileOverlap() override;
 
     void setRandomNextDir();

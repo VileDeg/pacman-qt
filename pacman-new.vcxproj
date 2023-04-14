@@ -88,37 +88,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animatedsprite.cpp" />
-    <ClCompile Include="astar.cpp" />
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="replay.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="ui.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <QtRcc Include="resource.qrc" />
-    <QtUic Include="mainwindow.ui" />
-    <QtMoc Include="mainwindow.h" />
-    <ClCompile Include="gamescene.cpp" />
-    <ClCompile Include="gameview.cpp" />
-    <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\animatedsprite.cpp" />
+    <ClCompile Include="src\astar.cpp" />
+    <ClCompile Include="src\enemy.cpp" />
+    <ClCompile Include="src\gamescene.cpp" />
+    <ClCompile Include="src\gameview.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mainwindow.cpp" />
+    <ClCompile Include="src\player.cpp" />
+    <ClCompile Include="src\replay.cpp" />
+    <ClCompile Include="src\sprite.cpp" />
+    <ClCompile Include="src\ui.cpp" />
+    <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="gamescene.h" />
-    <ClInclude Include="animatedsprite.h" />
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="gameview.h" />
-    <QtMoc Include="ui.h" />
-    <ClInclude Include="interfaces.h" />
-    <QtMoc Include="replay.h" />
-    <ClInclude Include="utils.h" />
-    <ClInclude Include="sprite.h" />
-    <QtMoc Include="player.h" />
+    <ClInclude Include="src\animatedsprite.h" />
+    <ClInclude Include="src\astar.h" />
+    <ClInclude Include="src\enemy.h" />
+    <QtMoc Include="src\gamescene.h" />
+    <ClInclude Include="src\gameview.h" />
+    <ClInclude Include="src\interfaces.h" />
+    <QtMoc Include="src\mainwindow.h" />
+    <QtMoc Include="src\player.h" />
+    <QtMoc Include="src\replay.h" />
+    <ClInclude Include="src\sprite.h" />
+    <QtMoc Include="src\ui.h" />
+    <ClInclude Include="src\utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="astar.h" />
-    <None Include="res.txt" />
+    <None Include="src\Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

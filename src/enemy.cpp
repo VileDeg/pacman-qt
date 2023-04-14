@@ -6,10 +6,10 @@ Enemy::Enemy(TileData t, size_t seed, GameScene* parent)
     : AnimatedSprite(SpriteType::Enemy, t, parent),
     _seed(seed), _generator(_seed)
 {
-    initAnimation(":/sprites/enemy/");
+    initAnimation("sprites/enemy/");
 }
 
-void Enemy::action(bool isGameReplayed)
+void Enemy::action()
 {
     updatePosition();
 

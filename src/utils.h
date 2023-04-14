@@ -4,10 +4,19 @@
 #include <QDebug>
 #include <QPixmap>
 
+#define NDEBUG 0
+
 #define errpr(_msg) qCritical() << _msg
-#define pr(_msg) qDebug() << _msg
-#define vpr(_v) pr(#_v << ": " << _v)
-#define v2pr(_v) pr(#_v << ": (" << _v.x() << "," << _v.y() << ")")
+
+#if NDEBUG == 1
+    #define pr(_msg) qDebug() << _msg
+    #define vpr(_v) pr(#_v << ": " << _v)
+    #define v2pr(_v) pr(#_v << ": (" << _v.x() << "," << _v.y() << ")")
+#else
+    #define pr(_msg)
+    #define vpr(_v)
+    #define v2pr(_v)
+#endif
 
 #define HHPR(_msg, _type, _file) do{ _file << "[" << __FILE__ << " " << __func__ << " " << __LINE__ << "] " << _type << ": " << _msg << std::endl; }while(0)
 #define HPR(_msg, _type) HHPR(_msg, _type, std::cerr)
@@ -20,8 +29,8 @@
 #define PRINF(_msg) HPRINFO(_msg, "Info");
 
 //Macro for breaking into the debugger or aborting the program
-#define NDEBUG
-#ifdef NDEBUG
+
+#if NDEBUG == 1
     #define TRAP() 
 #else
     #ifdef _WIN32
@@ -46,7 +55,6 @@
 #define ASSERTMSG(_x, _msg) HASSERTMSG(_x, true, _msg)
 
 #define V2PR(_v) " " << #_v << ": " << _v.x() << ", " << _v.y() << " "
-
 
 QImage loadPixmap(QString path);
 QImage setImageBrightness(QImage& img, int brightness);

@@ -18,9 +18,11 @@ class WindowUI : public QWidget {
     Q_OBJECT
 
 private slots:
-    void onloadMapMenuTriggered(QAction* action);
-    void onloadRecordingMenuTriggered(QAction* action);
+    void onLoadMapMenuTriggered(QAction* action);
+    void onLoadRecordingMenuTriggered(QAction* action);
     
+    void onRetryButtonClick();
+
     void onReplayFromStartButtonClick();
     void onReplayFromEndButtonClick();
 
