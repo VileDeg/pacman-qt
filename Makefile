@@ -18,8 +18,9 @@ doxygen:
 	doxygen Doxyfile
 
 pack:
-	zip -r $(LOGIN).zip $(SRC_DIR)/* $(DOC_DIR)/ sprites/* examples/* saves/ \
-	Makefile $(PROJ_FILE) README.txt Doxyfile
+	rm -f $(LOGIN).zip
+	zip -r $(LOGIN).zip $(SRC_DIR) sprites examples
+	zip $(LOGIN).zip $(DOC_DIR) saves Makefile README.txt Doxyfile
 
 unpack:
 	unzip $(LOGIN).zip -d $(LOGIN)
@@ -27,5 +28,5 @@ unpack:
 clean:
 	$(MAKE) -C $(SRC_DIR) -f $(PROJ_MAKEFILE) clean
 	rm -rf $(DOC_DIR)/*
-	rm $(SRC_DIR)/.qmake.stash
-	
+	rm -f $(SRC_DIR)/.qmake.stash
+	rm -f $(LOGIN).zip

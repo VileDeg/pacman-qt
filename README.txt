@@ -1,3 +1,5 @@
+Nothing was generated using QT Creator. All UI elements were created manually.
+
 Implemented functionality:
 - Everything stated in the task description was implemented:
 - - Loding of different maps from text files.
