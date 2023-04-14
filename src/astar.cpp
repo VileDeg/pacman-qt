@@ -1,6 +1,8 @@
 #include "astar.h"
 #include "gamescene.h"
 
+#include <QVector2D>
+
 #include <deque>
 
 Astar::Astar(GameScene* scene, QSize mapSize)

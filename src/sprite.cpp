@@ -1,7 +1,7 @@
 #include "sprite.h"
-
 #include "utils.h"
-#include <QKeyEvent>
+
+#include <QVector2D>
 
 Sprite::Sprite(SpriteType type, TileData t, QObject* parent)
     : QObject(parent), QGraphicsItem(),

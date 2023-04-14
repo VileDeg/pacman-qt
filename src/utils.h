@@ -1,5 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
+
 #include <iostream>
 #include <QDebug>
 #include <QPixmap>
@@ -58,7 +59,6 @@
 
 QImage loadPixmap(QString path);
 QImage setImageBrightness(QImage& img, int brightness);
-
 
 #endif // UTILS_H
 

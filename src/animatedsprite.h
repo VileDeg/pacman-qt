@@ -1,6 +1,7 @@
-#pragma once
+#ifndef ANIMATEDSPRITE_H
+#define ANIMATEDSPRITE_H
+
 #include "sprite.h"
-#include <QPair>
 
 enum class MoveDir { None, Up, Left, Down, Right };
 
@@ -54,3 +55,4 @@ private:
     std::unordered_map<MoveDir, std::vector<QImage>> _animation{};
 };
 
+#endif // ANIMATEDSPRITE_H

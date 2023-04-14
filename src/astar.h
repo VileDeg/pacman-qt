@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ASTAR_H
+#define ASTAR_H
 
 #include <QSize>
 #include <QPoint>
@@ -45,3 +46,5 @@ private:
     Node** _asMap;
     QSize _mapSize; //In tiles
 };
+
+#endif // ASTAR_H

@@ -3,13 +3,16 @@
 
 #include <QObject>
 #include <QGraphicsItem>
-#include <QTimer>
-#include <QPixmap>
 #include <QPainter>
-#include <QVector2D>
 #include <QDataStream>
 
-#include "interfaces.h"
+class ISerializable {
+public:
+    virtual ~ISerializable() {}
+
+    virtual void Serialize(QDataStream& stream) = 0;
+    virtual void Deserialize(QDataStream& stream) = 0;
+};
 
 struct TileData {
     int x;

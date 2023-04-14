@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENEMY_H
+#define ENEMY_H
 
 #include "animatedsprite.h"
 
@@ -24,3 +25,4 @@ private:
     std::mt19937 _generator;
 };
 
+#endif // ENEMY_H

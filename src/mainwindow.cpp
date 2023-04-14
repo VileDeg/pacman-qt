@@ -14,9 +14,6 @@
 #include "utils.h"
 #include "ui.h"
 
-//#define SER_FRAME_BYTE_SIZE 2945
-//#define SER_GAME_END_DATA (2 * sizeof(bool) + 2 * sizeof(int))
-
 #define CONNECT(_sender, _signal, _receiver, _slot) connect(_sender, SIGNAL(_signal), _receiver, SLOT(_slot))
 
 void MainWindow::onDeserializationEnded(GameState gs)
@@ -24,7 +21,6 @@ void MainWindow::onDeserializationEnded(GameState gs)
     sceneEnd(gs);
 }
 
-//ErrorCallback errorCallback, 
 MainWindow::MainWindow(ErrorCallback errorCallback, QWidget *parent) :
     QMainWindow(parent), _errorCallback(errorCallback)
 {
@@ -94,8 +90,6 @@ void MainWindow::startGame(QString mapPath, bool recorded, bool replayFromStart)
     _cleanupNeeded = true;
 }
 
-
-
 void MainWindow::cleanup()
 {
     pr("Main window cleanup");
@@ -110,7 +104,6 @@ void MainWindow::cleanup()
 void MainWindow::onGameStateChanged(GameState gs)
 {
     if (gs.gameOver && gs.gameOver != _state.gameOver) {
-        //serializationEnd(gs);
         sceneEnd(gs);
     }
     _state = gs;
@@ -118,8 +111,6 @@ void MainWindow::onGameStateChanged(GameState gs)
 
 void MainWindow::sceneEnd(GameState gs)
 {
-    //_ui->onGameEnd(gs);
-
     if (_cleanupNeeded) {
         cleanup();
     }

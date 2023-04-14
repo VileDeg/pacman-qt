@@ -2,16 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QGraphicsView>
-#include <QLabel>
-#include <QVBoxLayout>
-#include <vector>
+
 #include <functional>
 
 #include "sprite.h"
 #include "gameview.h"
 #include "gamescene.h"
-
 #include "replay.h"
 
 class WindowUI;

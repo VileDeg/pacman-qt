@@ -1,21 +1,13 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
-#include <QDataStream>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QTimer>
-#include <QTime>
-#include <QPair>
-#include <QByteArray>
-#include <QFile>
+
 #include <unordered_map>
-#include <iostream>
 
 #include "player.h"
 #include "enemy.h"
-#include "interfaces.h"
-
 #include "astar.h"
 #include "replay.h"
 

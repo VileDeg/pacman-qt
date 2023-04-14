@@ -1,11 +1,10 @@
-#pragma once
+#ifndef REPLAY_H
+#define REPLAY_H
 
 #include <QObject>
 #include <QFile>
 #include <QTimer>
 #include <QDataStream>
-
-#include "interfaces.h"
 
 class GameScene;
 
@@ -92,3 +91,5 @@ private:
     int _filePosFrameDataStart = 0;
     int _filePosFrameDataEnd = 0;
 };
+
+#endif // REPLAY_H

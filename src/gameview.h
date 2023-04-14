@@ -1,5 +1,5 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef GAMEVIEW_H
+#define GAMEVIEW_H
 
 #include <QGraphicsView>
 
@@ -13,4 +13,4 @@ private:
     void Init();
 };
 
-#endif // VIEW_H
+#endif // GAMEVIEW_H

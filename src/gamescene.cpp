@@ -1,8 +1,6 @@
 #include "gamescene.h"
 
 #include <QKeyEvent>
-#include <QTextStream>
-#include <QtGlobal>
 
 #include "utils.h"
 #include "mainwindow.h"
@@ -257,7 +255,6 @@ void GameScene::parseMap(QString* inputStr)
                         //Seed doesn't matter since the game won't be running anyway
                         enemy = new Enemy(t, 0, this);
                     } else {
-                        //seed = QDateTime::currentMSecsSinceEpoch() / 1'000'000;
                         std::random_device rd;
                         enemy = new Enemy(t, rd(), this);
                     }
@@ -277,7 +274,6 @@ void GameScene::parseMap(QString* inputStr)
                     _player->setScene(this);
                     _player->setZValue(2);
                     addItem(_player);
-                    //_map[ci][li] = _player;
                     playerInMap = true;
 
                     connect(_player, SIGNAL(tileOverlapped()), this, SLOT(onPlayerTileOverlapped()));

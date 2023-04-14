@@ -1,11 +1,10 @@
-#pragma once
+#ifndef UI_H
+#define UI_H
 
 #include <QGraphicsView>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QMainWindow>
 #include <QPushButton>
-#include <QToolBar>
 
 #include <unordered_map>
 #include <functional>
@@ -64,3 +63,5 @@ private:
 
     friend class MainWindow;
 };
+
+#endif // UI_H

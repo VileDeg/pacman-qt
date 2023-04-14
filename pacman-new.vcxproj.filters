@@ -73,9 +73,6 @@
     <ClInclude Include="src\gameview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>

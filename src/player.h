@@ -2,9 +2,6 @@
 #define PLAYER_H
 
 #include "animatedsprite.h"
-
-#include <unordered_map>
-#include <iostream>
 #include "utils.h"
 
 class Player : public AnimatedSprite

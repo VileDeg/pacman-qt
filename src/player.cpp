@@ -1,12 +1,6 @@
 #include "player.h"
-
-#include <QKeyEvent>
-#include <QTimer>
-#include <QPixmap>
-
 #include "utils.h"
 #include "gamescene.h"
-#include <map>
 
 Player::Player(TileData t, GameScene* parent)
     :AnimatedSprite(SpriteType::Player, t, parent)
