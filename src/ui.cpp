@@ -308,7 +308,7 @@ void WindowUI::onLoadMapMenuTriggered(QAction* act)
             return;
         }
     }
-    assert(false);
+    ASSERT(false);
 }
 
 void WindowUI::onLoadRecordingMenuTriggered(QAction* act)
@@ -322,7 +322,7 @@ void WindowUI::onLoadRecordingMenuTriggered(QAction* act)
             return;
         }
     }
-    assert(false);
+    ASSERT(false);
 }
 
 void WindowUI::onReplayFlagsChanged(ReplayFlags rf)

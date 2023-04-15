@@ -104,7 +104,6 @@ bool GameScene::canMoveTo(int x, int y)
 {
     if (x < 0 || y < 0 || x >= _mapSize.width() || y >= _mapSize.height())
         return false;
-    assert(_map[x][y]);
 
     switch (_map[x][y]->getType()) {
         case SpriteType::Wall:
@@ -126,7 +125,6 @@ void GameScene::setPlayerScore(int score)
 void GameScene::playerInteract(int x, int y, bool* end)
 {
     Sprite* target = _map[x][y];
-    assert(target);
     
     switch (target->getType())
     {
